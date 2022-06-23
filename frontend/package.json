@@ -65,5 +65,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://siscaju.herokuapp.com"
+  "proxy": "http://localhost:8080"
 }
