@@ -54,19 +54,19 @@ app.use(divisionRoutes);
 app.use(userPerformanceRoutes);
 
 // ----------------deployment---------------------------
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// // serve frontend
-// if (config.env === "production" || process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, "../frontend/build")));
+// serve frontend
+if (config.env === "production" || process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
 
-//   app.get("*", (req, res) =>
-//     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"))
-//   );
-// } else {
-//   app.get("/", (req, res) => res.send("Please set to production"));
-// }
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => res.send("Please set to production"));
+}
 
 // ----------------deployment---------------------------
 
