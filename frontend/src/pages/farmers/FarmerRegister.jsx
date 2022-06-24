@@ -286,8 +286,8 @@ const [
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "80vh",
         width: "100%",
+        height: "auto",
         marginTop: "60px"
       }}
     >
