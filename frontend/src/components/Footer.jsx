@@ -56,7 +56,8 @@ const Footer = ( ) => {
     })}
 
   return (
-    <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
+    // <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
+    <Box  sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 11 }}> 
       <CssBaseline />
     
       <Paper
