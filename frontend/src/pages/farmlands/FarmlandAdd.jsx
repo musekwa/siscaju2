@@ -86,7 +86,7 @@ const FarmlandAdd = ({ user }) => {
         }}
       >
         {farmers &&
-          farmers.map((farmer) => (
+          farmers?.map((farmer) => (
             <Box key={farmer?._id}>
               <ListItem alignItems="flex-start">
                 {/* <ListItemButton> */}

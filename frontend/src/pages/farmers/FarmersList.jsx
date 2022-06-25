@@ -63,6 +63,7 @@ const FarmersList = ({ user })=> {
                 <Add fontSize='large' color="white" />
             </Fab>
         </Tooltip>
+
         {
             (farmers && farmers.length === 0) && (
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
@@ -72,6 +73,7 @@ const FarmersList = ({ user })=> {
                 </Box>
             )
         }
+        
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
                 farmers?.map((farmer, key)=>(

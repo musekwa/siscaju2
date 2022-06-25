@@ -29,10 +29,10 @@ const Footer = ( ) => {
  const [itemList, setItemList] =  useState([]) // useState(() => refreshMessages());
 
  const navigate = useNavigate()
- useEffect(() => {
-   ref.current.ownerDocument.body.scrollTop = 0;
+//  useEffect(() => {
+//    ref.current.ownerDocument.body.scrollTop = 0;
    
- }, [value, setItemList]);
+//  }, [value, setItemList]);
 
     const toDashboard = ()=>{
       startTransition(()=>{
