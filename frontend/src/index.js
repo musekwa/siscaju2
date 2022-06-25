@@ -21,7 +21,7 @@ root.render(
       <div className="container">
         <ThemeProvider theme={outerTheme}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Router>
+            <Router basename='/'>
               <App />
             </Router>
           </LocalizationProvider>
