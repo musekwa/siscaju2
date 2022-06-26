@@ -12,7 +12,7 @@ import Footer from '../../components/Footer'
 import { toast } from 'react-toastify'
 import { useNavigate, useLocation } from 'react-router-dom'
 import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
-import { useAddFarmlandMutation, useAddCoordinatesMutation, } from '../../features/api/apiSlice'
+import { useAddFarmlandMutation,  } from '../../features/api/apiSlice'
 
 
 const styledTextField = {

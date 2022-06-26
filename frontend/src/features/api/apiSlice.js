@@ -3,8 +3,6 @@ import { baseURL } from "../index";
 
 let user = JSON.parse(localStorage.getItem("user"));
 
-console.log('api slice')
-
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -197,16 +195,19 @@ export const apiSlice = createApi({
     }),
 
     addCoordinates: build.mutation({
-      query: ({ geocoordinates, farmlandId }) => ({
-        url: `/farmlands/${farmlandId}`,
-        method: "PATCH",
-        body: {
+      query: ({ geocoordinates, farmlandId }) => {
+
+        const body = {
           geocoordinates: {
             latitude: geocoordinates.latitude,
             longitude: geocoordinates.longitude,
           },
-        },
-      }),
+        };
+        return {
+        url: `/farmlands/${farmlandId}`,
+        method: "PATCH",
+        body: body
+      }},
       invalidatesTags: ["Division"],
       async onQueryStarted(
         arg,

@@ -115,7 +115,6 @@ const FarmlandCoordinates = ({ user }) => {
               longitude: coordinates.longitude,
             }
           }
-          console.log('normalizaed coordinates: ', normalizedCoordinatesData)
           await addCoordinates(normalizedCoordinatesData)
         }
       } catch (error) {
