@@ -41,6 +41,8 @@ const Dashboard = () => {
     return <Spinner />;
   }
 
+  console.log('performance: ', performance)
+
   return (
     <Box>
       {/* { isLoading && <Spinner />} */}

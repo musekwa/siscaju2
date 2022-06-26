@@ -246,14 +246,20 @@ const [
       })
       return ;
     }
+ 
 
     const normalizedFarmerData = {
       ...farmerData,
       address: {
-        // province: user.address.province, // user's province
-        // district: user.address.district,  // user's district
+        province: user.address.province, // user's province
+        district: user.address.district,  // user's district
         territory: farmerData.address.territory2,
         village: farmerData.address.village2,
+      },
+      user: {
+        fullname: user?.fullname,
+        email: user?.email,
+        phone: user?.phone,
       }
     }
 

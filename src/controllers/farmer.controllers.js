@@ -104,17 +104,12 @@ const addFarmer = asyncHandler(async (req, res) => {
   // assign the user province and district to farmer's address.
   // no user  should register farmer outside their own district
 
-  let registeredBy = {
-    fullname: user?.fullname,
-    email: user?.email,
-    phone: user?.phone,
-  };
-
-  body.address.province = user?.address?.province;
-  body.address.district = user?.address?.district;
-  body["user"] = registeredBy; // add the user property (registeredBy)
+ // add the user property (registeredBy)
 
   const newFarmer = new Farmer(body);
+
+  //  console.log("user: ", user);
+
   const savedFarmer = await newFarmer.save();
 
   // save performance by user

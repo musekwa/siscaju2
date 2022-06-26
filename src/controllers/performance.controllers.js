@@ -28,6 +28,8 @@ const getPerformances = asyncHandler(async (req, res) => {
     user: ObjectId(userId),
     district,
   });
+  // console.log("user: ", ObjectId(userId));
+  // console.log("district: ", district);
   districtPerformances = await DistrictPerformance.findOne({ district });
   provincePerformances = await ProvincePerformance.findOne({ province });
   // }
@@ -37,6 +39,8 @@ const getPerformances = asyncHandler(async (req, res) => {
     district: districtPerformances,
     province: provincePerformances,
   };
+
+  
 
   return res.status(200).json(performance);
 });
