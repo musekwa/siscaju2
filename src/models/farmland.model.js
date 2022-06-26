@@ -52,8 +52,8 @@ const farmlandsSchema = mongoose.Schema(
       },
     },
     geocoordinates: {
-      latitude: Number,
-      longitude: Number,
+      latitude: { type: Number, default: 0, },
+      longitude: { type: Number, default: 0, }
     },
     interCrops: [String],
     farmlandType: {

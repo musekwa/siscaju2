@@ -20,6 +20,7 @@ import { Box, Typography } from "@mui/material";
 import { apiSlice } from "./features/api/apiSlice";
 import Spinner from "./components/Spinner";
 import { useSelector } from "react-redux";
+import FarmlandCoordinates from "./pages/farmlands/FarmlandCoordinates";
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
 
@@ -58,7 +59,7 @@ if (isLoading) {
 
           {/**  Dashboard */}
           <Route element={<ProtectedRoute user={user} />}>
-            <Route path="/" element={<Dashboard  />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/farmers" element={<FarmerRegister user={user} />} />
             <Route
               path="/farmlands"
@@ -76,6 +77,7 @@ if (isLoading) {
             />
             <Route path="/farmer" element={<Farmer user={user} />} />
             <Route path="/farmland" element={<Farmland user={user} />} />
+            <Route path="/add-coordinates" element={<FarmlandCoordinates user={user} /> } />
           </Route>
 
           {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}

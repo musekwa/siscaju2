@@ -230,7 +230,7 @@ const getFarmlandById = asyncHandler(async (req, res) => {
     params: { farmlandId },
   } = req;
   let foundFarmland = await getFarmlandByFarmlandIdService(farmlandId);
-  return res.status(200).json({ status: "OK", data: foundFarmland });
+  return res.status(200).json(foundFarmland);
 });
 
 //@desc
@@ -247,13 +247,18 @@ const updateFarmland = asyncHandler(async (req, res) => {
     throw new Error("Deve especificar 'farmerId' e 'farmlandId'");
   }
 
-  let updatedFarmland = await updateFarmlandService(farmlandId, body);
+  let updatedFarmland = await Farmland.findOneAndUpdate(
+    { _id: ObjectId(farmlandId) }, 
+    body, 
+    {
+    runValidators: true, new: true, }
+  );
   if (!updatedFarmland) {
     res.status(404);
     throw new Error("Pomar nao econtrado");
   }
 
-  return res.status(200).json({ status: "OK", data: updatedFarmland });
+   return res.status(200).json(updatedFarmland);
 });
 
 //@desc
@@ -273,7 +278,7 @@ const deleteFarmland = asyncHandler(async (req, res) => {
   let deletionResult = await deleteFarmlandService(farmerId, farmlandId);
   return res
     .status(204)
-    .json({ status: "OK", message: "Pomar eliminado", data: deletionResult });
+    .json(deletionResult );
 });
 
 export {

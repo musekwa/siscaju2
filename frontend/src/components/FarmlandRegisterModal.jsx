@@ -1,12 +1,20 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Backdrop, Box, Button, Fade, Grid, Modal, Typography } from "@mui/material"
 import { Link, useNavigate } from 'react-router-dom'
 import { AddAPhoto, AddLocation, ArrowBack, Forest } from '@mui/icons-material'
+import { useAddCoordinatesMutation } from '../features/api/apiSlice'
+
 
 const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivision }) => {
 
+
   const navigate = useNavigate();
+  // const [ 
+  //     addCoordinates, 
+  //     { data: updatedFarmland, isLoading, isError, error, isSuccess } 
+  //   ] = useAddCoordinatesMutation();
+
 
   // if (farmer && farmland && farmlandDivision) {
   //   console.log('farmland')
@@ -15,7 +23,7 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
   //   console.log('farmland division')
   // }
 
-  // console.log('farmland division')
+
   return (
     <Modal
         keepMounted
@@ -90,8 +98,8 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
 
             </Grid>
             <Grid item xs={5} sx={{ textAlign: "right" }}>
-              <Button onClick={()=>{
-                // setOpen(false)
+              <Button onClick={() =>{
+                navigate('/add-coordinates', { state: { farmer, farmland }})
               }}>
                 <Box sx={{ textAlign: "center", color: "rebeccapurple"}}>
                     <AddLocation fontSize="large"  />
