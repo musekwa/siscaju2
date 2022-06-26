@@ -89,13 +89,19 @@ const FarmlandDivisionRegister = ({ user }) => {
 
   useEffect(()=>{
 
-    if (isError){
-      toast.error(error, {
+    if (isError && error.status === 'FETCH_ERROR') {
+      toast.error("Verifique a conexão da Internet!", {
         autoClose: 5000,
         hideProgressBar: true,
-        position: toast.POSITION.TOP_CENTER,        
-      })
-    }
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isError){
+      toast.error(error.error, {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } 
     else if (isSuccess) {
       toast.success('Registado uma divisão com sucesso!', {
         autoClose: 5000,
