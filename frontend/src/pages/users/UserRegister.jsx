@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 // import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, Navigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 // import { register, reset } from "../../features/auth/authSlice";
 import Spinner from "../../components/Spinner";
 import { roles } from "../../app/roles";
@@ -21,7 +21,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { reset, register } from "../../features/users/userSlice"
 
@@ -58,8 +58,8 @@ function UserRegister() {
     }
   });
 
-  const [province, setProvince] = useState("");
-  const [district, setDistrict] = useState("");
+  // const [province, setProvince] = useState("");
+  // const [district, setDistrict] = useState("");
   const [territory, setTerritory] = useState("");
   const [inputRole, setInputRole] = useState("");
   const [inputProvince, setInputProvince] = useState("");
@@ -102,13 +102,7 @@ function UserRegister() {
 
 
   useEffect(() => {
-    if (isError || message || (user && !user?.fullname)) {
-      let errorMessage = message ? message : "O registo falhou";
-      toast.error(errorMessage, {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } else if (isSuccess) {
+    if (isSuccess) {
       toast.success(
         `Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`,
         {
@@ -117,6 +111,24 @@ function UserRegister() {
         }
       );
       navigate("/", { state: { user } });
+    }
+    else if (isError && message === 'Network Error') {
+      toast.error("Verifique a conexão da Internet!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    else if (isError && message?.includes('status code 400')) {
+      toast.error("Credenciais inválidas!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    else if (isError) {
+      toast.error(message ? message : "O registo falhou!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, register, dispatch]);
@@ -290,6 +302,15 @@ function UserRegister() {
         </Typography>
 
         <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+          <Paper
+            sx={{
+            maxWidth: "500px",
+            height: "auto",
+            textAlign: "center",
+            m: "5px",
+            
+            }}
+            >
           <div style={{ padding: "20px 10px 15px 10px" }}>
             <TextField
               sx={styledTextField}
@@ -368,6 +389,16 @@ function UserRegister() {
               }}
             />
           </div>
+          </Paper>
+          <Paper
+            sx={{
+            maxWidth: "500px",
+            height: "auto",
+            textAlign: "center",
+            m: "5px",
+            
+            }}
+            >
           <Stack
             direction="row"
             sx={{ display: "flex", justifyContent: "space-between" }}
@@ -606,8 +637,9 @@ function UserRegister() {
               />
             </div>
           </Stack>
+          </Paper>
 
-          <div style={{ padding: "5px 10px 20px 10px" }}>
+          <div style={{ padding: "10px 10px 20px 10px" }}>
             <BootstrapButton variant="contained" type="submit">
               Criar conta
             </BootstrapButton>

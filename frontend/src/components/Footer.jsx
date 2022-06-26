@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, startTransition } from 'react'
+import React, { startTransition } from 'react'
 import {
   Dashboard,
   Forest,
@@ -23,16 +23,8 @@ const styledBottomNavigation = {
 
 const Footer = ( ) => {
 
- const [value, setValue] = useState(0);
-
- const ref = useRef(null);
- const [itemList, setItemList] =  useState([]) // useState(() => refreshMessages());
 
  const navigate = useNavigate()
-//  useEffect(() => {
-//    ref.current.ownerDocument.body.scrollTop = 0;
-   
-//  }, [value, setItemList]);
 
     const toDashboard = ()=>{
       startTransition(()=>{
@@ -57,11 +49,11 @@ const Footer = ( ) => {
 
   return (
     // <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
-    <Box  sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 11 }}> 
+    <Box  sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1 }}> 
       <CssBaseline />
     
       <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 11 }}
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0,  }}
         elevation={3}
       >
         <BottomNavigation

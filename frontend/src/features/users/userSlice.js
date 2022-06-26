@@ -87,7 +87,7 @@ export const userSlice = createSlice({
                 state.isError = true;
                 state.isLoading = false;
                 state.user = null;
-                state.message = action.message;
+                state.message = action.payload;
             })
             .addCase(login.pending, (state)=>{
                 state.isLoading = true;
@@ -101,7 +101,7 @@ export const userSlice = createSlice({
                 state.isError = true;
                 state.isLoading = false;
                 state.user = null;
-                state.message = action.message;
+                state.message = action.payload;
             })
     }
 });

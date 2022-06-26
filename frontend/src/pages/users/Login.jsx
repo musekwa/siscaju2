@@ -64,8 +64,20 @@ function Login() {
         });
         navigate("/", { state: { user } });
       }
-      else if (isError || message || (user && !user?.fullname)) {
+      else if (isError && message === 'Network Error') {
+        toast.error("Verifique a conexão da Internet!", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+      else if (isError && message?.includes('status code 400')) {
         toast.error("Credenciais inválidas!", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+      else if (isError) {
+        toast.error(message, {
           autoClose: 5000,
           position: toast.POSITION.TOP_CENTER,
         });

@@ -97,13 +97,20 @@ const [
     if (!user){
       navigate('/login')
     }
-    if (isError) {
-      toast.error(error, {
+    if (isError && error.status === 'FETCH_ERROR') {
+      toast.error("Verifique a conexão da Internet", {
         autoClose: 5000,
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,
       });
-    } else if (isSuccess) {
+    } else if (isError){
+      toast.error(error.error, {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } 
+    else if (isSuccess) {
       toast.success(`Foi registado com sucesso o Produtor ${farmer.fullname.split(' ')[0]}!`, {
         autoClose: 5000,
         hideProgressBar: true,
@@ -288,7 +295,8 @@ const [
         alignItems: "center",
         width: "100%",
         height: "auto",
-        marginTop: "60px"
+        marginTop: "60px",
+        marginBottom: "60px",
       }}
     >
       <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
@@ -320,7 +328,6 @@ const [
             }}
           />
         </div>
-
 
         <Stack
           direction="row"

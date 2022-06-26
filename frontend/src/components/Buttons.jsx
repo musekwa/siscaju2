@@ -3,6 +3,7 @@ import { Button, styled } from "@mui/material";
 export const BootstrapButton = styled(Button)({
   boxShadow: "none",
   textTransform: "none",
+  minWidth: "150px",
   fontSize: 16,
   padding: "6px 12px",
   border: "1px solid",
