@@ -107,7 +107,15 @@ const Farmer = ({ user }) => {
 
     <Divider sx={{ mt: "10px", mb: "5px", }} />
 
-    <Box sx={{ maxWidth: "960px", padding: "0px 5px 5px 5px",  marginLeft: "15px" }}>
+    <Box 
+      sx={{ 
+        maxWidth: "960px", 
+        padding: "10px", 
+        marginLeft: "15px",  
+        position: "relative", 
+        bottom: "80px", 
+        marginTop: "80px"  }}
+    >
     <Box sx={{width: "100%", marginRight: "0px 5px 5px 5px", textAlign: "right" }}>
       <Button sx={{ width: "50px"}}>
           <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />

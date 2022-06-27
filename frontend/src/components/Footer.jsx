@@ -64,7 +64,7 @@ const Footer = ( ) => {
   return (
     // <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
     // <Box  sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-    <Box  sx={{ position: "fixed", top: {innerScreenHeight}, left: 0, right: 0, zIndex: 1 }}> 
+    <Box  sx={{ position: "fixed", top: {innerScreenHeight} +'px', left: 0, right: 0, zIndex: 1 }}> 
       <CssBaseline />
     
       <Paper

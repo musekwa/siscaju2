@@ -74,7 +74,7 @@ const FarmersList = ({ user })=> {
             )
         }
 
-        <Box sx={{ }}>
+        <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
         
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
@@ -89,8 +89,18 @@ const FarmersList = ({ user })=> {
                 <ListItemText
                     primary= {
                         <Fragment>
-                            <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >{`${farmer?.fullname}` } <span style={{ fontSize: "12px"}}>{`(${new Date().getFullYear() - new Date (farmer.birthDate).getFullYear()} anos)`}</span></Typography>
-                            <Typography component="span" sx={{ fontSize: "11px", }}>{farmer?.category} (em {`${farmer?.address?.territory}`})</Typography>
+
+                            <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >
+                                {`${farmer?.fullname}` } 
+                                    <span style={{ fontSize: "12px"}}>
+                                        {`(${new Date().getFullYear() - new Date (farmer.birthDate).getFullYear()} anos)`}
+                                    </span>
+                            </Typography>
+
+                            <Typography component="span" sx={{ fontSize: "11px", }}>
+                                {farmer?.category} (em {`${farmer?.address?.territory}`})
+                            </Typography>
+
                             <Stack direction="row">
                                 <Box sx={{ width: "50%"}}>
                                     <Typography component="span" variant='body2'>{`Pomares: ${farmer?.farmlands?.length}`}</Typography>
@@ -99,6 +109,7 @@ const FarmersList = ({ user })=> {
                                  <Typography component="span" variant='body2'>Cajueiros: {GetTotalTrees(farmer?.farmlands)}</Typography>
                                 </Box>
                             </Stack>
+
                             <Stack direction="row">
                                 <Box sx={{ width: "50%"}}>
                                  <Typography component="div" sx={{ fontSize: "11px", textAlign: "left"}}>{`${farmer.phone ? farmer.phone : "Não tem telefone"}`}</Typography> 
@@ -109,7 +120,14 @@ const FarmersList = ({ user })=> {
                     }
                     secondary={
                         
-                        <Typography component="div" sx={{ width: "100%"}}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${normalizeDate(farmer.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmer?.user?.fullname}`}</span></Typography> 
+                        <Typography component="div" sx={{ width: "100%"}}>
+                            <span style={{textAlign: "rigth", fontSize: "11px"}}>
+                                Registo:{`${normalizeDate(farmer.createdAt)}`}
+                            </span>   
+                            <span style={{textAlign: "rigth", fontSize: "11px"}}>
+                                {`por ${farmer?.user?.fullname}`}
+                            </span>
+                        </Typography> 
                     }
                 />
                 {/* </ListItemButton> */}

@@ -300,12 +300,11 @@ const [
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        height: "auto",
-        marginTop: "60px",
-        marginBottom: "60px",
+       
+
       }}
     >
-      <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+      <Box sx={{ position: "relative", bottom: "80px", marginTop: "140px"  }}  component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
       <Paper
           sx={{
           maxWidth: "500px",

@@ -77,6 +77,7 @@ const FarmlandAdd = ({ user }) => {
         isSearchIcon={true}
         user={user}
       />
+      <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
       <List
         sx={{
           marginTop: "45px",
@@ -143,6 +144,7 @@ const FarmlandAdd = ({ user }) => {
             </Box>
           ))}
       </List>
+      </Box>
       {/* <SearchModal open={false} /> */}
       <Footer />
     </Box>

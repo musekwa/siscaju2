@@ -69,7 +69,14 @@ const Farmland = ({ user }) => {
 
     <Divider sx={{ mt: "10px", mb: "10px", }} />
 
-    <Box sx={{ maxWidth: "960px", padding: "10px", marginLeft: "15px" }}>
+    <Box 
+      sx={{ 
+        maxWidth: "960px", 
+        padding: "10px", 
+        marginLeft: "15px",  
+        position: "relative", 
+        bottom: "80px", 
+        marginTop: "80px"  }}>
 
     {/* dados do pomar */}
     <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>

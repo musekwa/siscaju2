@@ -100,6 +100,7 @@ const FarmlandsList = ({ user }) => {
           </Box>
         </Box>
       )}
+    <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
       <List
         sx={{
           marginTop: "45px",
@@ -185,6 +186,7 @@ const FarmlandsList = ({ user }) => {
           </Box>
         ))}
       </List>
+      </Box>
       <SearchModal open={false} />
       <Footer />
     </Box>

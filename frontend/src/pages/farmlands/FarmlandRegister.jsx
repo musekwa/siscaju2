@@ -258,7 +258,7 @@ const FarmlandRegister = ({ user }) => {
         }}
       >
         {/* Farmalnd form */}
-        <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+        <Box sx={{ position: "relative", bottom: "80px", marginTop: "100px"  }} component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <Paper
             sx={{
               maxWidth: "500px",
