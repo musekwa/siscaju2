@@ -173,14 +173,14 @@ const Farmland = ({ user }) => {
               <Typography 
               variant='body2' 
               align='left'
-              sx={{ fontWeight: 800, color: "#fff", padding: "5px", }}
+              sx={{ fontWeight: 800, color: "#ffffff", padding: "5px", }}
               >
                   {`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}
               </Typography>
             </Grid>
             <Grid item xs={3}>
               <Button sx={{ width: "50px"}}>
-                <Edit fontSize='small' sx={{ color: "#fff"}} />
+                <Edit fontSize='small' sx={{ color: "#ffffff"}} />
               </Button>
             </Grid>
           </Grid>

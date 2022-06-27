@@ -162,7 +162,7 @@ const FarmlandsList = ({ user }) => {
               </ListItemAvatar>
               <Typography
                 variant="body2"
-                sx={{ fontWeight: 400, fontSize: "14px", color: "#fff" }}
+                sx={{ fontWeight: 400, fontSize: "14px", color: "#ffffff" }}
               >
                 {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}
                 {" "}
