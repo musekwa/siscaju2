@@ -128,8 +128,6 @@ const FarmlandRegister = ({ user }) => {
   }, [farmland, isError, isSuccess, error, farmer, label, navigate])
 
 
-
-
   const onSubmit = async (e)=>{
     e.preventDefault();
 
@@ -147,7 +145,6 @@ const FarmlandRegister = ({ user }) => {
       return ;
     }
 
-
     if (!label) {
       toast.error('Localização geográfica deste pomar',{
         autoClose: 5000,
@@ -162,7 +159,6 @@ const FarmlandRegister = ({ user }) => {
     }
 
     if (!(sowingYear > 1900 && sowingYear <= new Date().getFullYear())) {
-      console.log('sowing year: ', sowingYear)
       toast.error('Ano de plantio tem de ser válido!', {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -179,10 +175,6 @@ const FarmlandRegister = ({ user }) => {
         typeof trees === 'undefined' 
         || typeof declaredArea === 'undefined'
         || typeof plantedArea === 'undefined') {
-      console.log('trees', typeof trees)
-      console.log('declared', typeof declaredArea)
-      console.log('planted', typeof plantedArea)
-      console.log(typeof trees)
       toast.error('Completa dados em falta!', {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -211,7 +203,7 @@ const FarmlandRegister = ({ user }) => {
           },
           plantingTechniques: {
             seedling: plantingTechniques.seedling,
-            grafting: plantingTechniques.seedling === 'enxertia' ? plantingTechniques.grafting : null
+            grafting: plantingTechniques.seedling === 'mudas enxertadas' ? plantingTechniques.grafting : null
           }
         }
       ],
@@ -517,7 +509,7 @@ const FarmlandRegister = ({ user }) => {
             >
               <Box
                 component="div"
-                sx={{ width: "50%", padding: "10px 10px 10px 10px" }}
+                sx={{ width: "100%", padding: "10px 10px 10px 10px" }}
               >
                 <Autocomplete
                   fullWidth
@@ -551,7 +543,7 @@ const FarmlandRegister = ({ user }) => {
                 />
               </Box>
             </Stack>
-            {farmlandData.plantingTechniques.seedling === "enxertia" ? (
+            {farmlandData.plantingTechniques.seedling === 'mudas enxertadas' ? (
               <Box
                 component="div"
                 sx={{ width: "100%", padding: "10px 10px 10px 10px" }}

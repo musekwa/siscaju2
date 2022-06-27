@@ -145,15 +145,19 @@ const Farmland = ({ user }) => {
     {
       farmland?.divisions?.map((division, i)=>(
         <Fragment key={i}>
+        
         <Divider sx={{ mt: "10px", mb: "10px", }} />
+        <div style={{ border: "1px solid rebeccapurple" }}>
           <Box sx={{ width: "100%", height: "30px", p: 1, backgroundColor: "rebeccapurple"}}>
             <Typography variant='body2' color="#eee" sx={{ fontWeight: 600, textAlign: "center" }}>{`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}</Typography>
           </Box>
+          
           <Box sx={{width: "100%", marginRight: "5px", textAlign: "right" }}>
             <Button sx={{ width: "50px"}}>
                 <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
             </Button>
          </Box>
+           
           <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
             <Box sx={{ width: "50%", textAlign: 'left'}} >
               Área plantada:
@@ -189,6 +193,7 @@ const Farmland = ({ user }) => {
               {`${getFromDivision(division)?.plantingTechniques.toString()}`}
             </Box>
           </Stack>
+          </div>
         </Fragment>
       ))
     }

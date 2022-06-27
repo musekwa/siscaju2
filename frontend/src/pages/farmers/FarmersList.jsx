@@ -73,6 +73,8 @@ const FarmersList = ({ user })=> {
                 </Box>
             )
         }
+
+        <Box sx={{ }}>
         
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
@@ -117,6 +119,7 @@ const FarmersList = ({ user })=> {
             </Box>))
             }
         </List>
+        </Box>
         <SearchModal open={false} />
         <Footer />
     </Box>

@@ -1,7 +1,7 @@
 import { Forest, LegendToggle, PersonAdd } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/system";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../../components/Footer";
@@ -18,7 +18,7 @@ const Item = styled(Box)(({ theme }) => ({
 }));
 
 const Dashboard = () => {
-  const location = useLocation();
+  // const location = useLocation();
 
   const {
     user,
@@ -40,8 +40,6 @@ const Dashboard = () => {
   if (isLoading || isFetching || userLoading) {
     return <Spinner />;
   }
-
-  console.log('performance: ', performance)
 
   return (
     <Box>
@@ -120,7 +118,7 @@ const Dashboard = () => {
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
           <Grid item sx={{}} xs={4}>
-            <Link to="/farmers" sx={{}}>
+            <Link to="#" sx={{}}>
               <Typography variant="body1" sx={{}}>
                 {performance?.user?.farmers?.length || 0}
               </Typography>
@@ -132,7 +130,7 @@ const Dashboard = () => {
             </Link>
           </Grid>
           <Grid item sx={{}} xs={4}>
-            <Link to="/farmers" sx={{}}>
+            <Link to="#" sx={{}}>
               <Typography variant="body1" sx={{}}>
                 {performance?.user?.farmlands?.length || 0}
               </Typography>
@@ -145,7 +143,7 @@ const Dashboard = () => {
           </Grid>
 
           <Grid item sx={{}} xs={4}>
-            <Link to="/farmers" sx={{}}>
+            <Link to="#" sx={{}}>
               <Typography variant="body1" sx={{}}>
                 {0}
               </Typography>
@@ -170,7 +168,7 @@ const Dashboard = () => {
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
           <Grid item sx={{}} xs={4}>
-            <Link to="/farmers" sx={{}}>
+            <Link to="#" sx={{}}>
               <Typography variant="body1" sx={{}}>
                 {performance?.district?.farmers?.length || 0}
               </Typography>
@@ -182,7 +180,7 @@ const Dashboard = () => {
             </Link>
           </Grid>
           <Grid item sx={{}} xs={4}>
-            <Link to="/farmers" sx={{}}>
+            <Link to="#" sx={{}}>
               <Typography variant="body1" sx={{}}>
                 {performance?.district?.farmlands?.length || 0}
               </Typography>
@@ -195,7 +193,7 @@ const Dashboard = () => {
           </Grid>
 
           <Grid item sx={{}} xs={4}>
-            <Link to="/farmers" sx={{}}>
+            <Link to="#" sx={{}}>
               <Typography variant="body1" sx={{}}>
                 {0}
               </Typography>
@@ -225,7 +223,7 @@ const Dashboard = () => {
               sx={{ display: "flex", justifyContent: "space-around" }}
             >
               <Grid item sx={{}} xs={4}>
-                <Link to="/farmers" sx={{}}>
+                <Link to="#" sx={{}}>
                   <Typography variant="body1" sx={{}}>
                     {performance?.province?.farmers?.length || 0}
                   </Typography>
@@ -237,7 +235,7 @@ const Dashboard = () => {
                 </Link>
               </Grid>
               <Grid item sx={{}} xs={4}>
-                <Link to="/farmers" sx={{}}>
+                <Link to="#" sx={{}}>
                   <Typography variant="body1" sx={{}}>
                     {performance?.province?.farmlands?.length || 0}
                   </Typography>
@@ -250,7 +248,7 @@ const Dashboard = () => {
               </Grid>
 
               <Grid item sx={{}} xs={4}>
-                <Link to="/farmers" sx={{}}>
+                <Link to="#" sx={{}}>
                   <Typography variant="body1" sx={{}}>
                     {0}
                   </Typography>

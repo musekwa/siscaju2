@@ -69,7 +69,9 @@ const addFarmland = asyncHandler(async (req, res) => {
     phone: user?.phone,
   };
 
+  body["province"] = user?.address?.province;
   body["district"] = user?.address?.district;
+  body["territory"] = user?.address?.territory;
 
   let division = body.divisions[0];
 

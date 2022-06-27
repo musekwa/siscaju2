@@ -1,4 +1,4 @@
-import React, { startTransition } from 'react'
+import React, { startTransition, useState } from 'react'
 import {
   Dashboard,
   Forest,
@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Box, CssBaseline, Paper } from "@mui/material";
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react';
 
 
 
@@ -23,8 +24,21 @@ const styledBottomNavigation = {
 
 const Footer = ( ) => {
 
+  const [innerScreenHeight, setInnerScreenHeight] = useState(null)
 
  const navigate = useNavigate()
+
+//  let innerScreenHeight = window.innerHeight;
+
+  useEffect(()=>{
+
+    setInnerScreenHeight(window.innerHeight)
+
+  }, [innerScreenHeight])
+
+  console.log('innerHeight: ', innerScreenHeight)
+
+
 
     const toDashboard = ()=>{
       startTransition(()=>{
@@ -49,7 +63,8 @@ const Footer = ( ) => {
 
   return (
     // <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
-    <Box  sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1 }}> 
+    // <Box  sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+    <Box  sx={{ position: "fixed", top: {innerScreenHeight}, left: 0, right: 0, zIndex: 1 }}> 
       <CssBaseline />
     
       <Paper

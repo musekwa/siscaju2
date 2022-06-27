@@ -1,3 +1,3 @@
 
 export const plantingTechniquesList = [
-    'enxertia', 'sementes' ]
+    'mudas enxertadas', 'sementes policlonais' ]
