@@ -1,6 +1,6 @@
 
 import { Edit } from '@mui/icons-material'
-import { Avatar, Box, Button, Divider, Stack, styled, Typography } from '@mui/material'
+import { Avatar, Box, Button, Divider, Grid, Stack, styled, Typography } from '@mui/material'
 import React, { Fragment } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
@@ -73,13 +73,14 @@ const Farmland = ({ user }) => {
       sx={{ 
         maxWidth: "960px", 
         padding: "10px", 
-        marginLeft: "15px",  
+        marginLeft: "10px",  
+        marginRight: "10px",  
         position: "relative", 
         bottom: "80px", 
         marginTop: "80px"  }}>
 
     {/* dados do pomar */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
+    <Stack direction="row" sx={{ padding: "5px 0px 5px 0px"}} gap={2}>
       <Box sx={{ width: "50%",textAlign: 'left'}} >
         {farmer?.village ? 'Localidade (Designação):' : 'Designação:' }
       </Box>
@@ -89,7 +90,7 @@ const Farmland = ({ user }) => {
     </Stack>
 
       {/* Dados Immutaveis do pomar  */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
+    <Stack direction="row" sx={{ padding: "5px 0 5px 0px"}} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
         Distrito (posto):
       </Box>
@@ -102,15 +103,25 @@ const Farmland = ({ user }) => {
 
     <Divider  sx={{ mt: "10px", mb: "10px", }} />
     <Box sx={{width: "100%", marginRight: "5px", textAlign: "right" }}>
-      <Button sx={{ width: "50px"}}>
-          <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
-      </Button>
+      <Grid container sx={{ }}>
+        <Grid item xs={9}>
+        <Typography align='left' sx={{ fontSize: "14px", color: "gray", fontWeight: 800, }}>
+          Dados gerais do pomar
+        </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Button sx={{ width: "50px"}}>
+            <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
+          </Button>
+        </Grid>
+      </Grid>
+
     </Box>
 
     {/*  */}
-    <Stack direction="row" sx={{ padding: "0px 5px 5px 5px"}} gap={2}>
+    <Stack direction="row" sx={{ padding: "5px 0px 5px 0px" }} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Área declarada:
+        Total declarada:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
         <Typography>{`${farmland?.declaredArea} hectares`}</Typography>
@@ -118,9 +129,9 @@ const Farmland = ({ user }) => {
     </Stack>
 
         {/*  */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
+    <Stack direction="row" sx={{ padding: "5px 0px 5px 0px"}} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Área plantada:
+        Total plantada:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
         <Typography>{`${farmland?.actualArea} hectares`}</Typography>
@@ -128,9 +139,9 @@ const Farmland = ({ user }) => {
     </Stack>
 
      {/*  */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
+    <Stack direction="row" sx={{ padding: "5px 0px 5px 0px"}} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
-       Cajueiros:
+       Total Cajueiros:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
         <Typography>{`${farmland?.totalTrees} árvores`}</Typography>
@@ -138,7 +149,7 @@ const Farmland = ({ user }) => {
     </Stack>
 
          {/*  */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
+    <Stack direction="row" sx={{ padding: "5px 0px 5px 0px"}} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
        Culturas consorciadas:
       </Box>
@@ -149,21 +160,36 @@ const Farmland = ({ user }) => {
 
       {/* Divisions */}
 
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+
     {
       farmland?.divisions?.map((division, i)=>(
-        <Fragment key={i}>
+        <Box key={i} sx={{ width: "100%"}}>
         
         <Divider sx={{ mt: "10px", mb: "10px", }} />
-        <div style={{ border: "1px solid rebeccapurple" }}>
-          <Box sx={{ width: "100%", height: "30px", p: 1, backgroundColor: "rebeccapurple"}}>
-            <Typography variant='body2' color="#eee" sx={{ fontWeight: 600, textAlign: "center" }}>{`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}</Typography>
-          </Box>
+        <div style={{ border: "2px solid lightgray" }}>
+          <Grid container sx={{ backgroundColor: "lightgray" }}>
+            <Grid item xs={9}>
+              <Typography 
+              variant='body2' 
+              align='left'
+              sx={{ fontWeight: 800, color: "#444", padding: "5px", }}
+              >
+                  {`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Button sx={{ width: "50px"}}>
+                <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
+              </Button>
+            </Grid>
+          </Grid>
+          {/* <Box sx={{ width: "100%", height: "30px", p: 1, backgroundColor: "lightgray"}}>
+            </Box>
           
           <Box sx={{width: "100%", marginRight: "5px", textAlign: "right" }}>
-            <Button sx={{ width: "50px"}}>
-                <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
-            </Button>
-         </Box>
+
+         </Box> */}
            
           <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
             <Box sx={{ width: "50%", textAlign: 'left'}} >
@@ -201,10 +227,10 @@ const Farmland = ({ user }) => {
             </Box>
           </Stack>
           </div>
-        </Fragment>
+        </Box>
       ))
     }
-    <Divider sx={{ mt: "10px", mb: "10px", }} />
+    </Box>
     </Box>
     <Footer />
     </Box>

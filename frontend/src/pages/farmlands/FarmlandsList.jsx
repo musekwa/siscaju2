@@ -1,4 +1,4 @@
-import React, {  Fragment} from "react";
+import React, {  Fragment, useState} from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -19,10 +19,12 @@ import { Add } from "@mui/icons-material";
 import Spinner from "../../components/Spinner";
 import SearchModal from "../../components/SearchModal";
 import { useGetFarmlandsByQuery } from "../../features/api/apiSlice";
+import { useEffect } from "react";
 
 const FarmlandsList = ({ user }) => {
 
   const navigate = useNavigate();
+  const [byFarmers, setByFarmers] = useState({});
 
   let filterBy =
     user?.role === "Extensionista"
@@ -42,6 +44,29 @@ const FarmlandsList = ({ user }) => {
     fixedCacheKey: "farmlands",
   });
 
+
+  useEffect(()=>{
+    
+    if (farmlands && farmlands.length > 0) {
+      let groupedByFarmers = { }
+      farmlands?.map(farmland=> {
+        if (!groupedByFarmers.hasOwnProperty(farmland.farmer._id)) {
+          groupedByFarmers[`${farmland.farmer._id}`] = new Array(farmland);
+        }
+        else {
+          groupedByFarmers[`${farmland.farmer._id}`].push(farmland);
+        }
+      })
+
+      setByFarmers(prevState=>{
+        return groupedByFarmers;
+      })
+    }
+
+  }, [farmlands])
+
+
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -58,6 +83,7 @@ const FarmlandsList = ({ user }) => {
     return new Date().getFullYear() - Math.ceil(sum / divisions?.length);
   };
 
+
   const normalizeDate = (date) => {
     return (
       new Date(date).getDate() +
@@ -68,6 +94,7 @@ const FarmlandsList = ({ user }) => {
     );
   };
 
+ 
   return (
     <Box>
       <Navbar
@@ -100,6 +127,19 @@ const FarmlandsList = ({ user }) => {
           </Box>
         </Box>
       )}
+
+    {
+        (isError && !farmlands) && (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
+                <Box sx={{ width: "600px"}}>
+                <Typography sx={{ color: "red" }} >
+                    Verifique a conexão da Internet e volte a carregar!
+                </Typography>
+                </Box>
+            </Box>
+        )
+    }
+
     <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
       <List
         sx={{
@@ -109,82 +149,101 @@ const FarmlandsList = ({ user }) => {
           bgcolor: "background.paper",
         }}
       >
-        {farmlands?.map((farmland, key) => (
-          <Box key={farmland?._id.toString()}>
+
+    {
+      Object?.keys(byFarmers)?.map(farmerId =>(
+        <Box key={farmerId?.toString()} sx={{ border: "2px solid lightgray", margin: "10px", }}>
+
+          {/* started farmer data */}
+
+            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "lightgray", padding: "5px"  }}>
+              <ListItemAvatar>
+                <Avatar alt="Remy Sharp" src="" />
+              </ListItemAvatar>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 400, fontSize: "14px" }}
+              >
+                {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}{" "}
+              </Typography>
+            </Box>
+
+
+          {/* ended farmer data  */}
+
+          <Fragment>
+
+          {
+            byFarmers[farmerId]?.map(farmland=>(
+            <Box key={farmland?._id.toString()}>
             <Link to="/farmland" state={{ farmland, farmer: farmland.farmer }}>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src="" />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Fragment>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontWeight: 400, fontSize: "11px" }}
-                      >
-                        {`${farmland?.farmer?.fullname}`}{" "}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        sx={{ fontWeight: 600, color: "gray" }}
-                      >
-                        {`${farmland?.farmlandType}`}{" "}
-                        <span style={{ fontWeight: 400, fontSize: "11px" }}>
-                          (
-                          {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
-                          )
-                        </span>
-                      </Typography>
-                      <Stack direction="row">
-                        <Box sx={{ width: "50%" }}>
-                          <Typography component="span" variant="body2">
-                            {" "}
-                            {`Declarada: ${farmland?.declaredArea} ha`}{" "}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ width: "50%" }}>
-                          <Typography component="span" variant="body2">
-                            {" "}
-                            {`Plantada: ${farmland?.actualArea} ha`}{" "}
-                          </Typography>
-                        </Box>
-                      </Stack>
-                      <Stack direction="row">
-                        <Box sx={{ width: "50%" }}>
-                          <Typography component="span" variant="body2">
-                            {" "}
-                            {`Cajueiros: ${farmland?.totalTrees}`}{" "}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ width: "50%" }}>
-                          <Typography component="span" variant="body2">
-                            {" "}
-                            {`Idade : `}
-                            {getTreesAverageAge(
-                              farmland?.divisions
-                            )} {` anos`}{" "}
-                          </Typography>
-                        </Box>
-                      </Stack>
-                    </Fragment>
-                  }
-                  secondary={
-                    <Typography component="div" sx={{ width: "100%" }}>
-                      <span style={{ textAlign: "rigth", fontSize: "11px" }}>
-                        Registo:{`${normalizeDate(farmland?.createdAt)}`}
-                      </span>{" "}
-                      <span
-                        style={{ textAlign: "rigth", fontSize: "11px" }}
-                      >{`por ${farmland?.user?.fullname}`}</span>
+            <ListItem alignItems="flex-start">
+              <ListItemText
+                primary={
+                  <Fragment>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontWeight: 600, color: "gray" }}
+                    >
+                      {`${farmland?.farmlandType}`}{" "}
+                      <span style={{ fontWeight: 400, fontSize: "11px" }}>
+                        (
+                        {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
+                        )
+                      </span>
                     </Typography>
-                  }
-                />
-              </ListItem>
-            </Link>
-            <Divider variant="inset" component="li" />
-          </Box>
-        ))}
+                    <Stack direction="row">
+                      <Box sx={{ width: "50%" }}>
+                        <Typography component="span" variant="body2">
+                          {" "}
+                          {`Declarada: ${farmland?.declaredArea} ha`}{" "}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "50%" }}>
+                        <Typography component="span" variant="body2">
+                          {" "}
+                          {`Plantada: ${farmland?.actualArea} ha`}{" "}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                    <Stack direction="row">
+                      <Box sx={{ width: "50%" }}>
+                        <Typography component="span" variant="body2">
+                          {" "}
+                          {`Cajueiros: ${farmland?.totalTrees}`}{" "}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "50%" }}>
+                        <Typography component="span" variant="body2">
+                          {" "}
+                          {`Idade : `}
+                          {getTreesAverageAge(
+                            farmland?.divisions
+                          )} {` anos`}{" "}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Fragment>
+                }
+                secondary={
+                  <Typography component="div" sx={{ width: "100%" }}>
+                    <span style={{ textAlign: "rigth", fontSize: "11px" }}>
+                      Registo:{`${normalizeDate(farmland?.createdAt)}`}
+                    </span>{" "}
+                    <span
+                      style={{ textAlign: "rigth", fontSize: "11px" }}
+                    >{`por ${farmland?.user?.fullname}`}</span>
+                  </Typography>
+                }
+              />
+            </ListItem>
+          </Link>
+          <Divider component="li" />
+        </Box>
+      ))}
+      </Fragment>
+      </Box>       
+      )) }
       </List>
       </Box>
       <SearchModal open={false} />

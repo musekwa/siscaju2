@@ -25,7 +25,7 @@ const FarmersList = ({ user })=> {
                     ? user?.address?.province
                     : user?.role === 'Produtor'
                     ? user?.address?.territory : null;
-    let { data: farmers, isLoading } = useGetFarmersByQuery(filterBy, {
+    let { data: farmers, isLoading, isError } = useGetFarmersByQuery(filterBy, {
         fixedCaheKey: 'farmers'
     });
 
@@ -63,6 +63,18 @@ const FarmersList = ({ user })=> {
                 <Add fontSize='large' color="white" />
             </Fab>
         </Tooltip>
+
+        {
+            (isError && !farmers) && (
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
+                    <Box sx={{ width: "600px"}}>
+                    <Typography sx={{ color: "red" }} >
+                        Verifique a conexão da Internet e volte a carregar!
+                    </Typography>
+                    </Box>
+                </Box>
+            )
+        }
 
         {
             (farmers && farmers.length === 0) && (

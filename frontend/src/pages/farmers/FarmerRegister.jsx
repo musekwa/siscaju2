@@ -104,7 +104,10 @@ const [
         position: toast.POSITION.TOP_CENTER,
       });
     } else if (isError){
-      toast.error(error.error, {
+
+      console.log('error: ', error?.error ? error.error : error); 
+
+      toast.error(error.error ? error.error : "Algo deu errado. Tenta novamente!", {
         autoClose: 5000,
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,
