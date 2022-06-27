@@ -160,27 +160,27 @@ const Farmland = ({ user }) => {
 
       {/* Divisions */}
 
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+    <Box sx={{ display: "block", justifyContent: "center", alignItems: "center"}}>
 
     {
       farmland?.divisions?.map((division, i)=>(
         <Box key={i} sx={{ width: "100%"}}>
         
         <Divider sx={{ mt: "10px", mb: "10px", }} />
-        <div style={{ border: "2px solid lightgray" }}>
-          <Grid container sx={{ backgroundColor: "lightgray" }}>
+        <div style={{ border: "2px solid #826DA3" }}>
+          <Grid container sx={{ backgroundColor: "#826DA3" }}>
             <Grid item xs={9}>
               <Typography 
               variant='body2' 
               align='left'
-              sx={{ fontWeight: 800, color: "#444", padding: "5px", }}
+              sx={{ fontWeight: 800, color: "#fff", padding: "5px", }}
               >
                   {`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}
               </Typography>
             </Grid>
             <Grid item xs={3}>
               <Button sx={{ width: "50px"}}>
-                <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
+                <Edit fontSize='small' sx={{ color: "#fff"}} />
               </Button>
             </Grid>
           </Grid>

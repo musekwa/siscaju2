@@ -152,19 +152,21 @@ const FarmlandsList = ({ user }) => {
 
     {
       Object?.keys(byFarmers)?.map(farmerId =>(
-        <Box key={farmerId?.toString()} sx={{ border: "2px solid lightgray", margin: "10px", }}>
+        <Box key={farmerId?.toString()} sx={{ border: "2px solid #826DA3", margin: "10px", }}>
 
           {/* started farmer data */}
 
-            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "lightgray", padding: "5px"  }}>
+            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "#826DA3", padding: "5px"  }}>
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="" />
               </ListItemAvatar>
               <Typography
                 variant="body2"
-                sx={{ fontWeight: 400, fontSize: "14px" }}
+                sx={{ fontWeight: 400, fontSize: "14px", color: "#fff" }}
               >
-                {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}{" "}
+                {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}
+                {" "}
+                {`(${byFarmers[`${farmerId}`][0]?.farmer?.category})`}
               </Typography>
             </Box>
 
