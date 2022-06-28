@@ -78,7 +78,9 @@ function UserRegister() {
     (state) => state.user
   );
   
+  useEffect(()=>{
 
+  }, [user])
 
   // useEffect(()=>{
   //   if (isSuccess) {
@@ -172,7 +174,7 @@ function UserRegister() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if ((fullname.split(" ").length < 2) || !fullname.trim())  {
+    if ((fullname?.split(" ").length < 2) || !fullname?.trim())  {
       toast.error("Nome deve ser completo", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -294,9 +296,9 @@ function UserRegister() {
 
         <Typography
           variant="h6"
-          fontWeight={200}
+          fontWeight={400}
           component="p"
-          sx={{ p: "20px 0px 5px 0px" }}
+          sx={{ p: "20px 0px 5px 0px", color: "gray" }}
         >
           Registar-se
         </Typography>
@@ -307,11 +309,11 @@ function UserRegister() {
             maxWidth: "500px",
             height: "auto",
             textAlign: "center",
-            m: "5px",
-            
+            m: "10px",
+            p: "10px 0px 10px 0px",
             }}
             >
-          <div style={{ padding: "20px 10px 15px 10px" }}>
+          <div style={{ padding: "10px 5px 10px 5px" }}>
             <TextField
               sx={styledTextField}
               required
@@ -322,6 +324,7 @@ function UserRegister() {
               type="text"
               placeholder="Nome completo"
               size="small"
+              value={fullname}
               onChange={(event) => {
                 setUserData((prevState) => ({
                   ...prevState,
@@ -330,7 +333,7 @@ function UserRegister() {
               }}
             />
           </div>
-          <div style={{ padding: "10px 10px 15px 10px" }}>
+          <div style={{ padding: "10px 5px 10px 5px" }}>
             <TextField
               sx={styledTextField}
               required
@@ -350,7 +353,7 @@ function UserRegister() {
               }}
             />
           </div>
-          <div style={{ padding: "10px 10px 15px 10px" }}>
+          <div style={{ padding: "10px 5px 10px 5px" }}>
             <TextField
               sx={styledTextField}
               required
@@ -370,7 +373,7 @@ function UserRegister() {
               }}
             />
           </div>
-          <div style={{ padding: "10px 10px 15px 10px" }}>
+          <div style={{ padding: "10px 5px 10px 5px" }}>
             <TextField
               sx={styledTextField}
               required
@@ -389,54 +392,12 @@ function UserRegister() {
               }}
             />
           </div>
-          </Paper>
-          <Paper
-            sx={{
-            maxWidth: "500px",
-            height: "auto",
-            textAlign: "center",
-            m: "5px",
-            
-            }}
-            >
+
           <Stack
             direction="row"
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
-              <Autocomplete
-                fullWidth
-                required
-                size="small"
-                disablePortal
-                id="combo-box-demo-1"
-                value={role}
-                options={roles}
-                onChange={(event, newRole) => {
-                  setUserData((prevState) => ({
-                    ...prevState,
-                    role: newRole,
-                  }));
-                }}
-                inputValue={inputRole}
-                onInputChange={(event, newInputRole) => {
-                  setInputRole(newInputRole);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    sx={styledTextField}
-                    name="role"
-                    {...params}
-                    required
-                    label="Perfil"
-                  />
-                )}
-                isOptionEqualToValue={(option, value) =>
-                  value === undefined || value === "" || option === value
-                }
-              />
-            </div>
-            <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
               <Autocomplete
                 fullWidth
                 required
@@ -469,12 +430,79 @@ function UserRegister() {
                 }
               />
             </div>
+
+            <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
+              <TextField
+                sx={styledTextField}
+                fullWidth
+                label="Telefone"
+                id="fullWidth phone"
+                name="phone"
+                type="number"
+                placeholder="Telefone"
+                size="small"
+                onChange={(event) => {
+                  setUserData((prevState) => ({
+                    ...prevState,
+                    phone: event.target.value,
+                  }));
+                }}
+              />
+            </div>
           </Stack>
-          <Stack
+
+
+            <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+              <Autocomplete
+                fullWidth
+                required
+                size="small"
+                disablePortal
+                id="combo-box-demo-1"
+                value={role}
+                options={roles}
+                onChange={(event, newRole) => {
+                  setUserData((prevState) => ({
+                    ...prevState,
+                    role: newRole,
+                  }));
+                }}
+                inputValue={inputRole}
+                onInputChange={(event, newInputRole) => {
+                  setInputRole(newInputRole);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    sx={styledTextField}
+                    name="role"
+                    {...params}
+                    required
+                    label="Perfil"
+                  />
+                )}
+                isOptionEqualToValue={(option, value) =>
+                  value === undefined || value === "" || option === value
+                }
+              />
+            </div>
+          </Paper>
+
+            <Typography variant="body1" sx={{ fontWeight: 400, color: "gray"}}>Residência</Typography>
+
+          <Paper
+            sx={{
+              maxWidth: "500px",
+              height: "auto",
+              textAlign: "center",
+              m: "10px",
+              p: "10px 0px 10px 0px",        
+            }}
+            >
+          {/* <Stack
             direction="row"
             sx={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <div style={{ width: "49%", padding: "10px 10px 5px 10px" }}>
+          > */}
+            <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
               <Autocomplete
                 fullWidth
                 required
@@ -500,7 +528,7 @@ function UserRegister() {
                     {...params}
                     label="Província"
                     required
-                    helperText="Residência"
+                    // helperText="Residência"
                   />
                 )}
                 isOptionEqualToValue={(option, value) =>
@@ -509,7 +537,7 @@ function UserRegister() {
               />
             </div>
 
-            <div style={{ width: "49%", padding: "10px 10px 5px 10px" }}>
+            <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
               <Autocomplete
                 fullWidth
                 required
@@ -555,7 +583,7 @@ function UserRegister() {
                     {...params}
                     label="Distrito"
                     required
-                    helperText="residência"
+                    // helperText="residência"
                   />
                 )}
                 isOptionEqualToValue={(option, value) =>
@@ -563,12 +591,12 @@ function UserRegister() {
                 }
               />
             </div>
-          </Stack>
-          <Stack
+          {/* </Stack> */}
+          {/* <Stack
             direction="row"
             sx={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
+          > */}
+            <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
               <Autocomplete
                 fullWidth
                 required
@@ -609,8 +637,8 @@ function UserRegister() {
                     sx={styledTextField}
                     name="adminPost"
                     {...params}
-                    label="Posto Admin"
-                    helperText="residência"
+                    label="Posto Administrativo"
+                    // helperText="residência"
                   />
                 )}
                 isOptionEqualToValue={(option, value) =>
@@ -618,32 +646,15 @@ function UserRegister() {
                 }
               />
             </div>
-            <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
-              <TextField
-                sx={styledTextField}
-                fullWidth
-                label="Telefone"
-                id="fullWidth phone"
-                name="phone"
-                type="number"
-                placeholder="Telefone"
-                size="small"
-                onChange={(event) => {
-                  setUserData((prevState) => ({
-                    ...prevState,
-                    phone: event.target.value,
-                  }));
-                }}
-              />
-            </div>
-          </Stack>
+
+          {/* </Stack> */}
           </Paper>
 
-          <div style={{ padding: "10px 10px 20px 10px" }}>
+          <Box sx={{ marginTop: "15px"}}>
             <BootstrapButton variant="contained" type="submit">
               Criar conta
             </BootstrapButton>
-          </div>
+          </Box>
         </Box>
       </Box>
     </Box>

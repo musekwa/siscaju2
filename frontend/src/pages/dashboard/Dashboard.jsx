@@ -1,6 +1,7 @@
 import { Forest, LegendToggle, PersonAdd } from "@mui/icons-material";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/system";
+import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -20,6 +21,8 @@ const Item = styled(Box)(({ theme }) => ({
 const Dashboard = () => {
   // const location = useLocation();
 
+  const [currentUser, setCurrentUser] = useState(null);
+
   const {
     user,
     isLoading: userLoading,
@@ -35,7 +38,14 @@ const Dashboard = () => {
     isSuccess,
     isError,
     error,
-  } = useGetPerformanceQuery();
+  } = useGetPerformanceQuery(user);
+
+  useEffect(()=>{
+
+
+  }, [user, performance, isLoading, userLoading, isFetching, isError]);
+
+  // console.log('performance: ', performance)
 
   if (isLoading || isFetching || userLoading) {
     return <Spinner />;
@@ -45,6 +55,7 @@ const Dashboard = () => {
     <Box>
       {/* { isLoading && <Spinner />} */}
       <Navbar
+        arrowBack={'none'}
         pageDescription={
           user?.role === "Gestor"
             ? user?.address.province
@@ -106,11 +117,20 @@ const Dashboard = () => {
         </Grid>
       </Box>
 
-      <Divider sx={{}} />
+     
+     <Paper sx={{ margin: "15px", borderRadius: "10px 10px 10px 10px" }}>
+      <Link to="#" sx={{}}>
+      <Box sx={{ 
+        backgroundColor: "#826DA3", 
+        padding: "5px", 
+        borderRadius: "10px 10px 0px 0px" 
+        }}
+      >
 
-      <Typography variant="body1" sx={{ textAlign: "left", margin: "15px" }}>
-        Desempenho pessoal ({user?.fullname})
-      </Typography>
+        <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
+          Desempenho pessoal <br /> ({user?.fullname})
+        </Typography>
+      </Box>
       <Box sx={{ margin: "15px" }}>
         <Grid
           container
@@ -118,49 +138,59 @@ const Dashboard = () => {
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
           <Grid item sx={{}} xs={4}>
-            <Link to="#" sx={{}}>
-              <Typography variant="body1" sx={{}}>
+            {/* <Link to="#" sx={{}}> */}
+              <Typography variant="body2" sx={{}}>
                 {performance?.user?.farmers?.length || 0}
               </Typography>
-              <Typography variant="body1" sx={{}}>
+              <Typography variant="body2" sx={{}}>
                 Produtores
                 <br />
                 registados
               </Typography>
-            </Link>
+            {/* </Link> */}
           </Grid>
           <Grid item sx={{}} xs={4}>
-            <Link to="#" sx={{}}>
-              <Typography variant="body1" sx={{}}>
+            {/* <Link to="#" sx={{}}> */}
+              <Typography variant="body2" sx={{}}>
                 {performance?.user?.farmlands?.length || 0}
               </Typography>
-              <Typography variant="body1" sx={{}}>
+              <Typography variant="body2" sx={{}}>
                 Pomares
                 <br />
                 registados
               </Typography>
-            </Link>
+            {/* </Link> */}
           </Grid>
 
           <Grid item sx={{}} xs={4}>
-            <Link to="#" sx={{}}>
-              <Typography variant="body1" sx={{}}>
+            {/* <Link to="#" sx={{}}> */}
+              <Typography variant="body2" sx={{}}>
                 {0}
               </Typography>
-              <Typography variant="body1" sx={{}}>
+              <Typography variant="body2" sx={{}}>
                 Pomares
                 <br />
                 Monitorados
               </Typography>
-            </Link>
+            
           </Grid>
         </Grid>
       </Box>
+      </Link>
+      </Paper>
 
-      <Divider sx={{}} />
-      <Typography variant="body1" sx={{ textAlign: "left", margin: "15px" }}>
-        Desempenho distrital ({user?.address.district})
-      </Typography>
+      <Paper sx={{ margin: "15px", borderRadius: "10px 10px 10px 10px" }}>
+      <Link to="#" sx={{}}>
+      <Box sx={{ 
+        backgroundColor: "#826DA3", 
+        padding: "5px",
+         borderRadius: "10px 10px 0px 0px" 
+        }}
+      >
+        <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
+          Desempenho distrital <br /> ({user?.address.district})
+        </Typography>
+      </Box>
       <Box sx={{ margin: "15px" }}>
         <Grid
           container
@@ -168,54 +198,55 @@ const Dashboard = () => {
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
           <Grid item sx={{}} xs={4}>
-            <Link to="#" sx={{}}>
-              <Typography variant="body1" sx={{}}>
+            {/* <Link to="#" sx={{}}> */}
+              <Typography variant="body2" sx={{}}>
                 {performance?.district?.farmers?.length || 0}
               </Typography>
-              <Typography variant="body1" sx={{}}>
+              <Typography variant="body2" sx={{}}>
                 Produtores
                 <br />
                 registados
               </Typography>
-            </Link>
+            {/* </Link> */}
           </Grid>
           <Grid item sx={{}} xs={4}>
-            <Link to="#" sx={{}}>
-              <Typography variant="body1" sx={{}}>
+            {/* <Link to="#" sx={{}}> */}
+              <Typography variant="body2" sx={{}}>
                 {performance?.district?.farmlands?.length || 0}
               </Typography>
-              <Typography variant="body1" sx={{}}>
+              <Typography variant="body2" sx={{}}>
                 Pomares
                 <br />
                 registados
               </Typography>
-            </Link>
+            {/* </Link> */}
           </Grid>
 
           <Grid item sx={{}} xs={4}>
-            <Link to="#" sx={{}}>
-              <Typography variant="body1" sx={{}}>
+            {/* <Link to="#" sx={{}}> */}
+              <Typography variant="body2" sx={{}}>
                 {0}
               </Typography>
-              <Typography variant="body1" sx={{}}>
+              <Typography variant="body2" sx={{}}>
                 Pomares
                 <br />
                 Monitorados
               </Typography>
-            </Link>
+            
           </Grid>
         </Grid>
       </Box>
+      </Link>
+      </Paper>
 
       {user?.role === "Gestor" ? (
-        <>
-          <Divider sx={{}} />
-          <Typography
-            variant="body1"
-            sx={{ textAlign: "left", margin: "15px" }}
-          >
-            Desempenho provincial ({user?.address.province})
+      <Paper sx={{ margin: "15px", borderRadius: "0px 0px 10px 10px" }}>
+      <Link to="#" sx={{}}>
+      <Box sx={{ backgroundColor: "#826DA3", padding: "5px" }}>
+        <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
+            Desempenho provincial <br /> ({user?.address.province})
           </Typography>
+          </Box>
           <Box sx={{ margin: "15px" }}>
             <Grid
               container
@@ -223,45 +254,46 @@ const Dashboard = () => {
               sx={{ display: "flex", justifyContent: "space-around" }}
             >
               <Grid item sx={{}} xs={4}>
-                <Link to="#" sx={{}}>
-                  <Typography variant="body1" sx={{}}>
+                {/* <Link to="#" sx={{}}> */}
+                  <Typography variant="body2" sx={{}}>
                     {performance?.province?.farmers?.length || 0}
                   </Typography>
-                  <Typography variant="body1" sx={{}}>
+                  <Typography variant="body2" sx={{}}>
                     Produtores
                     <br />
                     registados
                   </Typography>
-                </Link>
+                {/* </Link> */}
               </Grid>
               <Grid item sx={{}} xs={4}>
-                <Link to="#" sx={{}}>
-                  <Typography variant="body1" sx={{}}>
+                {/* <Link to="#" sx={{}}> */}
+                  <Typography variant="body2" sx={{}}>
                     {performance?.province?.farmlands?.length || 0}
                   </Typography>
-                  <Typography variant="body1" sx={{}}>
+                  <Typography variant="body2" sx={{}}>
                     Pomares
                     <br />
                     registados
                   </Typography>
-                </Link>
+                {/* </Link> */}
               </Grid>
 
               <Grid item sx={{}} xs={4}>
-                <Link to="#" sx={{}}>
-                  <Typography variant="body1" sx={{}}>
+                {/* <Link to="#" sx={{}}> */}
+                  <Typography variant="body2" sx={{}}>
                     {0}
                   </Typography>
-                  <Typography variant="body1" sx={{}}>
+                  <Typography variant="body2" sx={{}}>
                     Pomares
                     <br />
                     Monitorados
                   </Typography>
-                </Link>
+                {/* </Link> */}
               </Grid>
             </Grid>
           </Box>
-        </>
+          </Link>
+       </Paper>
       ) : null}
 
       <Footer />

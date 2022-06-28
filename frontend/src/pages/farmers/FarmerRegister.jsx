@@ -16,6 +16,7 @@ import {
   Paper,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -107,8 +108,11 @@ const [
 
       console.log('error: ', error?.error ? error.error : error); 
 
-      toast.error(error.error ? error.error : "Algo deu errado. Tenta novamente!", {
-        autoClose: 5000,
+      toast.error(
+        error && error?.status === 401 
+        ? "A sua sessão expirou! Volte a fazer o login novamente!" 
+        : "Algo deu errado. Tenta novamente!", {
+        autoClose: 10000,
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,
       });
@@ -307,17 +311,26 @@ const [
 
       }}
     >
-      <Box sx={{ position: "relative", bottom: "80px", marginTop: "140px"  }}  component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+      <Box 
+        sx={{ 
+          position: "relative", 
+          bottom: "80px", 
+          marginTop: "140px"  
+        }}  
+        component="form" 
+        noValidate autoComplete="off" 
+        onSubmit={onSubmit}>
       <Paper
           sx={{
           maxWidth: "500px",
           height: "auto",
           textAlign: "center",
-          m: "5px",
+          m: "10px",
+          p: "10px 0px 10px 0px",
           
           }}
       >  
-        <div style={{ padding: "10px 10px 10px 10px" }}>
+        <div style={{ padding: "10px 5px 10px 5px" }}>
           <TextField
             sx={styledTextField}
             required
@@ -342,7 +355,7 @@ const [
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
 
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <Autocomplete
               fullWidth
               required
@@ -369,7 +382,7 @@ const [
             />
           </div>
 
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
               <DatePicker 
                 label="Data de Nascimento" 
                 onChange={(newDate)=>{
@@ -391,12 +404,15 @@ const [
           </div>
         </Stack>
       </Paper>
+
+      <Typography variant="body1" sx={{ fontWeight: 400, color: "gray"}}>Naturalidade</Typography>
       <Paper
           sx={{
           maxWidth: "500px",
           height: "auto",
           textAlign: "center",
-          m: "5px",
+          m: "10px",
+          p: "10px 0px 10px 0px",
           }}
       >  
         <Stack
@@ -404,7 +420,7 @@ const [
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
           
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <Autocomplete
               fullWidth
               required
@@ -438,7 +454,7 @@ const [
             />
           </div>
 
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <Autocomplete
               fullWidth
               required
@@ -492,7 +508,7 @@ const [
           direction="row"
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <Autocomplete
               fullWidth
               required
@@ -540,7 +556,7 @@ const [
                 value === undefined || value === "" || option === value }
             />
           </div>
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <TextField
               sx={styledTextField}
               fullWidth
@@ -562,19 +578,22 @@ const [
           </div>
         </Stack>
       </Paper>
+
+       <Typography variant="body1" sx={{ fontWeight: 400, color: "gray"}}>Residência</Typography>
       <Paper
           sx={{
           maxWidth: "500px",
           height: "auto",
           textAlign: "center",
-          m: "5px",
+          m: "10px",
+          p: "10px 0px 10px 0px",
           }}
       > 
         <Stack
           direction="row"
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <Autocomplete
               fullWidth
               required
@@ -610,7 +629,7 @@ const [
               value === undefined || value === "" || option === value }
             />
           </div>
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
             <TextField
               sx={styledTextField}
               fullWidth
@@ -631,7 +650,7 @@ const [
             />
           </div>
         </Stack>
-          <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
+          <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
               <TextField
               sx={styledTextField}
               fullWidth
@@ -650,11 +669,13 @@ const [
               />
           </div>
       </Paper>
-        <div style={{ padding: "15px 10px 20px 10px" }}>
+
+        <Box sx={{ marginTop: "15px" }}>
           <BootstrapButton variant="contained" type="submit">
             Registar Produtor
           </BootstrapButton>
-        </div>
+        </Box>
+
       </Box>      
     </Box>
     

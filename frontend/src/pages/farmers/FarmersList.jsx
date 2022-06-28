@@ -8,7 +8,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Navbar from '../../components/Navbar';
-import { Box, Fab, Stack, Tooltip } from '@mui/material';
+import { Box, Fab, Paper, Stack, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
 import { Add } from '@mui/icons-material';
 import { useNavigate, Link } from 'react-router-dom';
@@ -67,7 +67,7 @@ const FarmersList = ({ user })=> {
         {
             (isError && !farmers) && (
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
-                    <Box sx={{ width: "600px"}}>
+                    <Box sx={{ maxWidth: "500px"}}>
                     <Typography sx={{ color: "red" }} >
                         Verifique a conexão da Internet e volte a carregar!
                     </Typography>
@@ -79,7 +79,7 @@ const FarmersList = ({ user })=> {
         {
             (farmers && farmers.length === 0) && (
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
-                    <Box sx={{ width: "600px"}}>
+                    <Box sx={{ maxWidth: "500px"}}>
                     <Typography>Nenhum produtor deste distrito foi registado!</Typography>
                     </Box>
                 </Box>
@@ -91,19 +91,21 @@ const FarmersList = ({ user })=> {
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
                 farmers?.map((farmer, key)=>(
-            <Box key={farmer._id.toString()} >
+            <Paper key={farmer._id.toString()} sx={{ margin: "15px", borderRadius: "10px", borderTop: "5px solid #826DA3" }} >
             <Link to="/farmer" state={{ farmer }}>
             <ListItem alignItems="flex-start" >
                 {/* <ListItemButton> */}
-                <ListItemAvatar>
-                    <Avatar alt="Remy Sharp"  />
+                {/* <Box sx={{ backgroundColor: "#826DA3"}}> */}
+                <ListItemAvatar sx={{ }} >
+                    <Avatar sx={{ width: "50px", height: "50px", marginRight: "0px 5px 0px 0px" }} alt="Remy Sharp"  />
                 </ListItemAvatar>
+                {/* </Box> */}
                 <ListItemText
                     primary= {
                         <Fragment>
 
                             <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >
-                                {`${farmer?.fullname}` } 
+                                {`${farmer?.fullname}` } {" "}
                                     <span style={{ fontSize: "12px"}}>
                                         {`(${new Date().getFullYear() - new Date (farmer.birthDate).getFullYear()} anos)`}
                                     </span>
@@ -145,8 +147,7 @@ const FarmersList = ({ user })=> {
                 {/* </ListItemButton> */}
             </ListItem>
             </Link>
-            <Divider variant="inset" component="li" />
-            </Box>))
+            </Paper>))
             }
         </List>
         </Box>

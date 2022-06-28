@@ -196,7 +196,6 @@ export const apiSlice = createApi({
 
     addCoordinates: build.mutation({
       query: ({ geocoordinates, farmlandId }) => {
-
         const body = {
           geocoordinates: {
             latitude: geocoordinates.latitude,
@@ -204,10 +203,11 @@ export const apiSlice = createApi({
           },
         };
         return {
-        url: `/farmlands/${farmlandId}`,
-        method: "PATCH",
-        body: body
-      }},
+          url: `/farmlands/${farmlandId}`,
+          method: "PATCH",
+          body: body,
+        };
+      },
       invalidatesTags: ["Division"],
       async onQueryStarted(
         arg,
@@ -252,8 +252,8 @@ export const apiSlice = createApi({
       ) {},
     }),
     getPerformance: build.query({
-      query: () =>
-        `/performances?userId=${user?._id}&district=${user?.address?.district}&province=${user?.address?.province}`,
+      query: (currentUser) =>
+        `/performances?userId=${currentUser?._id}&district=${currentUser?.address?.district}&province=${currentUser?.address?.province}`,
       providesTags: ["Farmer", "Farmland", "Division", "Monitoring"],
       async onQueryStarted(
         arg,

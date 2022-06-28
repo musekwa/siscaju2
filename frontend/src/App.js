@@ -15,19 +15,38 @@ import Farmer from "./pages/farmers/Farmer";
 import Farmland from "./pages/farmlands/Farmland";
 
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Routes, Route, } from "react-router-dom";
+import { Routes, Route, useNavigate, } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { apiSlice } from "./features/api/apiSlice";
 import Spinner from "./components/Spinner";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import FarmlandCoordinates from "./pages/farmlands/FarmlandCoordinates";
+import { resetUser } from "./features/users/userSlice"
+import { toast } from "react-toastify";
+
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
 
 function App() {
 
+const navigate = useNavigate()
+const dispatch = useDispatch()
+const { user, isLoading, isError } = useSelector((state) => state.user);
 
-const { user, isLoading } = useSelector((state) => state.user);
+useEffect(()=>{
+
+  if (isError){
+    toast.info("A sua sessão expirou! Volte a fazer o login novamente!", {
+      autoClose: 5000,
+      position: toast.POSITION.TOP_CENTER,
+    });
+    navigate('/signin')
+    localStorage.removeItem("user");
+    dispatch(resetUser());
+  }
+
+}, [user, isError, isLoading])
+
 
 if (isLoading) {
   return <Spinner />

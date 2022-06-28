@@ -1,6 +1,6 @@
 
 import { Edit } from '@mui/icons-material'
-import { Avatar, Box, Button, Divider, Grid, Stack, styled, Typography } from '@mui/material'
+import { Avatar, Box, Button, Divider, Grid, Paper, Stack, styled, Typography } from '@mui/material'
 import React from 'react'
 import Navbar from '../../components/Navbar'
 import { FaPencilAlt } from 'react-icons/fa'
@@ -82,7 +82,7 @@ const Farmer = ({ user }) => {
 
   return (
     <Box>
-      <Navbar pageDescription={'Produtor'} user={user} />
+      <Navbar arrowBack={'block'} goBack={'/farmers-list'} pageDescription={'Produtor'} user={user} />
     
     <Box
       sx={{
@@ -90,13 +90,13 @@ const Farmer = ({ user }) => {
         justifyContent: "center",
         maxWidth: "960px",
         marginTop: "45px",
-        marginLeft: "15px"
+        marginLeft: "15px"      
       }}
     >
 
       {/* Start Farmer's Profile */}
      
-      <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
+      <UserStack direction="row" onClick={()=>(true)} sx={{ m: "5px", }}>
         <Avatar sx={{ width: "50px", height: "50px"}} src="" />
         <Box sx={{ textAlign: "center", width: "80%", marginRight: "5px" }}>
             <Typography variant='body1'>{`${farmer?.fullname}`}</Typography>
@@ -105,23 +105,33 @@ const Farmer = ({ user }) => {
       </UserStack>
     </Box>
 
-    <Divider sx={{ mt: "10px", mb: "5px", }} />
+    <Divider sx={{ mt: "10px", mb: "10px", }} />
 
     <Box 
       sx={{ 
         maxWidth: "960px", 
         padding: "10px", 
-        marginLeft: "15px",  
+        marginLeft: "10px",  
+        marginRight: "10px",  
         position: "relative", 
         bottom: "80px", 
-        marginTop: "80px"  }}
+        marginTop: "80px"  
+       }}
     >
-    <Box sx={{width: "100%", marginRight: "0px 5px 5px 5px", textAlign: "right" }}>
-      <Button sx={{ width: "50px"}}>
-          <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
-      </Button>
+    <Box sx={{width: "100%", marginRight: "5px", textAlign: "right" }}>
+      <Grid container sx={{ }}>
+        <Grid item xs={9}>
+        <Typography align='left' sx={{ fontSize: "14px", color: "#826DA3", fontWeight: 800, }}>
+          Dados pessoais do produtor
+        </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Button sx={{ width: "50px"}}>
+            <Edit fontSize='small' sx={{ color: "#826DA3"}} />
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
-
     {/* data nascimento */}
     <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
       <Box sx={{ width: "50%",textAlign: 'left'}} >
@@ -138,10 +148,12 @@ const Farmer = ({ user }) => {
         Lugar de Nascimento:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
-        <Typography>{`${farmer?.birthPlace?.province}`}</Typography>
-        <Typography>{`${farmer?.birthPlace?.district}`}</Typography>
-        <Typography>{`${farmer?.birthPlace?.territory}`}</Typography>
-        <Typography>{`${farmer?.birthPlace?.village}`}</Typography>
+        <Typography>
+          [ <span>{`${farmer?.birthPlace?.province} `}</span>
+          <span>{`${farmer?.birthPlace?.district} `}</span>
+          <span>{`${farmer?.birthPlace?.territory} `}</span>
+          <span>{`${farmer?.birthPlace?.village} `}</span>]
+        </Typography>
       </Box>
     </Stack>
 
@@ -151,10 +163,12 @@ const Farmer = ({ user }) => {
         Residência:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
-        <Typography>{`${farmer?.address?.province}`}</Typography>
-        <Typography>{`${farmer?.address?.district}`}</Typography>
-        <Typography>{`${farmer?.address?.territory}`}</Typography>
-        <Typography>{`${farmer?.address?.village}`}</Typography>
+        <Typography>       
+          [ <span>{`${farmer?.birthPlace?.province} `}</span>
+          <span>{`${farmer?.birthPlace?.district} `}</span>
+          <span>{`${farmer?.birthPlace?.territory} `}</span>
+          <span>{`${farmer?.birthPlace?.village} `}</span>]
+        </Typography>
       </Box>
     </Stack>
 
@@ -168,62 +182,79 @@ const Farmer = ({ user }) => {
       </Box>
     </Stack>
 
-    <Divider sx={{ mt: "10px", mb: "10px", }} />
+   
 
       {/* pomares */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
-      <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Número de pomares:
+    <Box sx={{ display: "block", justifyContent: "center", alignItems: "center"}}>
+    <Paper 
+      sx={{ 
+        width: "100%", 
+        borderRadius: "10px", 
+        margin: "15px 0px 20px 0px", 
+        }}>
+      <Box sx={{ backgroundColor: "#826DA3", borderRadius: "10px 10px 0px 0px" }}>
+        <Typography 
+              variant='body2' 
+              align='left'
+              sx={{ fontWeight: 600, color: "#ffffff", padding: "5px", }}
+              >
+              Dados de pomares do produtor
+        </Typography>
       </Box>
-      <Box sx={{width: "50%", textAlign: 'left'}}>
-        {`${foundFarmlands?.length}`}
-      </Box>
-    </Stack>
+      <Box sx={{ padding: "5px 0px 5px 10px"}}>
+      <Stack direction="row" sx={{ padding: "5px 0px 5px 0px" }} gap={2}>
+        <Box sx={{ width: "60%", textAlign: 'left'}} >
+          Número de pomares:
+        </Box>
+        <Box sx={{width: "40%", textAlign: 'left'}}>
+          {`${foundFarmlands?.length}`}
+        </Box>
+      </Stack>
 
-      {/* cajueiros */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
-      <Box sx={{ width: "50%",  textAlign: 'left'}} >
-        Número de cajueiros:
-      </Box>
-      <Box sx={{width: "50%", textAlign: 'left'}}>
-        {`${GetTotalArea()?.totalTrees}`}
-      </Box>
-    </Stack>
+        {/* cajueiros */}
+      <Stack direction="row" sx={{ padding: "5px 0px 5px 0px"}} gap={2}>
+        <Box sx={{ width: "60%",  textAlign: 'left'}} >
+          Número de cajueiros:
+        </Box>
+        <Box sx={{width: "40%", textAlign: 'left'}}>
+          {`${GetTotalArea()?.totalTrees} árvores`}
+        </Box>
+      </Stack>
 
 
-      {/* hectares */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
-      <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Área total plantada:
-      </Box>
-      <Box sx={{width: "50%", textAlign: 'left'}}>
-        {`${GetTotalArea()?.actualArea}`}
-      </Box>
-    </Stack>
+        {/* hectares */}
+      <Stack direction="row" sx={{ padding: "5px 0px 5px 0px" }} gap={2}>
+        <Box sx={{ width: "60%", textAlign: 'left'}} >
+          Área total plantada:
+        </Box>
+        <Box sx={{width: "40%", textAlign: 'left'}}>
+          {`${GetTotalArea()?.actualArea} hectares`}
+        </Box>
+      </Stack>
 
 
-      {/* hectares */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
-      <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Área total declarada:
-      </Box>
-      <Box sx={{width: "50%", textAlign: 'left'}}>
-        {`${GetTotalArea()?.declaredArea}`}
-      </Box>
-    </Stack>
+        {/* hectares */}
+      <Stack direction="row" sx={{ padding: "5px 0px 5px 0px" }} gap={2}>
+        <Box sx={{ width: "60%", textAlign: 'left'}} >
+          Área total declarada:
+        </Box>
+        <Box sx={{width: "40%", textAlign: 'left'}}>
+          {`${GetTotalArea()?.declaredArea} hectares`}
+        </Box>
+      </Stack>
 
-          {/* producao */}
-    <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
-      <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Produção anual:
+            {/* producao */}
+      <Stack direction="row" sx={{ padding: "5px 0px 5px 0px" }} gap={2}>
+        <Box sx={{ width: "60%", textAlign: 'left'}} >
+          Produção anual:
+        </Box>
+        <Box sx={{width: "40%",  textAlign: 'left'}}>
+          N/A
+        </Box>
+      </Stack>
       </Box>
-      <Box sx={{width: "50%",  textAlign: 'left'}}>
-        N/A
-      </Box>
-    </Stack>
-
-     <Divider sx={{ mt: "10px", mb: "10px", }} />
-
+     </Paper>
+    </Box>
     </Box>
     <Footer />
     </Box>

@@ -11,9 +11,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ManageSearch, Search as SearchIcon } from '@mui/icons-material';
+import { ArrowBackIos, ManageSearch, Search as SearchIcon } from '@mui/icons-material';
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { resetUser } from "../features/users/userSlice";
 import { useDispatch } from "react-redux";
@@ -61,7 +61,7 @@ const UserBox = styled(Box)(({ theme }) => ({
     
 // }))
 
-const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
+const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isManageSearch }) => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -124,18 +124,24 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
         }}
       >
         <StyledToolbar>
-          <Typography
+          {/* <Typography
             variant="h6"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
             SisCaju
-          </Typography>
+          </Typography> */}
 
           <Stack
             direction="row"
             sx={{ width: "100%", textAlign: "center" }}
             gap={3}
           >
+            <Grid item sx={{ display: arrowBack ? `${arrowBack}` : 'none'  }}>
+              <Link to={`${goBack}`}>
+                <ArrowBackIos fontSize="large" sx={{ color: "#ffffff"}} />
+              </Link>
+            </Grid>
+            
             <Grid item xs={6}>
               {pageDescription && (
                 <Typography

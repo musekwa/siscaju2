@@ -287,15 +287,15 @@ const FarmlandDivisionRegister = ({ user }) => {
               maxWidth: "500px",
               height: "auto",
               textAlign: "center",
-              margin: "10px 5px 5px 5px",
-              pt: "5px",
+              m: "10px",
+              p: "10px 0px 10px 0px",
               }}
             > 
               <Stack
                 direction="row"
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
-                <Box component="div" sx={{ padding: "10px 10px 10px 10px" }}>
+                <Box component="div" sx={{ width: "49%", padding: "10px 5px 10px 5px" }}>
                   <TextField
                       sx={styledTextField}
                       required
@@ -315,7 +315,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                       }}
                     />
                 </Box>
-                <Box component="div" sx={{ padding: "10px 10px 10px 10px" }}>
+                <Box component="div" sx={{ width: "49%", padding: "10px 5px 10px 5px" }}>
                   <TextField
                       sx={styledTextField}
                       required
@@ -341,7 +341,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                     direction="row"
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                    <Box component="div" sx={{ width: "50%", padding: "10px 10px 10px 10px" }}>
+                    <Box component="div" sx={{ width: "49%", padding: "10px 5px 10px 5px" }}>
                       <TextField
                       sx={styledTextField}
                       fullWidth
@@ -362,9 +362,9 @@ const FarmlandDivisionRegister = ({ user }) => {
                     </Box>
                   <Stack
                     direction="row"
-                    sx={{ width: "50%", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                    sx={{ width: "49%", display: "flex", alignItems: "center", justifyContent: "space-between" }}
                   >
-                    <Box component="div" sx={{ width: "45%", padding: "10px 2px 10px 10px" }}>
+                    <Box component="div" sx={{ width: "49%", padding: "10px 1px 10px 5px" }}>
                     <TextField
                         sx={styledTextField}
                         fullWidth
@@ -383,8 +383,8 @@ const FarmlandDivisionRegister = ({ user }) => {
                         }}
                     />
                     </Box>
-                    <Typography variant="body2">por</Typography>
-                    <Box component="div" sx={{ width: "45%", padding: "10px 10px 10px 2px" }}>
+                    <Typography variant="h5" sx={{ color: "gray" }}>x</Typography>
+                    <Box component="div" sx={{ width: "49%", padding: "10px 5px 10px 1px" }}>
                         <TextField
                             sx={styledTextField}
                             fullWidth
@@ -475,19 +475,14 @@ const FarmlandDivisionRegister = ({ user }) => {
           }
           </Paper>     
 
-          <Paper               
-          sx={{
-            maxWidth: "500px",
-            height: "auto",
-            textAlign: "center",
-            margin: "20px 5px 5px 5px",
-            pt: "5px",
-            }}
-            >
-              <BootstrapButton sx={{ width: "100%"}} variant="contained" type="submit" startIcon={<Save />}>
-                Salvar Divisão 
-              </BootstrapButton>
-          </Paper>
+          <Box sx={{ marginTop: "15px" }}>
+          <BootstrapButton 
+            variant="contained" 
+            type="submit" startIcon={<Save />}
+          >
+            Salvar Divisão 
+          </BootstrapButton>
+          </Box>
         </Box>
          {/* End Farmland registration form */}
       </Box>

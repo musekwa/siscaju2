@@ -10,6 +10,7 @@ import Navbar from "../../components/Navbar";
 import {
   Box,
   Fab,
+  Paper,
   Stack,
   Tooltip,
 } from "@mui/material";
@@ -122,7 +123,7 @@ const FarmlandsList = ({ user }) => {
             height: "90vh",
           }}
         >
-          <Box sx={{ width: "600px" }}>
+          <Box sx={{  maxWidth: "500px" }}>
             <Typography>Nenhum pomar deste distrito foi registado!</Typography>
           </Box>
         </Box>
@@ -131,7 +132,7 @@ const FarmlandsList = ({ user }) => {
     {
         (isError && !farmlands) && (
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
-                <Box sx={{ width: "600px"}}>
+                <Box sx={{  maxWidth: "500px"}}>
                 <Typography sx={{ color: "red" }} >
                     Verifique a conexão da Internet e volte a carregar!
                 </Typography>
@@ -152,11 +153,11 @@ const FarmlandsList = ({ user }) => {
 
     {
       Object?.keys(byFarmers)?.map(farmerId =>(
-        <Box key={farmerId?.toString()} sx={{ border: "2px solid #826DA3", margin: "10px", }}>
+        <Paper key={farmerId?.toString()}  sx={{ margin: "15px", borderRadius: "10px" }}>
 
           {/* started farmer data */}
 
-            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "#826DA3", padding: "5px"  }}>
+            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "#826DA3", padding: "5px", borderRadius: "10px 10px 0px 0px"  }}>
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="" />
               </ListItemAvatar>
@@ -240,11 +241,10 @@ const FarmlandsList = ({ user }) => {
               />
             </ListItem>
           </Link>
-          <Divider component="li" />
         </Box>
       ))}
       </Fragment>
-      </Box>       
+      </Paper>       
       )) }
       </List>
       </Box>

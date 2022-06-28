@@ -46,13 +46,12 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
             width: "300px",
             height: "50vh",
             bgcolor: 'background.paper',
-            border: '2px solid rebeccapurple',
             boxShadow: 24,
             p: 2,
           }}>
             
               { (farmer && farmland)  &&
-              <Box sx={{position: "absolute", top: 0, left: 0, backgroundColor: "rebeccapurple",  width: "100%", height: "70px", }}>
+              <Box sx={{position: "absolute", top: 0, left: 0, backgroundColor: "#826DA3",  width: "100%", height: "70px", }}>
                 <Typography 
                   sx={{ textAlign: "center", width: "250px", ml: 3, mt: 1,  }}
                   id="keep-mounted-modal-title" 

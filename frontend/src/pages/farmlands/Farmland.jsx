@@ -1,6 +1,6 @@
 
 import { Edit } from '@mui/icons-material'
-import { Avatar, Box, Button, Divider, Grid, Stack, styled, Typography } from '@mui/material'
+import { Avatar, Box, Button, Divider, Grid, Paper, Stack, styled, Typography } from '@mui/material'
 import React, { Fragment } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
@@ -38,13 +38,13 @@ const Farmland = ({ user }) => {
         sowingYear: division.sowingYear,
         spacing: (division?.spacing?.category === 'irregular') ? 'irregular' : `regular (${division?.spacing?.x} x ${division?.spacing?.y})`,
         divisionType: (new Date().getFullYear() - division?.sowingYear) >= 5 ? 'Parcela Antiga' : 'Parcela Nova',  
-        plantingTechniques:  division?.plantingTechniques.seedling === 'sementes'  ? '[sementes policlonal]' : `enxertia: [${division?.plantingTechniques?.grafting}]`,
+        plantingTechniques:  division?.plantingTechniques.seedling === 'sementes policlonais'  ? '[sementes policlonais]' : `enxertados: [${division?.plantingTechniques?.grafting}]`,
       }
     }
 
   return (
     <Box>
-      <Navbar pageDescription={'Pomar'} user={user} />
+      <Navbar arrowBack={'block'} goBack={'/farmlands-list'} pageDescription={'Pomar'} user={user} />
     
     <Box
       sx={{
@@ -105,13 +105,13 @@ const Farmland = ({ user }) => {
     <Box sx={{width: "100%", marginRight: "5px", textAlign: "right" }}>
       <Grid container sx={{ }}>
         <Grid item xs={9}>
-        <Typography align='left' sx={{ fontSize: "14px", color: "gray", fontWeight: 800, }}>
+        <Typography align='left' sx={{ fontSize: "14px", color: "#826DA3", fontWeight: 800, }}>
           Dados gerais do pomar
         </Typography>
         </Grid>
         <Grid item xs={3}>
           <Button sx={{ width: "50px"}}>
-            <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
+            <Edit fontSize='small' sx={{ color: "#826DA3"}} />
           </Button>
         </Grid>
       </Grid>
@@ -119,6 +119,7 @@ const Farmland = ({ user }) => {
     </Box>
 
     {/*  */}
+    
     <Stack direction="row" sx={{ padding: "5px 0px 5px 0px" }} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
         Total declarada:
@@ -164,16 +165,14 @@ const Farmland = ({ user }) => {
 
     {
       farmland?.divisions?.map((division, i)=>(
-        <Box key={i} sx={{ width: "100%"}}>
-        
-        <Divider sx={{ mt: "10px", mb: "10px", }} />
-        <div style={{ border: "2px solid #826DA3" }}>
-          <Grid container sx={{ backgroundColor: "#826DA3" }}>
+        <Paper key={i} sx={{ width: "100%", borderRadius: "10px", marginTop: "15px"}}>
+
+          <Grid container sx={{ backgroundColor: "#826DA3", borderRadius: "10px 10px 0px 0px" }}>
             <Grid item xs={9}>
               <Typography 
               variant='body2' 
               align='left'
-              sx={{ fontWeight: 800, color: "#ffffff", padding: "5px", }}
+              sx={{ fontWeight: 600, color: "#ffffff", padding: "5px", }}
               >
                   {`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}
               </Typography>
@@ -226,8 +225,7 @@ const Farmland = ({ user }) => {
               {`${getFromDivision(division)?.plantingTechniques.toString()}`}
             </Box>
           </Stack>
-          </div>
-        </Box>
+        </Paper>
       ))
     }
     </Box>

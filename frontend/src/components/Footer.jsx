@@ -36,10 +36,6 @@ const Footer = ( ) => {
 
   }, [innerScreenHeight])
 
-  console.log('innerHeight: ', innerScreenHeight)
-
-
-
     const toDashboard = ()=>{
       startTransition(()=>{
         navigate('/')

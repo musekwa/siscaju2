@@ -37,7 +37,6 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
             width: "300px",
             height: "50vh",
             bgcolor: "background.paper",
-            border: "2px solid rebeccapurple",
             boxShadow: 24,
             p: 2,
           }}
@@ -48,7 +47,7 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
                 position: "absolute",
                 top: 0,
                 left: 0,
-                backgroundColor: "rebeccapurple",
+                backgroundColor: "#826DA3",
                 width: "100%",
                 height: "70px",
               }}
