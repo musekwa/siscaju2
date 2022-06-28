@@ -67,7 +67,12 @@ const Dashboard = () => {
         }
         user={user}
       />
-      <Box sx={{ flexGrow: 1, marginTop: "35px", marginBottom: "20px" }}>
+      <Box sx={{         
+        display: "flex",
+        justifyContent: "center",
+        maxWidth: "960px",
+        margin: "30px 15px 10px 15px",   
+     }}>
         <Grid
           container
           spacing={{ xs: 4, sm: 6, md: 8 }}
@@ -117,8 +122,16 @@ const Dashboard = () => {
         </Grid>
       </Box>
 
+
+    <Box       
+    sx={{ 
+        maxWidth: "960px", 
+        padding: "10px",  
+        position: "relative", 
+        bottom: "80px", 
+        marginTop: "70px"  }}>
      
-     <Paper sx={{ margin: "15px", borderRadius: "10px 10px 10px 10px" }}>
+     <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
       <Link to="#" sx={{}}>
       <Box sx={{ 
         backgroundColor: "#826DA3", 
@@ -178,8 +191,8 @@ const Dashboard = () => {
       </Box>
       </Link>
       </Paper>
-
-      <Paper sx={{ margin: "15px", borderRadius: "10px 10px 10px 10px" }}>
+      { user?.role === "Extensionista" && (
+      <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
       <Link to="#" sx={{}}>
       <Box sx={{ 
         backgroundColor: "#826DA3", 
@@ -238,11 +251,12 @@ const Dashboard = () => {
       </Box>
       </Link>
       </Paper>
+    )}
 
       {user?.role === "Gestor" ? (
-      <Paper sx={{ margin: "15px", borderRadius: "0px 0px 10px 10px" }}>
+      <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
       <Link to="#" sx={{}}>
-      <Box sx={{ backgroundColor: "#826DA3", padding: "5px" }}>
+      <Box sx={{ backgroundColor: "#826DA3", padding: "5px", borderRadius: "10px 10px 0px 0px" }}>
         <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
             Desempenho provincial <br /> ({user?.address.province})
           </Typography>
@@ -295,7 +309,7 @@ const Dashboard = () => {
           </Link>
        </Paper>
       ) : null}
-
+      </Box>
       <Footer />
     </Box>
   );

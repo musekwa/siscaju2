@@ -411,7 +411,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                   sx={{ display: "flex", justifyContent: "space-between" }}
                 >
 
-                  <Box component="div" sx={{ width: "50%", padding: "10px 10px 10px 10px" }}>
+                  <Box component="div" sx={{ width: "100%", padding: "10px 5px 10px 5px" }}>
                     <Autocomplete
                       fullWidth
                       required
@@ -442,7 +442,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                   </Box>
                 </Stack>
               {
-                divisionData.plantingTechniques.seedling === 'enxertia' 
+                divisionData.plantingTechniques.seedling === 'mudas enxertadas' 
                 ? (
             
                 <Box component="div" sx={{ width: "100%", padding: "10px 10px 10px 10px" }}>

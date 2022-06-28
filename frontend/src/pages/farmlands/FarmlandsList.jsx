@@ -178,7 +178,11 @@ const FarmlandsList = ({ user }) => {
 
           {
             byFarmers[farmerId]?.map(farmland=>(
-            <Box key={farmland?._id.toString()}>
+            <Box key={farmland?._id.toString()} 
+              sx={{ 
+                borderTop: "2px solid #826DA3", 
+                borderRadius: "10px 10px 0px 0px", 
+                marginTop: "2px", }}>
             <Link to="/farmland" state={{ farmland, farmer: farmland.farmer }}>
             <ListItem alignItems="flex-start">
               <ListItemText

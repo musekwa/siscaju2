@@ -7,7 +7,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Navbar from "../../components/Navbar";
-import { Box, Grid, } from "@mui/material";
+import { Box, Grid, Paper, } from "@mui/material";
 import Footer from "../../components/Footer";
 import { AddCircle } from "@mui/icons-material";
 import {useNavigate } from "react-router-dom";
@@ -88,7 +88,12 @@ const FarmlandAdd = ({ user }) => {
       >
         {farmers &&
           farmers?.map((farmer) => (
-            <Box key={farmer?._id}>
+            <Box key={farmer?._id} sx={{ 
+              borderTop: "2px solid #826DA3", 
+              margin: "3px 10px 3px 10px",
+              borderRadius: "10px 10px 0px 0px", 
+              }}
+            >
               <ListItem alignItems="flex-start">
                 {/* <ListItemButton> */}
                 <ListItemAvatar>
@@ -114,7 +119,7 @@ const FarmlandAdd = ({ user }) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "center" }}>
-                        <Box
+                        <Paper
                           id={farmer?._id}
                           onClick={(event) => onAddFarm(farmer?._id)}
                           component="button"
@@ -133,14 +138,13 @@ const FarmlandAdd = ({ user }) => {
                             <br />
                             Pomar
                           </Typography>
-                        </Box>
+                        </Paper>
                       </Grid>
                     </Grid>
                   }
                   secondary={""}
                 />
               </ListItem>
-              <Divider variant="inset" component="li" />
             </Box>
           ))}
       </List>
