@@ -2,13 +2,25 @@ import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 // import { useGetUserByIdQuery } from '../features/api/apiSlice'
 import { useSelector } from "react-redux";
+import Spinner from './Spinner';
 
-const ProtectedRoute = ({ user, redirectPath = '/signin',  children  }) => {
+const ProtectedRoute = ({ redirectPath = '/signin',  children  }) => {
 
+    const { user, isLoading, isSuccess, isError } = useSelector((state)=>state.user)
 
-    if (!user) {
-        return <Navigate to={redirectPath} replace />;
+    useEffect(()=>{
+
+        if(isError || !user) {
+            return <Navigate to={redirectPath} replace />;
+        }
+
+    }, [isError, user, isLoading])
+
+    if (isLoading) {
+        return <Spinner />
     }
+
+
     return children ? children : <Outlet />;
 }
 

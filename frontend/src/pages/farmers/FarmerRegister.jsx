@@ -24,6 +24,7 @@ import {  DatePicker } from '@mui/x-date-pickers';
 import CustomizedModal from "../../components/FarmerRegisterModal.jsx";
 import FarmerRegisterModal from "../../components/FarmerRegisterModal.jsx";
 import { useAddFarmerMutation } from "../../features/api/apiSlice";
+import { useSelector } from "react-redux";
 
 
 const styledTextField = {
@@ -40,7 +41,7 @@ const styledTextField = {
 
 
 
-function FarmerRegister({ user }) {
+function FarmerRegister() {
 
   let [farmerData, setFarmerData] = useState({
     fullname: '',
@@ -59,17 +60,21 @@ function FarmerRegister({ user }) {
     phone: '',
   })
   
-  const [inputGender, setInputGender] = useState('')
-  const [inputBirthProvince, setInputBirthProvince] = useState('')
-  const [inputBirthDistrict, setInputBirthDistrict] = useState('')
-  const [inputBirthTerritory, setInputBirthTerritory] = useState('')
-  const [inputResidenceTerritory, setInputResidenceTerritory] = useState('')
+const [inputGender, setInputGender] = useState('')
+const [inputBirthProvince, setInputBirthProvince] = useState('')
+const [inputBirthDistrict, setInputBirthDistrict] = useState('')
+const [inputBirthTerritory, setInputBirthTerritory] = useState('')
+const [inputResidenceTerritory, setInputResidenceTerritory] = useState('')
+
+const [flag, setFlag] = useState(false);
 
   // open and close Farmer registration Modal
   const [open, setOpen] = useState(false)
 //   const [close, setClose] = useState(true)
 
- const { fullname, gender, birthDate, birthPlace, address } = farmerData;
+const { fullname, gender, birthDate, birthPlace, address } = farmerData;
+const { user, isloading: userIsLoading, isError: userIsError, isSuccess: userIsSuccess, } = useSelector((state)=>state.user);
+
 
 const [
     addFarmer, 
@@ -94,10 +99,16 @@ const [
   const navigate = useNavigate();
 //   const dispatch = useDispatch();
 
+    useEffect(()=>{
+      if ((userIsError || !user) && !flag) {
+        setFlag(true);
+      }
+      else {
+        setFlag(false);
+      }
+    }, [flag, userIsError, user, userIsLoading])
+
   useEffect(() => {
-    if (!user){
-      navigate('/login')
-    }
     if (isError && error.status === 'FETCH_ERROR') {
       toast.error("Verifique a conexão da Internet", {
         autoClose: 5000,
@@ -290,7 +301,7 @@ const [
     // dispatch(addFarmer(normalizedFarmerData));
   };
 
-  if (isLoading) {
+  if (isLoading || userIsLoading) {
     return <Spinner />;
   }
 

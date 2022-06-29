@@ -88,10 +88,10 @@ const FarmlandAdd = ({ user }) => {
       >
         {farmers &&
           farmers?.map((farmer) => (
-            <Box key={farmer?._id} sx={{ 
+            <Paper key={farmer?._id} sx={{ 
               borderTop: "2px solid #826DA3", 
-              margin: "3px 10px 3px 10px",
-              borderRadius: "10px 10px 0px 0px", 
+              margin: "3px 15px 3px 15px",
+              borderRadius: "10px", 
               }}
             >
               <ListItem alignItems="flex-start">
@@ -145,7 +145,7 @@ const FarmlandAdd = ({ user }) => {
                   secondary={""}
                 />
               </ListItem>
-            </Box>
+            </Paper>
           ))}
       </List>
       </Box>

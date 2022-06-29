@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { useNavigate, useLocation } from 'react-router-dom'
 import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
 import { useAddFarmlandMutation,  } from '../../features/api/apiSlice'
+import { useSelector } from 'react-redux'
 
 
 const styledTextField = {
@@ -31,7 +32,7 @@ const UserStack = styled(Stack)(({theme})=>({
 }))
 
 
-const FarmlandRegister = ({ user }) => {
+const FarmlandRegister = () => {
 
   // collecting all data from the this farmland form
   const [farmlandData, setFarmlandData] = useState({
@@ -53,6 +54,7 @@ const FarmlandRegister = ({ user }) => {
 
   // open and close the successfully farmland registration modal
   const [open, setOpen] = useState(false)
+  const [flag, setFlag] = useState(false);
 
   const [inputSeedling, setInputSeedling] = useState('')
   const { 
@@ -71,10 +73,29 @@ const FarmlandRegister = ({ user }) => {
   // get the farmer from the FarmlandAdd component route location (state)
    let farmer = location.state?.farmer;
 
+   const { 
+    user, 
+    isloading: userIsLoading, 
+    isError: userIsError, 
+    isSuccess: userIsSuccess, 
+  } = useSelector((state)=>state.user);
+
   const [
     addFarmland,
     { data: farmland, isLoading, isSuccess, error, isError },
   ] = useAddFarmlandMutation();
+
+
+  
+  useEffect(()=>{
+    if ((userIsError || !user) && !flag) {
+      setFlag(true);
+    }
+    else {
+      setFlag(false);
+    }
+  }, [flag, userIsError, user, userIsLoading])
+
 
  
   if (!farmer || !user){
@@ -225,7 +246,7 @@ const FarmlandRegister = ({ user }) => {
      }
   }
 
-  if (isLoading) {
+  if (isLoading || userIsLoading) {
     return (
       <Spinner />
     )

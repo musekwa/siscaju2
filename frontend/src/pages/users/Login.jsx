@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaSignInAlt } from "react-icons/fa";
+// import { FaSignInAlt } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 // import { reset, login } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -7,27 +7,19 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import { BootstrapButton } from "../../components/Buttons";
 import {
-  Autocomplete,
   Box,
-  Button,
-  FormControl,
-  Grid,
   IconButton,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Paper,
   Stack,
-  styled,
   TextField,
   Typography,
 } from "@mui/material";
 import { LockOpen, Visibility, VisibilityOff } from "@mui/icons-material";
-import { purple } from "@mui/material/colors";
-import { Link, Navigate } from "react-router-dom";
+// import { purple } from "@mui/material/colors";
+import { Link } from "react-router-dom";
 // import { useLoginMutation } from '../../features/api/apiSlice'
 import { useDispatch, useSelector } from "react-redux";
-import { reset, resetUser, login } from '../../features/users/userSlice'
+import { reset, login } from '../../features/users/userSlice'
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -167,7 +159,7 @@ function Login() {
             variant="h6"
             fontWeight={200}
             component="p"
-            sx={{ p: "10px 0px 5px 0px" }}
+            sx={{ p: "10px 0px 5px 0px", color: "gray" }}
           >
             Login
           </Typography>
