@@ -130,6 +130,7 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
           >
             SisCaju
           </Typography> */}
+        {  user ? ( <>
 
           <Stack
             direction="row"
@@ -142,7 +143,8 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
               </Link>
             </Grid>
             
-            <Grid item xs={6}>
+          
+           <Grid item xs={6}>
               {pageDescription && (
                 <Typography
                   variant="body1"
@@ -171,7 +173,7 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
               <Avatar
                 onClick={() => {}}
                 sx={{ width: "40px", height: "40px" }}
-                src=""
+                src="#"
               />
             </Icons>
           </Tooltip>
@@ -179,12 +181,34 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
             <Avatar
               onClick={() => {}}
               sx={{ width: "40px", height: "40px" }}
-              src={`${user?.image}`}
+              src={`#`}
             />
             <Typography variant="body2">
               {user?.fullname.split(" ")[0]}
             </Typography>
           </UserBox>
+        </>
+        ) 
+        : 
+        (<Grid container>
+          <Grid xs={2} item sx={{ display: arrowBack ? `${arrowBack}` : 'none'  }}>
+                <Link to={`${goBack}`}>
+                  <ArrowBackIos fontSize="large" sx={{ color: "#ffffff"}} />
+                </Link>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography
+                    variant="body1"
+                    fontWeight={100}
+                    component="p"
+                    sx={{ p: "6px 0px 0px 0px", textAlign: "center" }}
+                  >
+                    {pageDescription}
+              </Typography>
+            </Grid>
+          </Grid>
+        )
+        }
         </StyledToolbar>
         {/* <Box onClick={handleClick}> */}
         <Menu

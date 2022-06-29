@@ -16,14 +16,19 @@ import { BootstrapButton } from "../../components/Buttons";
 import {
   Autocomplete,
   Box,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 // import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { reset, register } from "../../features/users/userSlice"
+import Navbar from "../../components/Navbar";
 
 
 
@@ -55,7 +60,9 @@ function UserRegister() {
       province: "",
       district: "",
       territory: ""
-    }
+    },
+    showPassword: false,
+    showPassword2: false,
   });
 
   // const [province, setProvince] = useState("");
@@ -77,6 +84,25 @@ function UserRegister() {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.user
   );
+
+  const handleClickShowPassword = () => {
+    setUserData(prevState=>({
+      ...prevState,
+      showPassword: !prevState.showPassword,
+    }));
+  };
+
+  const handleClickShowPassword2 = () => {
+    setUserData(prevState=>({
+      ...prevState,
+      showPassword2: !prevState.showPassword2,
+    }));
+  };
+
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   
   useEffect(()=>{
 
@@ -113,6 +139,20 @@ function UserRegister() {
         }
       );
       navigate("/", { state: { user } });
+      setUserData({
+        fullname: "",
+        email: "",
+        password: "",
+        password2: "",
+        gender: "",
+        role: "",
+        phone: "",
+        address: {
+          province: "",
+          district: "",
+          territory: "",
+        },
+      });
     }
     else if (isError && message === 'Network Error') {
       toast.error("Verifique a conexão da Internet!", {
@@ -246,21 +286,6 @@ function UserRegister() {
 
     if (!isLoading) {
       dispatch(register(normalizedUserData));
-
-      setUserData({
-        fullname: "",
-        email: "",
-        password: "",
-        password2: "",
-        gender: "",
-        role: "",
-        phone: "",
-        address: {
-          province: "",
-          district: "",
-          territory: "",
-        },
-      });
     }
     
   };
@@ -270,6 +295,12 @@ function UserRegister() {
   }
 
   return (
+    <Box>
+      <Navbar
+        arrowBack={"block"}
+        goBack={"/signin"}
+        pageDescription={"Registo de utilizador"}
+      />
     <Box
       sx={{
         display: "flex",
@@ -286,22 +317,22 @@ function UserRegister() {
           maxWidth: "500px",
           height: "auto",
           textAlign: "center",
-          mt: "5rem",
-          mb: "10px",
+          mt: "2rem",
+          mb: "40px",
         }}
       >
         {/* <Typography color="primary" sx={{ fontSize: "19px", textAlign: "right", marginRight: "20px"}}>
             <Link to="/login" >login</Link>
         </Typography> */}
-
+{/* 
         <Typography
           variant="h6"
           fontWeight={400}
           component="p"
           sx={{ p: "20px 0px 5px 0px", color: "gray" }}
         >
-          Registar-se
-        </Typography>
+          
+        </Typography> */}
 
         <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <Paper
@@ -324,7 +355,7 @@ function UserRegister() {
               type="text"
               placeholder="Nome completo"
               size="small"
-              value={fullname}
+              value={userData.fullname}
               onChange={(event) => {
                 setUserData((prevState) => ({
                   ...prevState,
@@ -344,7 +375,7 @@ function UserRegister() {
               type="email"
               placeholder="Email"
               size="small"
-              value={email}
+              value={userData.email}
               onChange={(event) => {
                 setUserData((prevState) => ({
                   ...prevState,
@@ -354,6 +385,32 @@ function UserRegister() {
             />
           </div>
           <div style={{ padding: "10px 5px 10px 5px" }}>
+
+
+            {/* <OutlinedInput
+              id="outlined-adornment-password"
+              sx={styledTextField}
+              fullWidth
+              size="small"
+              type={userData.showPassword ? 'text' : 'password'}
+              value={userData.password}
+              onChange={handleChange('password')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {userData.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              placeholder="Password"
+            /> */}
+
+
             <TextField
               sx={styledTextField}
               required
@@ -361,17 +418,33 @@ function UserRegister() {
               label="Password"
               id="fullWidth password"
               name="password"
-              type="password"
+              type={userData.showPassword ? 'text' : 'password'}
               placeholder="Password"
               size="small"
-              value={password}
+              value={userData.password}
               onChange={(event) => {
                 setUserData((prevState) => ({
                   ...prevState,
                   password: event.target.value,
                 }));
               }}
+
+              InputProps={{
+                endAdornment: <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                  >
+                                    {userData.showPassword ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                              </InputAdornment>,
+                
+              }}
+              
             />
+             
           </div>
           <div style={{ padding: "10px 5px 10px 5px" }}>
             <TextField
@@ -381,7 +454,7 @@ function UserRegister() {
               label="Confirmar password"
               id="fullWidth password2"
               name="password2"
-              type="password"
+              type={userData.showPassword2 ? 'text' : 'password'}
               placeholder="Password"
               size="small"
               onChange={(event) => {
@@ -390,6 +463,21 @@ function UserRegister() {
                   password2: event.target.value,
                 }));
               }}
+
+              InputProps={{
+                endAdornment: <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword2}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                  >
+                                    {userData.showPassword2 ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                              </InputAdornment>,
+                
+              }}
+
             />
           </div>
 
@@ -404,8 +492,9 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo-2"
-                value={gender}
+                value={userData.gender}
                 options={genders}
+                
                 onChange={(event, newGender) => {
                   setUserData((prevState) => ({
                     ...prevState,
@@ -416,15 +505,20 @@ function UserRegister() {
                 onInputChange={(event, newInputGender) => {
                   setInputGender(newInputGender);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    sx={styledTextField}
-                    name="gender"
-                    {...params}
-                    required
-                    label="Gênro"
-                  />
-                )}
+                renderInput={(params) => {
+                  const inputProps = params.inputProps;
+                  inputProps.autoComplete = "off";
+
+                  return (
+                    <TextField
+                      sx={styledTextField}
+                      name="gender"
+                      {...params}
+                      inputProps={inputProps}
+                      required
+                      label="Gênro"
+                    />
+                )}}
                 isOptionEqualToValue={(option, value) =>
                   value === undefined || value === "" || option === value
                 }
@@ -471,15 +565,21 @@ function UserRegister() {
                 onInputChange={(event, newInputRole) => {
                   setInputRole(newInputRole);
                 }}
-                renderInput={(params) => (
+                renderInput={(params) => {
+
+                  const inputProps = params.inputProps;
+                  inputProps.autoComplete = 'off';
+
+                  return (
                   <TextField
                     sx={styledTextField}
                     name="role"
                     {...params}
+                    inputProps={inputProps}
                     required
                     label="Perfil"
                   />
-                )}
+                )}}
                 isOptionEqualToValue={(option, value) =>
                   value === undefined || value === "" || option === value
                 }
@@ -521,16 +621,22 @@ function UserRegister() {
                 onInputChange={(event, newInputProvince) => {
                   setInputProvince(newInputProvince);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    sx={styledTextField}
-                    name="province"
-                    {...params}
-                    label="Província"
-                    required
-                    // helperText="Residência"
-                  />
-                )}
+                renderInput={(params) => {
+
+                  const inputProps = params.inputProps;
+                  inputProps.autoComplete = 'off';
+
+                  return (
+                    <TextField
+                      sx={styledTextField}
+                      name="province"
+                      {...params}
+                      inputProps={inputProps}
+                      label="Província"
+                      required
+                      // helperText="Residência"
+                    />
+                )}}
                 isOptionEqualToValue={(option, value) =>
                   value === undefined || value === "" || option === value
                 }
@@ -576,16 +682,22 @@ function UserRegister() {
                 onInputChange={(event, newInputDistrict) => {
                   setInputDistrict(newInputDistrict);
                 }}
-                renderInput={(params) => (
+                renderInput={(params) => { 
+                  
+                  const inputProps = params.inputProps;
+                  inputProps.autoComplete = 'off';
+
+                  return (
                   <TextField
                     sx={styledTextField}
                     name="district"
                     {...params}
+                    inputProps={inputProps}
                     label="Distrito"
                     required
                     // helperText="residência"
                   />
-                )}
+                )}}
                 isOptionEqualToValue={(option, value) =>
                   value === undefined || value === "" || option === value
                 }
@@ -632,15 +744,21 @@ function UserRegister() {
                 onInputChange={(event, newInputTerritory) => {
                   setInputTerritory(newInputTerritory);
                 }}
-                renderInput={(params) => (
+                renderInput={(params) => {
+
+                  const inputProps = params.inputProps;
+                  inputProps.autoComplete = 'off';
+                  
+                  return (
                   <TextField
                     sx={styledTextField}
                     name="adminPost"
                     {...params}
+                    inputProps={inputProps}
                     label="Posto Administrativo"
                     // helperText="residência"
                   />
-                )}
+                )}}
                 isOptionEqualToValue={(option, value) =>
                   value === undefined || value === "" || option === value
                 }
@@ -657,6 +775,7 @@ function UserRegister() {
           </Box>
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 }

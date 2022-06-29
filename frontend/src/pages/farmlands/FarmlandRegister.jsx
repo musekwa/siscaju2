@@ -192,6 +192,10 @@ const FarmlandRegister = ({ user }) => {
       label,
       interCrops,
       declaredArea,
+      user, 
+      province: farmer?.address.province, // farmer's province
+      district: farmer?.address.district,  // farmer's district
+      territory: farmer?.address.territory,  // farmer's territory
       divisions: [
         {
           trees,

@@ -60,18 +60,18 @@ const addFarmland = asyncHandler(async (req, res) => {
   const {
     body,
     query: { farmerId },
-    user,
   } = req;
 
-  body["user"] = {
+
+  const user = body?.user;
+
+  const userLabel = {
     fullname: user?.fullname,
     email: user?.email,
     phone: user?.phone,
-  };
+  }
 
-  body["province"] = user?.address?.province;
-  body["district"] = user?.address?.district;
-  body["territory"] = user?.address?.territory;
+  body.user = userLabel;
 
   let division = body.divisions[0];
 
@@ -178,6 +178,8 @@ const getFarmlands = asyncHandler(async (req, res) => {
     user,
   } = req;
 
+  
+
   let farmlands;
   // if (!farmerId && !farmlandId && !district) {
   //   // get all registered farmlands
@@ -201,10 +203,13 @@ const getFarmlands = asyncHandler(async (req, res) => {
 
   if (user?.role === "Produtor") {
     farmlands = await Farmland.find({ territory: from }).populate("farmer");
+   
   } else if (user?.role === "Extensionista") {
     farmlands = await Farmland.find({ district: from }).populate("farmer");
+    
   } else {
     farmlands = await Farmland.find({ province: from }).populate("farmer");
+     
   }
   // }
 
@@ -212,6 +217,7 @@ const getFarmlands = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Pomares nao encontrados!");
   }
+
 
   // sort by the update date
   if (farmlands) {

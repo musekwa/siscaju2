@@ -257,17 +257,13 @@ const [
 
     const normalizedFarmerData = {
       ...farmerData,
+      user,
       address: {
         province: user.address.province, // user's province
         district: user.address.district,  // user's district
         territory: farmerData.address.territory2,
         village: farmerData.address.village2,
       },
-      user: {
-        fullname: user?.fullname,
-        email: user?.email,
-        phone: user?.phone,
-      }
     }
 
     try {
@@ -374,9 +370,20 @@ const [
               onInputChange={(event, newInputGender) => {
                 setInputGender(newInputGender)
               }}
-              renderInput={(params) => (
-                <TextField sx={styledTextField} name="gender" {...params} required label="Gênro" />
-              )}
+              renderInput={(params) => {
+
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = 'off';
+                
+                return (
+                <TextField 
+                  sx={styledTextField} 
+                  name="gender" 
+                  inputProps={inputProps}
+                  {...params} 
+                  required label="Gênro" 
+                />
+              )}}
               isOptionEqualToValue={(option, value) =>
                 value === undefined || value === "" || option === value }
             />
@@ -439,16 +446,22 @@ const [
               onInputChange={(event, newInputBirthProvince) => {
                 setInputBirthProvince(newInputBirthProvince);
               }}
-              renderInput={(params) => (
-                <TextField
-                  sx={styledTextField}
-                  name="province"
-                  {...params}
-                  label="Província"
-                  required
-                  helperText="Nascimento"
-                />
-              )}
+              renderInput={(params) => {
+
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = 'off';
+                
+                return (
+                  <TextField
+                    sx={styledTextField}
+                    name="province"
+                    inputProps={inputProps}
+                    {...params}
+                    label="Província"
+                    required
+                    helperText="Nascimento"
+                  />
+              )}}
               isOptionEqualToValue={(option, value) =>
                 value === undefined || value === "" || option === value }
             />
@@ -489,16 +502,22 @@ const [
               onInputChange={(event, newInputBirthDistrict) => {
                 setInputBirthDistrict(newInputBirthDistrict);
               }}
-              renderInput={(params) => (
-                <TextField
-                  sx={styledTextField}
-                  name="district"
-                  {...params}
-                  label="Distrito"
-                  required
-                  helperText="Nascimento"
-                />
-              )}
+              renderInput={(params) => {
+
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = 'off';
+                
+                return (
+                  <TextField
+                    sx={styledTextField}
+                    name="district"
+                    inputProps={inputProps}
+                    {...params}
+                    label="Distrito"
+                    required
+                    helperText="Nascimento"
+                  />
+              )}}
               isOptionEqualToValue={(option, value) =>
                 value === undefined || value === "" || option === value }
             />
@@ -543,15 +562,21 @@ const [
               onInputChange={(event, newInputBirthTerritory) => {
                 setInputBirthTerritory(newInputBirthTerritory);
               }}
-              renderInput={(params) => (
+              renderInput={(params) => {
+
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = 'off';
+                
+                return (
                 <TextField
                   sx={styledTextField}
                   name="territory"
+                  inputProps={inputProps}
                   {...params}
                   label="Posto Admin"
                   helperText="Nascimento"
                 />
-              )}
+              )}}
               isOptionEqualToValue={(option, value) =>
                 value === undefined || value === "" || option === value }
             />
@@ -616,15 +641,21 @@ const [
               onInputChange={(event, newInputResidenceTerritory) => {
                 setInputResidenceTerritory(newInputResidenceTerritory);
               }}
-              renderInput={(params) => (
+              renderInput={(params) => {
+
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = 'off';
+                
+                return (
                 <TextField
                   sx={styledTextField}
                   name="territory2"
+                  inputProps={inputProps}
                   {...params}
                   label="Posto Admin"
                   helperText="Residência"
                 />
-              )}
+              )}}
               isOptionEqualToValue={(option, value) =>
               value === undefined || value === "" || option === value }
             />

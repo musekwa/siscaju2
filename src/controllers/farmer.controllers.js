@@ -99,12 +99,22 @@ const getFarmers = asyncHandler(async (req, res) => {
 //@access
 // Duplicates must not be allowed
 const addFarmer = asyncHandler(async (req, res) => {
-  const { body, user } = req;
+  const { body } = req;
 
   // assign the user province and district to farmer's address.
   // no user  should register farmer outside their own district
 
  // add the user property (registeredBy)
+
+  const user = body?.user;
+
+  const userLabel = {
+      fullname: user?.fullname,
+      email: user?.email,
+      phone: user?.phone,
+    };
+
+  body.user = userLabel;
 
   const newFarmer = new Farmer(body);
 
@@ -113,7 +123,7 @@ const addFarmer = asyncHandler(async (req, res) => {
   const savedFarmer = await newFarmer.save();
 
   // save performance by user
-  let userPerformance = await UserPerformance.findOne({ user: user?._id });
+  let userPerformance = await UserPerformance.findOne({ user: user._id });
 
   if (!userPerformance) {
     let newUserPerformace = new UserPerformance({

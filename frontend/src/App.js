@@ -35,15 +35,11 @@ const { user, isLoading, isError } = useSelector((state) => state.user);
 
 useEffect(()=>{
 
-  if (isError){
-    toast.info("A sua sessão expirou! Volte a fazer o login novamente!", {
-      autoClose: 5000,
-      position: toast.POSITION.TOP_CENTER,
-    });
-    navigate('/signin')
-    localStorage.removeItem("user");
-    dispatch(resetUser());
-  }
+  // if (isError){
+  //   navigate('/signin')
+  //   localStorage.removeItem("user");
+  //   dispatch(resetUser());
+  // }
 
 }, [user, isError, isLoading])
 

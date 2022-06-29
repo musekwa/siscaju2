@@ -45,7 +45,6 @@ const FarmlandsList = ({ user }) => {
     fixedCacheKey: "farmlands",
   });
 
-
   useEffect(()=>{
     
     if (farmlands && farmlands.length > 0) {
@@ -239,7 +238,7 @@ const FarmlandsList = ({ user }) => {
                     </span>{" "}
                     <span
                       style={{ textAlign: "rigth", fontSize: "11px" }}
-                    >{`por ${farmland?.user?.fullname}`}</span>
+                    >{` por ${farmland?.user?.fullname}`}</span>
                   </Typography>
                 }
               />

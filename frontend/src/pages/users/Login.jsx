@@ -12,6 +12,7 @@ import {
   Button,
   FormControl,
   Grid,
+  IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -21,7 +22,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LockOpen } from "@mui/icons-material";
+import { LockOpen, Visibility, VisibilityOff } from "@mui/icons-material";
 import { purple } from "@mui/material/colors";
 import { Link, Navigate } from "react-router-dom";
 // import { useLoginMutation } from '../../features/api/apiSlice'
@@ -45,6 +46,7 @@ function Login() {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
+    showPassword: false,
   });
 
   const { email, password } = userData;
@@ -54,6 +56,17 @@ function Login() {
 
   const { user, isLoading, isError, isSuccess, message } = useSelector((state)=>state.user)
 
+  const handleClickShowPassword = () => {
+    setUserData(prevState=>({
+      ...prevState,
+      showPassword: !prevState.showPassword,
+    }));
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  
   useEffect(()=>{
 
   }, [user])
@@ -192,7 +205,7 @@ function Login() {
                 label="Password"
                 id="fullWidth-2"
                 name="password"
-                type="password"
+                type={userData.showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 size="small"
                 value={password}
@@ -202,6 +215,21 @@ function Login() {
                     password: event.target.value,
                   }));
                 }}
+
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                  >
+                                    {userData.showPassword ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                              </InputAdornment>,
+                
+              }}
+
               />
             </div>
             <div

@@ -139,7 +139,7 @@ const FarmersList = ({ user })=> {
                                 Registo:{`${normalizeDate(farmer.createdAt)}`}
                             </span>   
                             <span style={{textAlign: "rigth", fontSize: "11px"}}>
-                                {`por ${farmer?.user?.fullname}`}
+                                {` por ${farmer?.user?.fullname}`}
                             </span>
                         </Typography> 
                     }
