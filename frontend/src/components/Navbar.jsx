@@ -85,21 +85,11 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
     autoClose: 5000,
     position: toast.POSITION.TOP_CENTER,
     });
+    dispatch(resetUser())
     navigate("/signin");
     // setOpen(false);
-    dispatch(resetUser())
+    
   }
-
-  // useEffect(()=>{
-  //   if (!user) {
-  //     toast.info("Sessão terminada!", {
-  //       autoClose: 5000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     })
-  //     navigate('/signin')
-  //   }
-
-  // }, [navigate, open, user]);
 
     
 

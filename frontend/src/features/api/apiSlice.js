@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseURL } from "../index";
 
-let user = JSON.parse(localStorage.getItem("user"));
+// let user = JSON.parse(localStorage.getItem("user"));
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: baseURL,
     prepareHeaders: (headers, { getState }) => {
+      let user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         headers.set("authorization", `Bearer ${user.token}`);
       }
@@ -106,11 +107,16 @@ export const apiSlice = createApi({
     //   ) {},
     // }),
     addFarmer: build.mutation({
-      query: (body) => ({
+      query: (body) => {
+
+        // let user = JSON.parse(localStorage.getItem("user"));
+ 
+        return {
         url: `/farmers`,
         method: "POST",
+        // headers: {authorization:  `Bearer ${user.token}` },
         body: body,
-      }),
+      }},
       invalidatesTags: ["Farmer"],
       async onQueryStarted(
         arg,
@@ -130,11 +136,16 @@ export const apiSlice = createApi({
       ) {},
     }),
     addFarmland: build.mutation({
-      query: (body) => ({
-        url: `/farmlands?farmerId=${body.farmerId}`,
-        method: "POST",
-        body: body,
-      }),
+      query: (body) => {
+
+        //  let user = JSON.parse(localStorage.getItem("user"));
+
+        return {
+          url: `/farmlands?farmerId=${body.farmerId}`,
+          method: "POST",
+          // headers: { authorization: `Bearer ${user.token}` },
+          body: body,
+        };},
       invalidatesTags: ["Farmland"],
       async onQueryStarted(
         arg,
@@ -228,11 +239,12 @@ export const apiSlice = createApi({
     }),
 
     addDivision: build.mutation({
-      query: (body) => ({
+      query: (body) => {
+        return {
         url: `/farmlands/${body.farmlandId}/divisions`,
         method: "POST",
         body: body,
-      }),
+      }},
       invalidatesTags: ["Division"],
       async onQueryStarted(
         arg,

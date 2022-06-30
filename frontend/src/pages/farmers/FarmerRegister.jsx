@@ -75,7 +75,6 @@ const [flag, setFlag] = useState(false);
 const { fullname, gender, birthDate, birthPlace, address } = farmerData;
 const { user, isloading: userIsLoading, isError: userIsError, isSuccess: userIsSuccess, } = useSelector((state)=>state.user);
 
-
 const [
     addFarmer, 
     { 

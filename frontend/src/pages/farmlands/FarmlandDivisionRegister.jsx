@@ -192,7 +192,7 @@ const FarmlandDivisionRegister = ({ user }) => {
       },
       plantingTechniques: {
         seedling: plantingTechniques.seedling,
-        grafting: plantingTechniques.seedling === 'enxertia' ? plantingTechniques.grafting : null
+        grafting: plantingTechniques.seedling === 'mudas enxertadas' ? plantingTechniques.grafting : null
       },
       // sending the farmerId to be used as a query param in the URL (backend)
       farmlandId: farmland._id

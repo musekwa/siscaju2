@@ -166,6 +166,12 @@ function UserRegister() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    else if (isError && message?.includes('status code 409')) {
+      toast.error("Este utilizador já foi registado!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
     else if (isError) {
       toast.error(message ? message : "O registo falhou!", {
         autoClose: 5000,

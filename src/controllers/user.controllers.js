@@ -41,6 +41,13 @@ const login = asyncHandler(async (req, res) => {
 const register = asyncHandler(async (req, res) => {
   const user = new User(req.body);
 
+  let foundUser = await User.findOne({ email: user.email });
+
+  if (foundUser) {
+    res.status(409);
+    throw new Error("Este utilizador já foi registado!");
+  }
+
   let savedUser = await user.save();
 
   return res

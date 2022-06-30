@@ -21,8 +21,6 @@ const protect = asyncHandler(async (req, res, next) => {
       // verify token
       const decoded = await jwt.verify(token, process.env.JWT_SECRET);
 
-      // console.log('decoded: ', decoded)
-
       // get user from the token
       req.user = await User.findById(decoded.id).select("-password");
 
@@ -33,10 +31,10 @@ const protect = asyncHandler(async (req, res, next) => {
     }
   }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Nao autorizado por falta de 'token'");
-  }
+  // if (!token) {
+  //   res.status(401);
+  //   throw new Error("Nao autorizado por falta de 'token'");
+  // }
 });
 
 export { protect, generateToken };

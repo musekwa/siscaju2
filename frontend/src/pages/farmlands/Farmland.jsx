@@ -36,9 +36,13 @@ const Farmland = ({ user }) => {
         plantedArea: division?.plantedArea,
         trees: division?.trees,
         sowingYear: division.sowingYear,
-        spacing: (division?.spacing?.category === 'irregular') ? 'irregular' : `regular (${division?.spacing?.x} x ${division?.spacing?.y})`,
+        spacing: (division?.spacing?.category === 'irregular') 
+                  ? 'irregular' 
+                  : `regular (${division?.spacing?.x} x ${division?.spacing?.y})`,
         divisionType: (new Date().getFullYear() - division?.sowingYear) >= 5 ? 'Parcela Antiga' : 'Parcela Nova',  
-        plantingTechniques:  division?.plantingTechniques.seedling === 'sementes policlonais'  ? '[sementes policlonais]' : `enxertados: [${division?.plantingTechniques?.grafting}]`,
+        plantingTechniques:  division?.plantingTechniques.seedling === 'sementes policlonais'  
+                  ? '[ sementes policlonais ]' 
+                  : `enxertados: [ ${division?.plantingTechniques?.grafting.join(', ')} ]`,
       }
     }
 
@@ -155,7 +159,7 @@ const Farmland = ({ user }) => {
        Culturas consorciadas:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
-        <Typography>{`[${farmland?.interCrops.join(", ").toString()}]`}</Typography>
+        <Typography>{`[ ${farmland?.interCrops.join(", ").toString()} ]`}</Typography>
       </Box>
     </Stack>
 
