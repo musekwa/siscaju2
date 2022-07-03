@@ -90,7 +90,7 @@ const FarmlandAdd = ({ user }) => {
           farmers?.map((farmer) => (
             <Paper key={farmer?._id} sx={{ 
               borderTop: "2px solid #826DA3", 
-              margin: "3px 15px 3px 15px",
+              margin: "10px 15px 3px 15px",
               borderRadius: "10px", 
               }}
             >

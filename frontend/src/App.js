@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import FarmlandAdd from "./pages/farmlands/FarmlandAdd";
 import Farmer from "./pages/farmers/Farmer";
 import Farmland from "./pages/farmlands/Farmland";
+import PasswordReset from "./pages/users/PasswordReset"
 
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, } from "react-router-dom";
@@ -23,6 +24,7 @@ import { useSelector, useDispatch } from "react-redux";
 import FarmlandCoordinates from "./pages/farmlands/FarmlandCoordinates";
 import { resetUser } from "./features/users/userSlice"
 import { toast } from "react-toastify";
+import PasswordUpdate from "./pages/users/PasswordUpdate";
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
@@ -71,28 +73,30 @@ if (isLoading) {
           {/* User Routes */}
           <Route path="/signin" element={<Login />} />
           <Route path="/signup" element={<UserRegister />} />
+          <Route path="/password-reset" element={<PasswordReset />} />
+          <Route path="/password-update/:userId/:token" element={<PasswordUpdate />} />
 
           {/**  Dashboard */}
           <Route element={<ProtectedRoute user={user} />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/farmers" element={<FarmerRegister />} />
-            <Route
-              path="/farmlands"
-              element={<FarmlandRegister />}
-            />
+            <Route path="/farmlands" element={<FarmlandRegister />} />
             <Route
               path="/divisions"
               element={<FarmlandDivisionRegister user={user} />}
             />
             <Route path="/farmland-add" element={<FarmlandAdd user={user} />} />
-            <Route path="/farmers-list" element={<FarmersList user={user} />} />
+            <Route path="/farmers-list" element={<FarmersList />} />
             <Route
               path="/farmlands-list"
               element={<FarmlandsList user={user} />}
             />
             <Route path="/farmer" element={<Farmer user={user} />} />
             <Route path="/farmland" element={<Farmland user={user} />} />
-            <Route path="/add-coordinates" element={<FarmlandCoordinates user={user} /> } />
+            <Route
+              path="/add-coordinates"
+              element={<FarmlandCoordinates user={user} />}
+            />
           </Route>
 
           {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}

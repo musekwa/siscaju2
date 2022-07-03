@@ -129,7 +129,7 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
           >
             <Grid item sx={{ display: arrowBack ? `${arrowBack}` : 'none'  }}>
               <Link to={`${goBack}`}>
-                <ArrowBackIos fontSize="large" sx={{ color: "#ffffff"}} />
+                <ArrowBackIos fontSize="medium" sx={{ color: "#ffffff"}} />
               </Link>
             </Grid>
             

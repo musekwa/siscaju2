@@ -241,7 +241,7 @@ function Login() {
                   justifyContent: "space-between",
                 }}
               >
-                <Link to={"/forgotpassword"} style={{ textDecoration: "none" }}>
+                <Link to={"/password-reset"} style={{ textDecoration: "none" }}>
                   <Typography variant="body2" sx={{ color: "rebeccapurple" }}>
                     Recuperar
                     <br /> password

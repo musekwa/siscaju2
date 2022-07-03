@@ -35,6 +35,10 @@ var usersSchema = new Schema(
       },
       required: true,
     },
+    loginCount: {
+      type: Number,
+      default: 0,
+    },
     sex: {
       type: String,
       enum: {

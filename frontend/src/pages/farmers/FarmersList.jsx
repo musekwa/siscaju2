@@ -15,16 +15,22 @@ import { useNavigate, Link } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import SearchModal from '../../components/SearchModal';
 import { useGetFarmersByQuery } from '../../features/api/apiSlice'
+import { useSelector } from 'react-redux';
 
 
-const FarmersList = ({ user })=> {
+const FarmersList = ()=> {
+
+
+
+    const { user, isloading: userIsLoading, isError: userIsError, isSuccess: userIsSuccess, } = useSelector((state)=>state.user);
 
     let filterBy = user?.role === 'Extensionista' 
-                    ? user?.address?.district 
-                    : user?.role === 'Gestor' 
-                    ? user?.address?.province
-                    : user?.role === 'Produtor'
-                    ? user?.address?.territory : null;
+                ? user?.address?.district 
+                : user?.role === 'Gestor' 
+                ? user?.address?.province
+                : user?.role === 'Produtor'
+                ? user?.address?.territory : null;
+
     let { data: farmers, isLoading, isError } = useGetFarmersByQuery(filterBy, {
         fixedCaheKey: 'farmers'
     });
@@ -51,7 +57,7 @@ const FarmersList = ({ user })=> {
              + new Date(date).getFullYear()
     }
 
-    if (isLoading) {
+    if (isLoading || userIsLoading) {
       return <Spinner />;
     }
 

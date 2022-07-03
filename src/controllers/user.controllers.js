@@ -15,7 +15,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  let user = await User.findOne({ email });
+  let user = await User.findOneAndUpdate({ email }, { $inc: { loginCount: 1 }}, { new: false });
   if (user && (await bcrypt.compare(password, user.password))) {
     return res
       .status(201)
@@ -64,6 +64,35 @@ const register = asyncHandler(async (req, res) => {
     });
 });
 
+const changePassword = asyncHandler(async (req, res)=>{
+  const { email, oldPassword, newPassword } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(404);
+    throw new Error(`Nenhum utizador está associado a este email`);
+  }
+
+   if (user && (await bcrypt.compare(oldPassword, user.password))) {
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({
+      fullname: savedUser.fullname,
+      address: savedUser.address,
+      email: savedUser.email,
+      role: savedUser.role,
+      _id: savedUser._id,
+      createdAt: savedUser.createdAt,
+      token: generateToken(savedUser._id),
+    });
+   }
+   else {
+    res.status(400);
+    throw new Error("Alteração de password falhou");
+   }
+
+})
+
 //@desc
 //@route
 //@access
@@ -83,7 +112,7 @@ const getUsers = asyncHandler(async (req, res) => {
   let users = await User.find({ role: role });
   if (!users) {
     res.status(404);
-    throw new `Nenhum ${role} encontrado`();
+    throw new Error(`Nenhum ${role} encontrado`);
   }
   return res.status(200).json(users);
 });
@@ -160,6 +189,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 export {
   login,
   register,
+  changePassword,
   addUser,
   getUserById,
   getUsers,
