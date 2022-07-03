@@ -68,7 +68,7 @@ export const administrativePosts = {
   ],
   Nacarôa: ["Nacarôa", "Intete", "Saua-Saua"],
   Rapale: ["Rapale", "Anchilo", "Mutivaze", "Namaita"],
-  Ribaué: ["Ribaué", "Kunle", "Iapala"],
+  Ribáuè: ["Ribaué", "Kunle", "Iapala"],
 
   // zambezia
   "Alto Molócuè": ["Alto Molócuè", "Nauela"],
@@ -259,9 +259,5 @@ export const administrativePosts = {
 
   KaTembe: ["Inguide", "Incassane", "Guachene", "Chali", "Chamissava"],
 
-  KaNyaka: [
-    "Ribzwene", 
-    "Inguane",
-    "Nhanquene",
-  ]
+  KaNyaka: ["Ribzwene", "Inguane", "Nhanquene"],
 };
