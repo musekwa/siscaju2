@@ -8,7 +8,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 router.route("/user/:email").get(sendPasswordResetEmail);
 
-router.route("/user/:userId/:password/:token").post(receiveNewPassword);
+router.route("/user/:password").post(receiveNewPassword);
 
 
 export default router;

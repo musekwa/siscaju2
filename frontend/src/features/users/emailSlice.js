@@ -33,9 +33,9 @@ export const passwordReset = createAsyncThunk(
 
 export const passwordUpdate = createAsyncThunk(
   "user/password",
-  async ({userId, password, token }, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
-      const response = await axios.post(baseURL + `/user/${userId}/${password}/${token}`);
+      const response = await axios.post(baseURL + `/user/${userData.password}`);
       return response.data;
     } catch (error) {
       const message =

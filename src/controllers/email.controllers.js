@@ -44,13 +44,22 @@ const resetPasswordTemplate = (user, url) => {
     `Musekwa Evariste`;
 
   const html =
+    `<!DOCTYPE html>` +
+    `<html lang="en"> <head>` +
+    `<meta charset="utf-8" />`+
+    `<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />`+
+    `<meta name="viewport" content="width=device-width, initial-scale=1" />` +
+    `<meta name="description" content="Web site created using create-react-app" />`+
+    `<link rel="apple-touch-icon" href="apple-touch-icon.png" />`+
+    `<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />`+
+    `</head> ` +
     `<p>Olá ${user?.fullname || user?.email},</p>` +
     `<p>Apercebemo-nos de que se esqueceu do seu password, lamentamos por isso!</p>` +
     `<p>Mas, não se preocupe, siga o seguinte link para criar um novo password:</p>` +
     `<a href=${url}>${url}</a>` +
     `<p>Este link vai expirar em 1 hora de tempo</p>` +
-    `<p>Musekwa Evariste</p>`;
-
+    `<p>Musekwa Evariste</p>` +
+    `</html>`;
   return { from, to, subject, text, html };
 };
 
@@ -128,16 +137,16 @@ const sendPasswordResetEmail = asyncHandler(async (req, res) =>{
 });
 
 const receiveNewPassword = asyncHandler(async (req, res)=>{
-    const { userId, token, password } = req.params;
+    const { body } = req;
   
-    const user = await User.findOne({ _id: userId })
+    const user = await User.findOne({ _id: body.userId })
 
     if (user) {
         const secret = user.password + "-" + user.createdAt;
-        const payload = jwt.decode(token, secret);
+        const payload = jwt.decode(body.token, secret);
 
         if (payload.id === user.id) {
-            user.password = password;;
+            user.password = body.password;;
             await user.save();
 
             res.status(202).json("Password alterado com sucesso!")
