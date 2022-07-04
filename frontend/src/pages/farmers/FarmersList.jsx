@@ -35,6 +35,8 @@ const FarmersList = ()=> {
         fixedCaheKey: 'farmers'
     });
 
+    console.log('farmers: ', farmers)
+
     const navigate = useNavigate()
     // const location = useLocation()
 
@@ -44,7 +46,7 @@ const FarmersList = ()=> {
     })}
 
 
-    const GetTotalTrees = (farmlands) => {
+    const GetTotalTrees = ({ farmlands }) => {
         // get all the declared areas for all the farmlands
         let trees = farmlands?.map(f=>f?.totalTrees)
        
@@ -126,7 +128,7 @@ const FarmersList = ()=> {
                                     <Typography component="span" variant='body2'>{`Pomares: ${farmer?.farmlands?.length}`}</Typography>
                                 </Box>
                                 <Box sx={{ width: "50%"}}>
-                                 <Typography component="span" variant='body2'>Cajueiros: {GetTotalTrees(farmer?.farmlands)}</Typography>
+                                 <Typography component="span" variant='body2'>Cajueiros: {GetTotalTrees(farmer)}</Typography>
                                 </Box>
                             </Stack>
 
