@@ -5,6 +5,8 @@ import UserRegister from "./pages/users/UserRegister";
 import FarmerRegister from "./pages/farmers/FarmerRegister";
 import FarmlandRegister from "./pages/farmlands/FarmlandRegister";
 // import Monitorings from "./pages/Monitorings";
+import MonitoringsList from "./pages/monitorings/MonitoringsList";
+import MonitoringAdd from "./pages/monitorings/MonitoringAdd";
 import FarmersList from "./pages/farmers/FarmersList";
 import FarmlandsList from "./pages/farmlands/FarmlandsList";
 import NotFound from "./pages/NotFound";
@@ -74,7 +76,10 @@ if (isLoading) {
           <Route path="/signin" element={<Login />} />
           <Route path="/signup" element={<UserRegister />} />
           <Route path="/password-reset" element={<PasswordReset />} />
-          <Route path="/password-update/:userId/:token" element={<PasswordUpdate />} />
+          <Route
+            path="/password-update/:userId/:token"
+            element={<PasswordUpdate />}
+          />
 
           {/**  Dashboard */}
           <Route element={<ProtectedRoute user={user} />}>
@@ -96,6 +101,15 @@ if (isLoading) {
             <Route
               path="/add-coordinates"
               element={<FarmlandCoordinates user={user} />}
+            />
+
+            <Route
+              path="/monitorings-list"
+              element={<MonitoringsList user={user} />}
+            />
+            <Route
+              path="/monitoring-add"
+              element={<MonitoringAdd user={user} />}
             />
           </Route>
 

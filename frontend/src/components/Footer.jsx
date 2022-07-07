@@ -54,7 +54,7 @@ const Footer = ( ) => {
 
     const toMonitorings = ()=>{
       startTransition(()=>{
-      navigate('/to-be-defined')
+      navigate('/monitorings-list')
     })}
 
   return (

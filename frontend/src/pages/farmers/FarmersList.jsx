@@ -35,8 +35,6 @@ const FarmersList = ()=> {
         fixedCaheKey: 'farmers'
     });
 
-    console.log('farmers: ', farmers)
-
     const navigate = useNavigate()
     // const location = useLocation()
 

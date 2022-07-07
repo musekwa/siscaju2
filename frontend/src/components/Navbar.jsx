@@ -2,7 +2,10 @@ import {
   AppBar,
   Avatar,
   Box,
+  Divider,
   Grid,
+  IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Stack,
@@ -11,7 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ArrowBackIos, ManageSearch, Search as SearchIcon } from '@mui/icons-material';
+import { ArrowBackIos, Logout, ManageSearch, PersonAdd, Search as SearchIcon, Settings } from '@mui/icons-material';
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -77,6 +80,19 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  // --------------start account menu -------------------
+
+  const [anchorElAccountMenu, setAnchorElAccountMenu] = useState(null);
+  const openAccountMenu = Boolean(anchorElAccountMenu);
+  const handleClickAccountMenu = (event) => {
+    setAnchorElAccountMenu(event.currentTarget);
+  };
+  const handleCloseAccountMenu = () => {
+    setAnchorElAccountMenu(null);
+  };
+
+  // ----------------------- end account menu ---------------
 
 
   const onLogout = ()=>{
@@ -159,20 +175,38 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
             </Grid>
           </Stack>
           <Tooltip title={`${user?.fullname.split(" ")[0]}`}>
-            <Icons onClick={handleClick}>
+            <IconButton             
+              onClick={handleClickAccountMenu}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
               <Avatar
-                onClick={() => {}}
-                sx={{ width: "40px", height: "40px" }}
-                src="#"
+                // onClick={() => {}}
+                // sx={{ width: "40px", height: "40px" }}
+                // src="#"
               />
-            </Icons>
+            </IconButton>
           </Tooltip>
           <UserBox>
-            <Avatar
+            <IconButton               
+              onClick={handleClickAccountMenu}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              <Avatar />
+            </IconButton>
+            
+            {/* <Avatar
               onClick={() => {}}
               sx={{ width: "40px", height: "40px" }}
               src={`#`}
-            />
+            /> */}
             <Typography variant="body2">
               {user?.fullname.split(" ")[0]}
             </Typography>
@@ -201,7 +235,7 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
         }
         </StyledToolbar>
         {/* <Box onClick={handleClick}> */}
-        <Menu
+        {/* <Menu
           id="demo-positioned-menu"
           aria-labelledby="demo-positioned-button"
           anchorEl={anchorEl}
@@ -215,8 +249,73 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
           <MenuItem onClick={() => {}}>Minha conta</MenuItem>
           <MenuItem onClick={() => onLogout()}>Terminar a sessão</MenuItem>
           <MenuItem onClick={() => {}}>Configurações</MenuItem>
-        </Menu>
+        </Menu> */}
         {/* </Box> */}
+
+
+        {/* -----------------------start account menu-------------------------- */}
+
+        <Menu
+        anchorEl={anchorElAccountMenu}
+        id="account-menu"
+        open={openAccountMenu}
+        onClose={handleCloseAccountMenu}
+        onClick={handleCloseAccountMenu}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <MenuItem>
+          <Avatar /> Minha conta
+        </MenuItem>
+        <Divider />
+        {/* <MenuItem>
+          <ListItemIcon>
+            <PersonAdd fontSize="small" />
+          </ListItemIcon>
+          Add another account
+        </MenuItem> */}
+        <MenuItem>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          Configurações
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={()=>onLogout()}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Terminar a sessão
+        </MenuItem>
+      </Menu>
+
+      {/* -----------------------end account menu ------------------------------ */}
       </AppBar>
     </Box>
   );

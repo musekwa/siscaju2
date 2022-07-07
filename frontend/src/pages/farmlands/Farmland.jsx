@@ -1,7 +1,7 @@
 
-import { Edit } from '@mui/icons-material'
-import { Avatar, Box, Button, Divider, Grid, Paper, Stack, styled, Typography } from '@mui/material'
-import React, { Fragment } from 'react'
+import { Edit, MoreVert, Preview, QueryStats } from '@mui/icons-material'
+import { Avatar, Badge, Box, Button, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem, Paper, Stack, styled, Typography } from '@mui/material'
+import React, { Fragment, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { useLocation } from 'react-router-dom'
@@ -22,6 +22,8 @@ const sortDivisionsBySowingYear = (divisions)=>{
   });
 }
 
+const ITEM_HEIGHT = 52;
+
 const Farmland = ({ user }) => {
 
     const location = useLocation()
@@ -31,6 +33,22 @@ const Farmland = ({ user }) => {
 
     farmland['divisions'] = sortDivisionsBySowingYear(farmland['divisions'])
     
+    // --------- start MoreVert ------------------------------------
+
+  const [anchorElMoreVert, setAnchorElMoreVert] = useState(null);
+  const openMoreVert = Boolean(anchorElMoreVert);
+
+  const handleClickMoreVert = (event) => {
+    setAnchorElMoreVert(event.currentTarget);
+  };
+
+  const handleCloseMoreVert = () => {
+    setAnchorElMoreVert(null);
+  };
+ 
+  // ---------------- end MoreVert -----------------------------------------------
+
+
     const getFromDivision = (division)=>{
       return {
         plantedArea: division?.plantedArea,
@@ -114,9 +132,9 @@ const Farmland = ({ user }) => {
         </Typography>
         </Grid>
         <Grid item xs={3}>
-          <Button sx={{ width: "50px"}}>
+          <IconButton sx={{ }}>
             <Edit fontSize='small' sx={{ color: "#826DA3"}} />
-          </Button>
+          </IconButton>
         </Grid>
       </Grid>
 
@@ -172,7 +190,7 @@ const Farmland = ({ user }) => {
         <Paper key={i} sx={{ width: "100%", borderRadius: "10px", marginTop: "15px"}}>
 
           <Grid container sx={{ backgroundColor: "#826DA3", borderRadius: "10px 10px 0px 0px" }}>
-            <Grid item xs={9}>
+            <Grid item xs={10}>
               <Typography 
               variant='body2' 
               align='left'
@@ -181,10 +199,19 @@ const Farmland = ({ user }) => {
                   {`${getFromDivision(division).divisionType}: (${getFromDivision(division).sowingYear})`}
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <Button sx={{ width: "50px"}}>
-                <Edit fontSize='small' sx={{ color: "#ffffff"}} />
-              </Button>
+            <Grid item xs={2}>
+                    <IconButton 
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={openMoreVert ? 'long-menu' : undefined}
+                        aria-expanded={openMoreVert ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClickMoreVert}
+                    >
+                        <Badge>
+                            <MoreVert fontSize="medium" sx={{ color: "#eee"}}  />
+                        </Badge>
+                    </IconButton>
             </Grid>
           </Grid>
           {/* <Box sx={{ width: "100%", height: "30px", p: 1, backgroundColor: "lightgray"}}>
@@ -234,6 +261,56 @@ const Farmland = ({ user }) => {
     }
     </Box>
     </Box>
+          {/* -------------------start MoreVert menu -------------- */}
+        <Menu
+            id="long-menu"
+            MenuListProps={{
+            'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorElMoreVert}
+            open={openMoreVert}
+            onClose={handleCloseMoreVert}
+            PaperProps={{
+            style: {
+                maxHeight: ITEM_HEIGHT * 3.5,
+                // width: '20ch',
+            },
+            }}
+        >
+            {/* {options.map((option) => (
+            <MenuItem key={option} selected={option === 'Monitorar pomar'} onClick={handleCloseMoreVert}>
+                {option}
+            </MenuItem>
+            ))} */}
+            <MenuItem selected onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <QueryStats />
+                </ListItemIcon>
+                <Typography>
+                    Monitorar divisão
+                </Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <Preview />
+                </ListItemIcon>
+                <Typography>
+                    Ver o estado da divisão
+                </Typography>
+            </MenuItem>
+             <Divider />
+            <MenuItem onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <Edit />
+                </ListItemIcon>
+                <Typography>
+                    Editar a divisão
+                </Typography>
+            </MenuItem>
+        </Menu>
+      {/* --------------------------end MoreVert menu --------------------- */}
+
     <Footer />
     </Box>
   )
