@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseURL } from "../index";
 
-// let user = JSON.parse(localStorage.getItem("user"));
-
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -15,108 +13,16 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "Farmer", "Farmland", "Division", "Monitoring"],
+  tagTypes: ["User", "Farmer", "Farmland", "Division", "Monitoring", 'Weeding'],
   endpoints: (build) => ({
-    // register: build.mutation({
-    //   query: (body) => ({
-    //     url: `/register`,
-    //     method: "POST",
-    //     body: body,
-    //   }),
-    //   invalidatesTags: ["User"],
-    //   async onQueryStarted(
-    //     arg,
-    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-    //   ) {},
-    //   async onCacheEntryAdded(
-    //     arg,
-    //     {
-    //       dispatch,
-    //       getState,
-    //       requestId,
-    //       extra,
-    //       getCacheEntry,
-    //       cacheDataLoaded,
-    //       cacheEntryRemoved,
-    //     }
-    //   ) {},
-    // }),
-    // login: build.mutation({
-    //   query: (body) => ({
-    //     url: `/login`,
-    //     method: "POST",
-    //     body: body,
-    //   }),
-    //   invalidatesTags: ["User"],
-    //   async onQueryStarted(
-    //     arg,
-    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-    //   ) {},
-    //   async onCacheEntryAdded(
-    //     arg,
-    //     {
-    //       dispatch,
-    //       getState,
-    //       requestId,
-    //       extra,
-    //       getCacheEntry,
-    //       cacheDataLoaded,
-    //       cacheEntryRemoved,
-    //     }
-    //   ) {},
-    // }),
-    // getUsers: build.query({
-    //   query: () => `/users`,
-    //   providesTags: ["User"],
-    //   async onQueryStarted(
-    //     arg,
-    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-    //   ) {},
-    //   async onCacheEntryAdded(
-    //     arg,
-    //     {
-    //       dispatch,
-    //       getState,
-    //       requestId,
-    //       extra,
-    //       getCacheEntry,
-    //       cacheDataLoaded,
-    //       cacheEntryRemoved,
-    //     }
-    //   ) {},
-    // }),
-
-    // getUserById: build.query({
-    //   query: (userId) => `/users/${userId}`,
-    //   providesTags: ["User"],
-    //   async onQueryStarted(
-    //     arg,
-    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-    //   ) {},
-    //   async onCacheEntryAdded(
-    //     arg,
-    //     {
-    //       dispatch,
-    //       getState,
-    //       requestId,
-    //       extra,
-    //       getCacheEntry,
-    //       cacheDataLoaded,
-    //       cacheEntryRemoved,
-    //     }
-    //   ) {},
-    // }),
     addFarmer: build.mutation({
       query: (body) => {
-
-        // let user = JSON.parse(localStorage.getItem("user"));
- 
         return {
-        url: `/farmers`,
-        method: "POST",
-        // headers: {authorization:  `Bearer ${user.token}` },
-        body: body,
-      }},
+          url: `/farmers`,
+          method: "POST",
+          body: body,
+        };
+      },
       invalidatesTags: ["Farmer"],
       async onQueryStarted(
         arg,
@@ -137,15 +43,12 @@ export const apiSlice = createApi({
     }),
     addFarmland: build.mutation({
       query: (body) => {
-
-        //  let user = JSON.parse(localStorage.getItem("user"));
-
         return {
           url: `/farmlands?farmerId=${body.farmerId}`,
           method: "POST",
-          // headers: { authorization: `Bearer ${user.token}` },
           body: body,
-        };},
+        };
+      },
       invalidatesTags: ["Farmland"],
       async onQueryStarted(
         arg,
@@ -241,10 +144,11 @@ export const apiSlice = createApi({
     addDivision: build.mutation({
       query: (body) => {
         return {
-        url: `/farmlands/${body.farmlandId}/divisions`,
-        method: "POST",
-        body: body,
-      }},
+          url: `/farmlands/${body.farmlandId}/divisions`,
+          method: "POST",
+          body: body,
+        };
+      },
       invalidatesTags: ["Division"],
       async onQueryStarted(
         arg,
@@ -284,15 +188,38 @@ export const apiSlice = createApi({
         }
       ) {},
     }),
+
+    addMonitoringReport: build.mutation({
+      query: (body) => {
+        
+        return {
+          url: `/monitorings/${body.flag}`,
+          method: "POST",
+          body: body,
+        };
+      },
+      invalidatesTags: ["Weeding, Monitoring"],
+      async onQueryStarted(
+        arg,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {},
+      async onCacheEntryAdded(
+        arg,
+        {
+          dispatch,
+          getState,
+          requestId,
+          extra,
+          getCacheEntry,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        }
+      ) {},
+    }),
   }),
 });
 
 export const { 
-    // user
-    // useRegisterMutation, 
-    // useLoginMutation, 
-    // useGetUsersQuery,
-    // useGetUserByIdQuery,
 
     // farmer
     useAddFarmerMutation,
@@ -306,4 +233,8 @@ export const {
 
     // performance
     useGetPerformanceQuery,
+
+    // monitoring
+    useAddMonitoringReportMutation
+
 } = apiSlice;

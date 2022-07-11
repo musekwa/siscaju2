@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Backdrop,
   Box,
@@ -9,19 +9,66 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { BootstrapButton, QuestionButton } from "./Buttons";
+import { useAddMonitoringReportMutation } from "../features/api/apiSlice";
+import Spinner from "./Spinner";
+import { toast } from "react-toastify";
 
-const ConfirmModal = ({ openModal, setOpenModal, weedingData: data, division, flag }) => {
+const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, division, flag, farmland }) => {
 
   const navigate = useNavigate();
+
+  const [ addMonitoringReport, { data: monitoring, isSuccess, isError, isLoading, error} ] = useAddMonitoringReportMutation()
+
+
+  useEffect(()=>{
+
+    if (isError && error.status === 'FETCH_ERROR') {
+      toast.error("Verifique a conexão da Internet!", {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isError){
+      toast.error(error.error, {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } 
+    else if (isSuccess) {
+      toast.success(`Actualizado o estado do pomar com sucesso!`, {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,        
+      })     
+      setOpenModal(false)
+      // setReportData(null);
+      navigate('/monitoring-board', { state: { farmland }})
+
+
+    }
+    // reset()
+
+  }, [monitoring, isError, isSuccess, error, navigate])
+
+
 
   const onsubmit = async (e)=>{
     // e.preventDefault();
     const normalizedData = {
-      ...data,
+      ...reportData,
       division,
+      flag
     }
-    console.log('normalized data: ', normalizedData)
+    
+    if (!isLoading) {
+      await addMonitoringReport(normalizedData);
+    }
 
+  }
+
+  if (isLoading) {
+    return <Spinner />
   }
 
 
@@ -83,15 +130,15 @@ const ConfirmModal = ({ openModal, setOpenModal, weedingData: data, division, fl
                   <Box sx={{ p: "15px 15px 5px 15px" }}>
                       <Stack direction="row">
                           <Typography sx={{ width: "50%", textAlign: "left"}}>Totalmente limpos:</Typography>
-                          <Typography sx={{ width: "50%", textAlign: "center"}}>{data?.totallyCleanedTrees || 0}</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.totallyCleanedTrees || 0}</Typography>
                       </Stack>
                       <Stack direction="row" >
                           <Typography sx={{ width: "50%", textAlign: "left"}}>Parcialmente limpos:</Typography>
-                          <Typography sx={{ width: "50%", textAlign: "center"}}>{data?.partiallyCleanedTrees || 0}</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.partiallyCleanedTrees || 0}</Typography>
                       </Stack>
                       <Stack direction="row" >
                           <Typography sx={{ width: "50%", textAlign: "left"}}>Não limpos:</Typography>
-                          <Typography sx={{ width: "50%", textAlign: "center"}}>{division?.trees - (Number(data?.totallyCleanedTrees) + Number(data?.partiallyCleanedTrees))}</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{division?.trees - (Number(reportData?.totallyCleanedTrees) + Number(reportData?.partiallyCleanedTrees))}</Typography>
                       </Stack>
                       <Stack>
                           <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>

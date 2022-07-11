@@ -37,7 +37,7 @@ const styledTextField = {
 
 function WeedingForm({ user }) {
   
-  const [weedingData, setWeedingData] = useState({
+  const [reportData, setReportData] = useState({
     totallyCleanedTrees: null,
     partiallyCleanedTrees: null,
     weededAt: null,
@@ -49,11 +49,11 @@ function WeedingForm({ user }) {
   const navigate = useNavigate();
   const location = useLocation()
 
-  const { division, flag } = location.state;
+  const { division, flag, farmland } = location.state;
 
   useEffect(()=>{
 
-  }, [weedingData])
+  }, [reportData])
 
   // useEffect(() => {
   //   if (isSuccess && user && JSON.stringify(user)?.includes('timed out after')) {
@@ -144,9 +144,9 @@ function WeedingForm({ user }) {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const remainder = division?.trees - (Number(weedingData?.totallyCleanedTrees) + Number(weedingData?.partiallyCleanedTrees));
+    const remainder = division?.trees - (Number(reportData?.totallyCleanedTrees) + Number(reportData?.partiallyCleanedTrees));
 
-    if (!weedingData?.totallyCleanedTrees || !weedingData?.partiallyCleanedTrees)  {
+    if (!reportData?.totallyCleanedTrees || !reportData?.partiallyCleanedTrees)  {
       toast.error("Completar informação obrigatória", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -160,8 +160,8 @@ function WeedingForm({ user }) {
     }
     if (
       (remainder < 0 || remainder > division?.trees) ||
-      (Number(weedingData?.totallyCleanedTrees) < 0 || Number(weedingData?.totallyCleanedTrees) > division?.trees) ||
-      (Number(weedingData?.partiallyCleanedTrees) < 0 || Number(weedingData?.partiallyCleanedTrees) > division?.trees)
+      (Number(reportData?.totallyCleanedTrees) < 0 || Number(reportData?.totallyCleanedTrees) > division?.trees) ||
+      (Number(reportData?.partiallyCleanedTrees) < 0 || Number(reportData?.partiallyCleanedTrees) > division?.trees)
       
       ) {
       toast.error("Fornecer números certos", {
@@ -241,7 +241,7 @@ function WeedingForm({ user }) {
                 placeholder="Cajueiros totalmente limpos"
                 size="small"
                 onChange={(event) => {
-                  setWeedingData((prevState) => ({
+                  setReportData((prevState) => ({
                     ...prevState,
                     totallyCleanedTrees: event.target.value,
                   }));
@@ -262,7 +262,7 @@ function WeedingForm({ user }) {
                 placeholder="Cajueiros parcialmente limpos"
                 size="small"
                 onChange={(event) => {
-                  setWeedingData((prevState) => ({
+                  setReportData((prevState) => ({
                     ...prevState,
                     partiallyCleanedTrees: event.target.value,
                   }));
@@ -275,12 +275,12 @@ function WeedingForm({ user }) {
               <DatePicker 
                 label="Data em que se fez a limpeza" 
                 onChange={(newDate)=>{
-                  setWeedingData((prevState)=>({
+                  setReportData((prevState)=>({
                     ...prevState,
                     weededAt: newDate
                   }))
                 }}
-                value={weedingData?.weededAt}
+                value={reportData?.weededAt}
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
@@ -304,9 +304,11 @@ function WeedingForm({ user }) {
     <ConfirmModal
       openModal={openModal}
       setOpenModal={setOpenModal}
-      weedingData={weedingData} 
+      reportData={reportData} 
+      setReportData={setReportData}
       division={division}
       flag={flag}
+      farmland={farmland}
     />
     <Footer />
     </Box>

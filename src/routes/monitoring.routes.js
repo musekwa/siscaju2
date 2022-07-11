@@ -2,7 +2,7 @@ import router from "./index.js";
 import {
   getMonitorings,
   addMonitoringByVariability,
-  addVariability,
+  addMonitoringReport,
   // updateMonitoring,
   // deleteMonitoring,
 } from "../controllers/monitoring.controllers.js";
@@ -15,8 +15,8 @@ router
 
 router
   .route("/monitorings/:variable")
-  // .post(protect, addVariability);
-  .post(addVariability);
+  .post(protect, addMonitoringReport);
+  // .post(addVariability);
 
 // router.patch("/monitorings/:monitoringId");
 // router.delete("/monitorings/:monitoringId");

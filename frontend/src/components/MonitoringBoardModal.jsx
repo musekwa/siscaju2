@@ -14,7 +14,7 @@ import { AddAPhoto, ArrowBack, Forest } from "@mui/icons-material";
 import { BootstrapButton, QuestionButton } from "./Buttons";
 
 
-const MonitoringBoardModal = ({ openModal, setOpenModal, division, question }) => {
+const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, farmland }) => {
 
   const navigate = useNavigate();
 
@@ -104,7 +104,7 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question }) =
                     <QuestionButton 
                       sx={{ color: "#eee" }}
                       onClick={()=>{
-                        navigate(`/${question?.flag}-add`, { state: { division, flag: question?.flag }})
+                        navigate(`/${question?.flag}-add`, { state: { division, flag: question?.flag, farmland }})
                       }}
                     >
                       Sim

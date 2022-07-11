@@ -30,10 +30,12 @@ const addWeedingReport = async (data)=>{
   }
   else {
     if (!foundMonitoring?.weeding?.length === 0) {
+      await newWeedingReport.save();
       return await new Monitoring({...foundMonitoring, weeding: new Array(newWeedingReport) }).save()
     }
     else {
       foundMonitoring?.weeding?.push(newWeedingReport);
+      await newWeedingReport.save();
       return await foundMonitoring.save();
     }
 }
@@ -41,45 +43,41 @@ const addWeedingReport = async (data)=>{
 
 // ------------------------- end services ---------------------------------
 
-const addVariability = asyncHandler(async (req, res)=>{
-    const { body } = req;
-    const { variable } = req.params;
+const addMonitoringReport = asyncHandler(async (req, res) => {
+  const {
+    body,
+    params: { variable },
+  } = req;
+  
+  if (!variable) {
+    res.status(400);
+    throw new Error("Indique a variável que pretende monitorar!");
+  }
 
-    if (!variable) {
-        res.status(400);
-        throw new Error("Indique a variável que pretende monitorar!");
-    }
+  let result;
 
-    let result;
+  switch (variable) {
+    case "weeding":
+      result = await addWeedingReport(body);
+      break;
+    case "pruning":
+      break;
+    case "diseases":
+      break;
+    case "plagues":
+      break;
+    case "insecticides":
+      break;
+    case "fungicides":
+      break;
+    case "harvest":
+      break;
+    default:
+      res.status(400);
+      throw new Error("Indique uma variável certa que pretende monitorar!");
+  }
 
-    switch(variable) {
-        case 'weeding':
-            result =  await addWeedingReport(body);
-            break;
-        case 'pruning':
-
-            break;
-        case 'diseases':
-
-            break;
-        case 'plagues':
-
-            break;
-        case 'insecticides':
-
-            break;
-        case 'fungicides':
-
-            break;
-        case 'harvest':
-
-            break;
-        default:
-            res.status(400);
-            throw new Error("Indique uma variável certa que pretende monitorar!");
-    }
-
-    res.status(200).json(result);
+  res.status(200).json(result);
 });
 
 //@desc
@@ -141,7 +139,7 @@ export {
   addMonitoringByVariability,
   // getMonitoringByYear,
   getMonitorings,
-  addVariability,
+  addMonitoringReport,
   // updateMonitoring,
   // deleteMonitoring,
 };

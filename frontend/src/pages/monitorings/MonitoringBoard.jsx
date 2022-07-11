@@ -473,6 +473,7 @@ const MonitoringBoard = ({ user }) => {
           setOpenModal={setOpenModal}
           question={question}
           division={division}
+          farmland={farmland}
         />
       <Footer />
       </Box>
