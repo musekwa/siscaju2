@@ -27,7 +27,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 // import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { reset, register } from "../../features/users/userSlice"
+import { reset, register, resetUser } from "../../features/users/userSlice"
 import Navbar from "../../components/Navbar";
 
 
@@ -130,9 +130,18 @@ function UserRegister() {
 
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && user && JSON.stringify(user)?.includes('timed out after')) {
+        toast.error(`Verifique a conexão da Internet!`, {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+        localStorage.removeItem('user');
+        dispatch(resetUser());
+        return ;
+    } 
+    else if (isSuccess) {
       toast.success(
-        `Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`,
+        `Olá ${user?.fullname?.split(" ")[0]}, Bem-vindo a SisCaju!`,
         {
           autoClose: 5000,
           position: toast.POSITION.TOP_CENTER,

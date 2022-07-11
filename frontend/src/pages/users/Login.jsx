@@ -66,8 +66,16 @@ function Login() {
 
  
     useEffect(() => {
-      if (isSuccess) {
-        toast.success(`Bem-vindo de volta, ${user?.fullname.split(" ")[0]}`, {
+      if (isSuccess && user && JSON.stringify(user)?.includes('timed out after')) {
+        toast.error(`Verifique a conexão da Internet!`, {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+        localStorage.removeItem('user');
+        return ;
+      }
+      else if (isSuccess ) {
+        toast.success(`Bem-vindo de volta, ${user?.fullname?.split(" ")[0]}`, {
           autoClose: 5000,
           position: toast.POSITION.TOP_CENTER,
         });
@@ -93,7 +101,6 @@ function Login() {
       }
       dispatch(reset())
     }, [isSuccess, user, navigate, isError, message, dispatch]);
-
 
 
   // validating email

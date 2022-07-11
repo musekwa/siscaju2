@@ -32,6 +32,7 @@ import Spinner from "../../components/Spinner";
 import SearchModal from "../../components/SearchModal";
 import { useGetFarmlandsByQuery } from "../../features/api/apiSlice";
 import { useEffect } from "react";
+import FarmlandCard from "./FarmlandCard";
 
 
 
@@ -51,35 +52,13 @@ const options = [
   'Ver o estado do pomar',
 ];
 
-const ITEM_HEIGHT = 35;
+
 
 
 const MonitoringsList = ({ user }) => {
 
-    // --------- start MoreVert ------------------------------------
 
-  const [anchorElMoreVert, setAnchorElMoreVert] = useState(null);
-  const openMoreVert = Boolean(anchorElMoreVert);
 
-  const handleClickMoreVert = (event) => {
-    setAnchorElMoreVert(event.currentTarget);
-  };
-
-  const handleCloseMoreVert = () => {
-    setAnchorElMoreVert(null);
-  };
- 
-  // ---------------- end MoreVert -----------------------------------------------
-
-  // --------------- start Accordion --------------------------------
-
-  const [expanded, setExpanded] = useState(false);
-
-  const handleChangeAccordion = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  // ---------------- end Accordion ---------------------
 
 
   const navigate = useNavigate();
@@ -129,9 +108,6 @@ const MonitoringsList = ({ user }) => {
   }
 
 
-  const onAddMonitoring = () => {
-    navigate("/monitoring-add");
-  };
 
   const getTreesAverageAge = (divisions) => {
     let sum = 0;
@@ -221,120 +197,17 @@ const MonitoringsList = ({ user }) => {
 
           {
             byFarmers[farmerId]?.map(farmland=>(
-            <Box key={farmland?._id.toString()} 
-              sx={{ 
-                borderTop: "2px solid #826DA3", 
-                borderRadius: "10px 10px 0px 0px", 
-                marginTop: "10px",  }}>
-                      
-            <Grid container sx={{ mt: 1, mr: 2, ml: 2, mb: 1, }}>
-                <Grid item xs={7}>
-                    <Typography
-                        variant="body1"
-                        sx={{ fontWeight: 600, color: "gray", textAlign: "left", }}
-                    >
-                        {`${farmland?.farmlandType}`}{" "} <br />
-                        <span style={{ fontWeight: 400, fontSize: "11px" }}>
-                        (
-                        {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
-                        )
-                        </span>
-                    </Typography>
-                </Grid>
-                <Grid item xs={2.5} >
-                    <IconButton onClick={()=>{}}> 
-                        <Badge badgeContent={4} color="error"  sx={{ mt: 1, mr: 1 }}>
-                            <NotificationsNoneSharp fontSize="medium" sx={{ color: "#826DA3"}} />
-                        </Badge>
-                    </IconButton>
-                </Grid>
-                <Grid item xs={2.5}>
-                    <IconButton 
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={openMoreVert ? 'long-menu' : undefined}
-                        aria-expanded={openMoreVert ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClickMoreVert}
-                    >
-                        <Badge>
-                            <MoreVert fontSize="medium" sx={{ color: "#826DA3"}}  />
-                        </Badge>
-                    </IconButton>
-                </Grid>
-            </Grid>
-
-             {/* -----------------------start recommendation-------------------------------------------------------------- */}
-
-              <Stack sx={{  }}>
-                    <Accordion 
-                      expanded={expanded === farmland._id } 
-                      onChange={handleChangeAccordion(farmland._id)}
-                      >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "#826DA3" }}  />} aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: "#eee" }}>
-                          <Typography variant="body1" sx={{ textAlign: "left", color: "#826DA3" }}>
-                              Acção recomendada
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Stack sx={{ }} spacing={1}>
-                                <Alert  severity="error" >
-                                    This is an error alert 
-                                </Alert>
-                                <Alert  severity="error">
-                                    This is an error alert 
-                                </Alert>
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
-                </Stack>
-        </Box>
-      ))}
-      </Fragment>
-      </Paper>       
+              <FarmlandCard
+                key={farmland._id}
+                farmland={farmland}
+              />
+        ))}
+        </Fragment>
+      </Paper>         
       )) }
       </List>
       </Box>
-      {/* -------------------start MoreVert menu -------------- */}
-        <Menu
-            id="long-menu"
-            MenuListProps={{
-            'aria-labelledby': 'long-button',
-            }}
-            anchorEl={anchorElMoreVert}
-            open={openMoreVert}
-            onClose={handleCloseMoreVert}
-            PaperProps={{
-            style: {
-                maxHeight: ITEM_HEIGHT * 3.5,
-                // width: '20ch',
-            },
-            }}
-        >
-            {/* {options.map((option) => (
-            <MenuItem key={option} selected={option === 'Monitorar pomar'} onClick={handleCloseMoreVert}>
-                {option}
-            </MenuItem>
-            ))} */}
-            <MenuItem selected onClick={handleCloseMoreVert}>
-                <ListItemIcon>
-                    <QueryStats />
-                </ListItemIcon>
-                <Typography>
-                    Monitorar pomar
-                </Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleCloseMoreVert}>
-                <ListItemIcon>
-                    <Preview />
-                </ListItemIcon>
-                <Typography>
-                    Ver o estado do pomar
-                </Typography>
-            </MenuItem>
-        </Menu>
-      {/* --------------------------end MoreVert menu --------------------- */}
+
       <SearchModal open={false} />
       <Footer />
     </Box>

@@ -300,19 +300,23 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
           </ListItemIcon>
           Add another account
         </MenuItem> */}
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Configurações
-        </MenuItem>
-        <Divider />
+                
         <MenuItem onClick={()=>onLogout()}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Terminar a sessão
         </MenuItem>
+        
+        <Divider />
+
+        <MenuItem>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          Configurações
+        </MenuItem>
+
       </Menu>
 
       {/* -----------------------end account menu ------------------------------ */}
