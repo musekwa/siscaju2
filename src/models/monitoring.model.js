@@ -58,7 +58,7 @@ const monitoringsSchema = mongoose.Schema(
     ],
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
     },
     createdAt: {
       type: Date,

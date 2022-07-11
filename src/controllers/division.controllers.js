@@ -120,14 +120,7 @@ const getDivisions = asyncHandler(async (req, res) => {
   } else if (farmlandId && divisionId) {
     foundDivisions = await getOneDivisionService(farmlandId, divisionId);
   }
-  return res.status(200).json({
-    status: "OK",
-    data: foundDivisions,
-  });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
+  return res.status(200).json(foundDivisions);
 });
 
 //@desc

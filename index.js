@@ -10,7 +10,7 @@ import userRoutes from "./src/routes/user.routes.js";
 import farmerRoutes from "./src/routes/farmer.routes.js";
 import farmlandRoutes from "./src/routes/farmland.routes.js";
 import divisionRoutes from "./src/routes/division.routes.js";
-// import monitoringRoutes from "./src/routes/monitoring.routes.js";
+import monitoringRoutes from "./src/routes/monitoring.routes.js";
 import userPerformanceRoutes from "./src/routes/performance.routes.js";
 import emailRoutes from './src/routes/email.routes.js'
 import dbConnection from "./config/db.js";
@@ -51,7 +51,7 @@ app.use(userRoutes);
 app.use(farmerRoutes);
 app.use(farmlandRoutes);
 app.use(divisionRoutes);
-// app.use(monitoringRoutes);
+app.use(monitoringRoutes);
 app.use(userPerformanceRoutes);
 app.use(emailRoutes);
 

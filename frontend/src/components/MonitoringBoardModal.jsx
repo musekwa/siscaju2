@@ -16,9 +16,6 @@ import { BootstrapButton, QuestionButton } from "./Buttons";
 
 const MonitoringBoardModal = ({ openModal, setOpenModal, division, question }) => {
 
-  console.log('division: ', division)
-
-
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -107,7 +104,7 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question }) =
                     <QuestionButton 
                       sx={{ color: "#eee" }}
                       onClick={()=>{
-                        navigate(`/${question?.flag}-add`, { state: { division }})
+                        navigate(`/${question?.flag}-add`, { state: { division, flag: question?.flag }})
                       }}
                     >
                       Sim

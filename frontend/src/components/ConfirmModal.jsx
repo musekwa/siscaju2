@@ -2,9 +2,7 @@ import React from "react";
 import {
   Backdrop,
   Box,
-  Button,
   Fade,
-  Grid,
   Modal,
   Stack,
   Typography,
@@ -12,10 +10,21 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { BootstrapButton, QuestionButton } from "./Buttons";
 
-const ConfirmWeedingModal = ({ openModal, setOpenModal, weedingData, division }) => {
-
+const ConfirmModal = ({ openModal, setOpenModal, weedingData: data, division, flag }) => {
 
   const navigate = useNavigate();
+
+  const onsubmit = async (e)=>{
+    // e.preventDefault();
+    const normalizedData = {
+      ...data,
+      division,
+    }
+    console.log('normalized data: ', normalizedData)
+
+  }
+
+
 
   return (
     <Modal
@@ -68,23 +77,30 @@ const ConfirmWeedingModal = ({ openModal, setOpenModal, weedingData, division })
                         color: "gray"
                     }}
                 >
-                    <Box sx={{ p: "15px 15px 5px 15px" }}>
-                    <Stack direction="row">
-                        <Typography sx={{ width: "50%", textAlign: "left"}}>Totalmente limpos:</Typography>
-                        <Typography sx={{ width: "50%", textAlign: "center"}}>{weedingData?.totallyCleanedTrees || 0}</Typography>
-                    </Stack>
-                    <Stack direction="row" >
-                        <Typography sx={{ width: "50%", textAlign: "left"}}>Parcialmente limpos:</Typography>
-                        <Typography sx={{ width: "50%", textAlign: "center"}}>{weedingData?.partiallyCleanedTrees || 0}</Typography>
-                    </Stack>
-                    <Stack direction="row" >
-                        <Typography sx={{ width: "50%", textAlign: "left"}}>Não limpos:</Typography>
-                        <Typography sx={{ width: "50%", textAlign: "center"}}>{division?.trees - (Number(weedingData?.totallyCleanedTrees) + Number(weedingData?.partiallyCleanedTrees))}</Typography>
-                    </Stack>
-                    <Stack>
-                        <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
-                    </Stack>
+        {                    
+            flag === "weeding"  &&     
+            (
+                  <Box sx={{ p: "15px 15px 5px 15px" }}>
+                      <Stack direction="row">
+                          <Typography sx={{ width: "50%", textAlign: "left"}}>Totalmente limpos:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{data?.totallyCleanedTrees || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" >
+                          <Typography sx={{ width: "50%", textAlign: "left"}}>Parcialmente limpos:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{data?.partiallyCleanedTrees || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" >
+                          <Typography sx={{ width: "50%", textAlign: "left"}}>Não limpos:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{division?.trees - (Number(data?.totallyCleanedTrees) + Number(data?.partiallyCleanedTrees))}</Typography>
+                      </Stack>
+                      <Stack>
+                          <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
+                      </Stack>
                     </Box>
+                  )
+          }
+
+          
                 </Box>
                
             </Box>
@@ -94,9 +110,6 @@ const ConfirmWeedingModal = ({ openModal, setOpenModal, weedingData, division })
                 position: "relative",
                 bottom: 3,
                 left: 0,
-                // p: 2,
-                // backgroundColor: "#826DA3",
-                // width: "100%",
                 height: "30%",
               }}
             > 
@@ -113,7 +126,12 @@ const ConfirmWeedingModal = ({ openModal, setOpenModal, weedingData, division })
                         textAlign: "center",
                         // border: "1px solid"
                      }}>
-                    <QuestionButton sx={{ color: "#eee" }}>Sim</QuestionButton>
+                    <QuestionButton 
+                      sx={{ color: "#eee" }}
+                      onClick={onsubmit}
+                    >
+                      Sim
+                    </QuestionButton>
                 </Box>
                 <Box 
                     sx={{ 
@@ -141,4 +159,4 @@ const ConfirmWeedingModal = ({ openModal, setOpenModal, weedingData, division })
   );
 };
 
-export default ConfirmWeedingModal;
+export default ConfirmModal;

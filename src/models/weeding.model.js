@@ -14,10 +14,6 @@ const weedingsSchema = mongoose.Schema(
     totallyCleanedTrees: Number,
     partiallyCleanedTrees: Number,
     weededAt: Date,
-    controlCount: {
-      type: Number,
-      default: 0,
-    },
     division: {
       type: ObjectId,
       ref: "FarmDivision",

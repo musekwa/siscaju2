@@ -17,7 +17,7 @@ import { reset, register, resetUser } from "../../features/users/userSlice"
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { DatePicker } from "@mui/x-date-pickers";
-import ConfirmWeedingModal from "../../components/ConfirmWeedingModal";
+import ConfirmModal from "../../components/ConfirmModal";
 
 
 
@@ -49,7 +49,7 @@ function WeedingForm({ user }) {
   const navigate = useNavigate();
   const location = useLocation()
 
-  const { division } = location.state;
+  const { division, flag } = location.state;
 
   useEffect(()=>{
 
@@ -301,11 +301,12 @@ function WeedingForm({ user }) {
         </Paper>
       </Box>
     </Box>
-    <ConfirmWeedingModal
+    <ConfirmModal
       openModal={openModal}
       setOpenModal={setOpenModal}
       weedingData={weedingData} 
       division={division}
+      flag={flag}
     />
     <Footer />
     </Box>
