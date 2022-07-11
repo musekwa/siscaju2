@@ -6,7 +6,7 @@ import FarmerRegister from "./pages/farmers/FarmerRegister";
 import FarmlandRegister from "./pages/farmlands/FarmlandRegister";
 // import Monitorings from "./pages/Monitorings";
 import MonitoringsList from "./pages/monitorings/MonitoringsList";
-import MonitoringAdd from "./pages/monitorings/MonitoringAdd";
+import MonitoringBoard from "./pages/monitorings/MonitoringBoard";
 import FarmersList from "./pages/farmers/FarmersList";
 import FarmlandsList from "./pages/farmlands/FarmlandsList";
 import NotFound from "./pages/NotFound";
@@ -16,7 +16,6 @@ import FarmlandAdd from "./pages/farmlands/FarmlandAdd";
 import Farmer from "./pages/farmers/Farmer";
 import Farmland from "./pages/farmlands/Farmland";
 import PasswordReset from "./pages/users/PasswordReset"
-
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
@@ -27,6 +26,8 @@ import FarmlandCoordinates from "./pages/farmlands/FarmlandCoordinates";
 import { resetUser } from "./features/users/userSlice"
 import { toast } from "react-toastify";
 import PasswordUpdate from "./pages/users/PasswordUpdate";
+import WeedingForm from "./pages/monitorings/WeedingForm";
+
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
@@ -108,9 +109,15 @@ if (isLoading) {
               element={<MonitoringsList user={user} />}
             />
             <Route
-              path="/monitoring-add"
-              element={<MonitoringAdd user={user} />}
+              path="/monitoring-board"
+              element={<MonitoringBoard user={user} />}
             />
+
+            <Route 
+              path="/weeding-add" 
+              element={<WeedingForm user={user}  />}
+              />
+
           </Route>
 
           {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}

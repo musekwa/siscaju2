@@ -11,13 +11,12 @@ const weedingsSchema = mongoose.Schema(
       },
     },
 
-    cleanTrees: Number,
-    weededAt: {
-      type: Date,
-    },
-    controlledAt: {
-      type: Date,
-      default: Date.now,
+    totallyCleanedTrees: Number,
+    partiallyCleanedTrees: Number,
+    weededAt: Date,
+    controlCount: {
+      type: Number,
+      default: 0,
     },
     division: {
       type: ObjectId,

@@ -39,7 +39,7 @@ const FarmlandCard = ({ farmland, }) => {
     const navigate = useNavigate()
 
     const onAddMonitoring = (farmland) => {
-        navigate("/monitoring-add", { state: { farmland, }});
+        navigate("/monitoring-board", { state: { farmland, }});
     };
 
     // console.log('farmland --:', farmland)

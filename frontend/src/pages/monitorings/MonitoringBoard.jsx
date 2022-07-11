@@ -25,6 +25,7 @@ import pruning from '../../assets/images/pruning.jpg'
 import { styled } from "@mui/system";
 import { months } from "../../app/months";
 import { monitoringQuestions } from "../../app/monitoringQuestions";
+import MonitoringBoardModal from "../../components/MonitoringBoardModal";
 
 
 const UserStack = styled(Stack)(({theme})=>({
@@ -46,8 +47,7 @@ const styledTextField = {
 }
 
 
-const MonitoringAdd = ({ user }) => {
-
+const MonitoringBoard = ({ user }) => {
 
   let filterBy =
     user?.role === "Extensionista"
@@ -58,17 +58,23 @@ const MonitoringAdd = ({ user }) => {
       ? user?.address?.territory
       : null;
 
-  const {
-    data: farmers,
-    isLoading,
-    isFetching,
-    isError,
-    isSuccess,
-    error,
-  } = useGetFarmersByQuery(filterBy);
+  // const {
+  //   data: farmers,
+  //   isLoading,
+  //   isFetching,
+  //   isError,
+  //   isSuccess,
+  //   error,
+  // } = useGetFarmersByQuery(filterBy);
 
+  const [openModal, setOpenModal] = useState(false);
   const [sowingYear, setSowingYear] = useState('');
+  const [question, setQuestion] = useState({
+    question: '',
+    flag: '',
+  });
   const [inputSowingYear, setInputSowingYear] = useState("");
+  const [division, setDivision] = useState(null);
 
   const handleSowingYear = (event) => {
     setSowingYear(event.target.value);
@@ -76,46 +82,67 @@ const MonitoringAdd = ({ user }) => {
 
   const navigate = useNavigate();
   const location = useLocation()
-  const { farmland } = location.state;
 
-  const sowingYears = farmland?.divisions?.map(division=>division?.sowingYear)
+  let farmland; 
+  let sowingYears;
 
+  // if (farmland) {
+    farmland = location?.state?.farmland;
+    sowingYears = farmland?.divisions?.map(division=>division?.sowingYear);
+  // }
 
   useEffect(()=>{
-    if (farmers && farmers.length === 0) {
-      toast.warning(
-        "Primeiro, regista-se produtores (proprietários) de pomares!",
-        {
-          autoClose: 5000,
-          position: toast.POSITION.TOP_RIGHT,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-    navigate("/");
-    return ;
-  }
-  if (!farmland) {
+
+    if (sowingYear && farmland) {
+      let newDivision = farmland?.divisions?.filter(division=>division?.sowingYear === sowingYear)
+      // if (sowingYear !== newDivision.sowingYear){
+      setDivision(newDivision[0])
+      // }
+    }
+
+  }, [sowingYear, farmland])
+
+  // console.log('sowing year: ', sowingYear)
+
+  useEffect(()=>{
+
+  // if (!farmland) {
+  //   navigate('/monitorings-list')
+  // }
+  //   if (farmers && farmers.length === 0) {
+  //     toast.warning(
+  //       "Primeiro, regista-se produtores (proprietários) de pomares!",
+  //       {
+  //         autoClose: 5000,
+  //         position: toast.POSITION.TOP_RIGHT,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       }
+  //     );
+  //   navigate("/");
+  //   return ;
+  // }
+  // if (!farmland) {
    
-      toast.warning(
-        "Seleccionar pomar que pretende monitorar!",
-        {
-          autoClose: 5000,
-          position: toast.POSITION.TOP_RIGHT,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-    navigate("/monitorings-list");
-    return ;
-  }
-  }, [farmers, farmland])
+  //     toast.warning(
+  //       "Seleccionar pomar que pretende monitorar!",
+  //       {
+  //         autoClose: 5000,
+  //         position: toast.POSITION.TOP_RIGHT,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       }
+  //     );
+  //   navigate("/monitorings-list");
+  //   return ;
+  // }
+  }, [farmland])
 
 //   if (isLoading || isFetching) {
 //       return <Spinner />
@@ -157,7 +184,7 @@ const MonitoringAdd = ({ user }) => {
             <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
               <Avatar sx={{ width: "50px", height: "50px"}} src="" />
               <Box sx={{ textAlign: "center", width: "80%", marginRight: "5px" }}>
-                  <Typography variant='body1'>{`${farmland?.farmer.fullname}`}</Typography>
+                  <Typography variant='body1'>{`${farmland?.farmer?.fullname}`}</Typography>
                   <Typography variant='body2'>({`${farmland?.farmer?.category}`})</Typography>
               </Box>
             </UserStack>
@@ -177,7 +204,7 @@ const MonitoringAdd = ({ user }) => {
             <Typography sx={{ textAlign: "left"}} variant='body2'>Anos de plantio:</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography sx={{ textAlign: "left"}} variant='body2'>[ {`${sowingYears.sort()?.join(", ").toString()}`} ]</Typography>
+            <Typography sx={{ textAlign: "left"}} variant='body2'>[ {`${sowingYears?.sort()?.join(", ")?.toString()}`} ]</Typography>
           </Grid>
         </Grid>
        </Paper>
@@ -243,12 +270,26 @@ const MonitoringAdd = ({ user }) => {
 
   
   <Box sx={{ position: "relative", bottom: "80px", marginTop: "100px", color: "gray" }}>
-      <Typography variant="body2" sx={{margin: "2px 2px 5px 2px",  }}>Última monitoria: 02/01/2021 por Evariste</Typography>
+      <Typography variant="body2" sx={{margin: "2px 2px 5px 2px",  }}>
+        Última monitoria: 02/01/2021 por Evariste
+      </Typography>
         <Grid container direction="column" justifyContent="center" alignItems="center" >
         <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              <Link to='/weeding-add'>
-                <Typography sx={{ color: "#eee" }}>Limpeza</Typography>
+              {/* <Link to='/weeding-add'> */}
+              <Box 
+                  component="button" 
+                  sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                  onClick={()=>{
+                    setQuestion(prevState=>({
+                      ...prevState,
+                      question: monitoringQuestions.weeding,
+                      flag: 'weeding'
+                    }))
+                    setOpenModal(true)
+                  }}
+                >
+                <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Limpeza</Typography>
                 <CardMedia
                   component="img"
                   width= "150px"
@@ -256,11 +297,25 @@ const MonitoringAdd = ({ user }) => {
                   image={weeding}
                   alt="weeding"
               />
-             </Link>
+              </Box>
+             {/* </Link> */}
           </Paper>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-               <Link to='/pruning-add'>
-              <Typography sx={{ color: "#eee" }}>Poda</Typography>
+               {/* <Link to='/pruning-add'> */}
+               <Box 
+                  component="button" 
+                  sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}} 
+                  onClick={()=>{
+                    setQuestion(prevState=>({
+                      ...prevState,
+                      question: monitoringQuestions.pruning,
+                      flag: 'pruning'
+                    }))
+                    setOpenModal(true)
+
+                  }}
+              >
+              <Typography sx={{ color: "#eee", fontWeight: 800, }}>Poda</Typography>
               <CardMedia
                 component="img"
                 width= "150px"
@@ -268,14 +323,27 @@ const MonitoringAdd = ({ user }) => {
                 image={pruning}
                 alt="pruning"
               />
-              </Link>
+              </Box>
+              {/* </Link> */}
           </Paper>
         </Stack>
 
         <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              <Link to='/diseases-add'>
-              <Typography sx={{ color: "#eee" }}>Doenças</Typography>
+              {/* <Link to='/diseases-add'> */}
+            <Box 
+                component="button" 
+                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                onClick={()=>{
+                  setQuestion(prevState=>({
+                      ...prevState,
+                      question: monitoringQuestions.diseases,
+                      flag: 'diseases'
+                    }))
+                  setOpenModal(true)
+                }}
+            >
+              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Doenças</Typography>
               <CardMedia
                 component="img"
                 width= "150px"
@@ -283,39 +351,78 @@ const MonitoringAdd = ({ user }) => {
                 image={diseases}
                 alt="diseases"
                 />
-             </Link>
+            </Box>
+             {/* </Link> */}
           </Paper>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-            <Link to='/plagues-add'>
-              <Typography sx={{ color: "#eee" }}>Pragas</Typography>
-              <CardMedia
-                component="img"
-                width= "150px"
-                height="125px"
-                image={plagues}
-                alt="plague"
-            />
-            </Link>
+            {/* <Link to='/plagues-add'> */}
+            <Box 
+                component="button" 
+                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                onClick={()=>{
+                  setQuestion(prevState=>({
+                    ...prevState,
+                    question: monitoringQuestions.plagues,
+                    flag: 'plagues'
+                  }))
+                  setOpenModal(true)
+                }}
+              >
+                <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Pragas</Typography>
+                <CardMedia
+                  component="img"
+                  width= "150px"
+                  height="125px"
+                  image={plagues}
+                  alt="plague"
+                />
+            </Box>
+            {/* </Link> */}
           </Paper>
         </Stack>
 
         <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-            <Link to='/insecticide-add'>
-            <Typography sx={{ color: "#eee" }}>Insecticidas</Typography>
-         
-            <CardMedia
-              component="img"
-              width="150px"
-              height="125px"
-              image={insecticide}
-              alt="insecticide"
-              />
-          </Link>
+            {/* <Link to='/insecticide-add'> */}
+            <Box 
+                component="button" 
+                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                onClick={()=>{
+                  setQuestion(prevState=>({
+                    ...prevState,
+                    question: monitoringQuestions.insecticides,
+                    flag: 'insecticides'
+                  }))
+                  setOpenModal(true)
+                }}
+              >
+              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Insecticidas</Typography>
+          
+              <CardMedia
+                component="img"
+                width="150px"
+                height="125px"
+                image={insecticide}
+                alt="insecticide"
+                />
+            </Box>
+          {/* </Link> */}
           </Paper>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              <Link to='/fungicide-add'>
-              <Typography sx={{ color: "#eee" }}>Fungicidas</Typography>
+              {/* <Link to='/fungicide-add'> */}
+            <Box 
+                component="button" 
+                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                onClick={()=>{
+                  setQuestion(prevState=>({
+                    ...prevState,
+                    question: monitoringQuestions.fungicides,
+                    flag: 'fungicides'
+                  }))
+                  setOpenModal(true)
+                }}
+              >
+              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Fungicidas</Typography>
 
               <CardMedia
               component="img"
@@ -324,13 +431,27 @@ const MonitoringAdd = ({ user }) => {
               image={insecticide}
               alt="fungicide"
               />
-            </Link>
+            </Box>
+            {/* </Link> */}
           </Paper>
         </Stack>
         <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              <Link to='/crop-add'>
-              <Typography sx={{ color: "#eee" }}>Colheitas</Typography>
+              {/* <Link to='/crop-add'> */}
+            <Box 
+                component="button" 
+                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                onClick={()=>{
+                  setQuestion(prevState=>({
+                    ...prevState,
+                    question: monitoringQuestions.harvest,
+                    flag: 'harvest'
+                  }))
+                  setOpenModal(true)
+                }}
+                
+            >
+              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Colheitas</Typography>
               <CardMedia
                 component="img"
                 width= "150px"
@@ -338,7 +459,8 @@ const MonitoringAdd = ({ user }) => {
                 image={crop}
                 alt="crop"
                 />
-            </Link>
+            </Box>
+            {/* </Link> */}
           </Paper>
           <Box sx={{ display: "block", width: "150px", height: "150px" }}>
           </Box>
@@ -346,9 +468,15 @@ const MonitoringAdd = ({ user }) => {
         </Grid>
       </Box>
   )}
+        <MonitoringBoardModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          question={question}
+          division={division}
+        />
       <Footer />
       </Box>
   );
 };
 
-export default MonitoringAdd;
+export default MonitoringBoard;
