@@ -198,7 +198,7 @@ function WeedingForm({ user }) {
     <Box>
       <Navbar
         arrowBack={"block"}
-        goBack={"/monitoring-board"}
+        goBack={"/monitorings-list"}
         pageDescription={"Controle de Limpeza"}
         user={user}
       />

@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import asyncHandler from "express-async-handler";
 import Monitoring from '../models/monitoring.model.js';
 import Weeding from "../models/weeding.model.js";
+import Pruning from "../models/pruning.model.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -25,8 +26,20 @@ const addWeedingReport = async (data)=>{
   let foundMonitoring = await Monitoring.findOne({ year: new Date().getFullYear(), division: newWeedingReport.division})
   
   if (!foundMonitoring) {
+
     await newWeedingReport.save();
-    return await new Monitoring({  weeding: new Array(newWeedingReport), division: newWeedingReport.division }).save();
+
+    const newMonitoringReport = {
+      weeding: new Array(newWeedingReport),
+      division: newWeedingReport.division,
+      user: {
+        fullname: data?.user?.fullname,
+        email: data?.user?.email,
+        phone: data?.user?.phone,
+      }
+    };
+
+    return await new Monitoring(newMonitoringReport).save();
   }
   else {
     if (!foundMonitoring?.weeding?.length === 0) {
@@ -41,6 +54,49 @@ const addWeedingReport = async (data)=>{
 }
 };
 
+// add pruning
+const addPruningReport = async (data)=>{
+  const newPruningReport = new Pruning({
+    ...data,
+    division: ObjectId(data?.division._id),
+  });
+
+  let foundMonitoring = await Monitoring.findOne({ year: new Date().getFullYear(), division: newPruningReport.division})
+  
+  if (!foundMonitoring) {
+
+    await newPruningReport.save();
+
+    const newMonitoringReport = {
+      pruning: new Array(newPruningReport),
+      division: newPruningReport.division,
+      user: {
+        fullname: data?.user?.fullname,
+        email: data?.user?.email,
+        phone: data?.user?.phone,
+      },
+    };
+
+    return await new Monitoring(newMonitoringReport).save();
+  }
+  else {
+    if (!foundMonitoring?.pruning?.length === 0) {
+      await newPruningReport.save();
+      return await new Monitoring({
+        ...foundMonitoring,
+        pruning: new Array(newPruningReport),
+      }).save();
+    }
+    else {
+      foundMonitoring?.pruning?.push(newPruningReport);
+      await newPruningReport.save();
+      return await foundMonitoring.save();
+    }
+}
+};
+
+
+
 // ------------------------- end services ---------------------------------
 
 const addMonitoringReport = asyncHandler(async (req, res) => {
@@ -51,7 +107,7 @@ const addMonitoringReport = asyncHandler(async (req, res) => {
   
   if (!variable) {
     res.status(400);
-    throw new Error("Indique a variável que pretende monitorar!");
+    throw new Error("Indique  como parametro a variável que pretende monitorar!");
   }
 
   let result;
@@ -61,6 +117,7 @@ const addMonitoringReport = asyncHandler(async (req, res) => {
       result = await addWeedingReport(body);
       break;
     case "pruning":
+      result = await addPruningReport(body);
       break;
     case "diseases":
       break;
@@ -74,30 +131,44 @@ const addMonitoringReport = asyncHandler(async (req, res) => {
       break;
     default:
       res.status(400);
-      throw new Error("Indique uma variável certa que pretende monitorar!");
+      throw new Error("Indique como parametro uma variável certa que pretende monitorar!");
   }
 
   res.status(200).json(result);
 });
 
+
+const getMonitoringReports = asyncHandler(async (req, res)=>{
+  const {
+    params: { variable }
+  } = req;
+
+  // variable param is a division ID
+
+  if (!variable) {
+    res.status(400);
+    throw new Error("Indique como parametro o ID da divisao!");
+  }
+
+ let monitoringReports = 
+    await Monitoring.find({ division: ObjectId(variable) }).populate('weeding');
+
+ return res.status(200).json(monitoringReports);
+})
+
 //@desc
 //@route
 //@access
-const addMonitoringByVariability = asyncHandler(async (req, res) => {
-  const { body, query, user } = req;
+// const addMonitoringByVariability = asyncHandler(async (req, res) => {
+//   const { body, query, user } = req;
 
-  if (!query.divisionId || !query.variable) {
-    res.status(400);
-    throw new Error("Indique 'divisionId' e 'variable'!");
-  }
-  // try {
-  let savedInspection = await inspectDivision(user.id, query, body);
-  return res.status(201).json(savedInspection);
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
-});
+//   if (!query.divisionId || !query.variable) {
+//     res.status(400);
+//     throw new Error("Indique 'divisionId' e 'variable'!");
+//   }
+//   let savedInspection = await inspectDivision(user.id, query, body);
+//   return res.status(201).json(savedInspection);
+// });
 
 //@desc
 //@route
@@ -136,10 +207,11 @@ const getMonitorings = asyncHandler(async (req, res) => {
 });
 
 export {
-  addMonitoringByVariability,
+  // addMonitoringByVariability,
   // getMonitoringByYear,
   getMonitorings,
   addMonitoringReport,
+  getMonitoringReports,
   // updateMonitoring,
   // deleteMonitoring,
 };

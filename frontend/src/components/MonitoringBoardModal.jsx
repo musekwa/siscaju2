@@ -2,25 +2,53 @@ import React, { useEffect} from "react";
 import {
   Backdrop,
   Box,
-  Button,
   Fade,
-  Grid,
   Modal,
   Stack,
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { AddAPhoto, ArrowBack, Forest } from "@mui/icons-material";
 import { BootstrapButton, QuestionButton } from "./Buttons";
 
 
-const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, farmland }) => {
+const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, farmland, lastReportDate }) => {
 
   const navigate = useNavigate();
 
   useEffect(()=>{
 
   }, [navigate])
+
+  const onConfirm = (flag) =>{
+
+    switch(flag) {
+      case 'weeding':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        break;
+      case 'pruning':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        break;
+      case 'diseases':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        break;
+      case 'plagues':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        break;
+      case 'insecticides':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        break;
+      case 'fungicides':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }});
+        break;
+      case 'harvest':
+        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        break;
+      default:
+        console.log(`Indicar a variavel: ${flag} que pretende monitorar`)
+
+    }
+
+  }
 
   return (
     <Modal
@@ -44,7 +72,7 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
             transform: "translate(-50%, -50%)",
             width: "350px",
             borderRadius: "20px",
-            height: "30vh",
+            height: "40vh",
             bgcolor: "background.paper",
             boxShadow: 24,
             // p: 2,
@@ -59,7 +87,7 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
                 // p: 2,
                 // backgroundColor: "#826DA3",
                 width: "100%",
-                height: "70%",
+                height: "75%",
                 borderRadius: "20px",
                 // border: "1px solid"
               }}
@@ -69,24 +97,30 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
                         backgroundColor: "#826DA3", 
                         borderRadius: "20px 20px 0px 0px",
                         width: "100%",
-                        height: "30%"
+                        height: "auto"
+                        // height: "30%"
                     }}
                 >
+
                     <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-                       Ano de plantio: {}
+                       Ano de plantio: {division?.sowingYear}
                     </Typography>
                 </Box>
-                <Typography sx={{  textAlign: 'center', }} variant="h6">{question?.question}{", desde 23/Jan/2022"}{division?.updatedAt}?</Typography>
+                <Box 
+                  sx={{  textAlign: 'center', padding: "25px 10px 0px 10px" }}
+                >
+                <Typography  variant="h6">{question?.question}{", desde "} {lastReportDate}?</Typography>
+                </Box>
             </Box>
             <Box
               sx={{
                 position: "relative",
-                bottom: 3,
+                bottom: 4,
                 left: 0,
                 p: 2,
                 // backgroundColor: "#826DA3",
                 // width: "100%",
-                height: "30%",
+                // height: "35%",
               }}
             > 
                 <Stack direction="row" sx={{ 
@@ -103,9 +137,7 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
                      }}>
                     <QuestionButton 
                       sx={{ color: "#eee" }}
-                      onClick={()=>{
-                        navigate(`/${question?.flag}-add`, { state: { division, flag: question?.flag, farmland }})
-                      }}
+                      onClick={()=>onConfirm(question?.flag)}
                     >
                       Sim
                     </QuestionButton>
@@ -117,8 +149,12 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
                         // border: "1px solid"
                     }}>
                     <QuestionButton 
-                        sx={{ color: "#eee", width: "20px" }}>
-                            Não
+                        sx={{ color: "#eee", width: "20px" }}
+                        onClick={()=>{
+                          setOpenModal(false)
+                        }}
+                    >
+                      Não
                     </QuestionButton>
                 </Box>
                 </Stack>

@@ -22,16 +22,22 @@ const pruningsSchema = mongoose.Schema(
         message: ["Este tipo de poda não é recomendado!"],
       },
     },
-    prunedTrees: Number,
+    totallyPrunedTrees: Number,
+    partiallyPrunedTrees: Number,
     prunedAt: { type: Date },
-    controlledAt: { type: Date, default: Date.now },
+    // controlledAt: { type: Date, default: Date.now },
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
     },
     createdAt: {
       type: Date,
       default: Date.now,
+    },
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
     },
   },
   { timestamps: true }

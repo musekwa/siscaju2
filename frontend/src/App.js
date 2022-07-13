@@ -27,6 +27,7 @@ import { resetUser } from "./features/users/userSlice"
 import { toast } from "react-toastify";
 import PasswordUpdate from "./pages/users/PasswordUpdate";
 import WeedingForm from "./pages/monitorings/WeedingForm";
+import PruningForm from "./pages/monitorings/PruningForm";
 
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
@@ -113,11 +114,8 @@ if (isLoading) {
               element={<MonitoringBoard user={user} />}
             />
 
-            <Route 
-              path="/weeding-add" 
-              element={<WeedingForm user={user}  />}
-              />
-
+            <Route path="/weeding-add" element={<WeedingForm user={user} />} />
+            <Route path="/pruning-add" element={<PruningForm user={user} />} />
           </Route>
 
           {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}

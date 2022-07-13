@@ -64,6 +64,11 @@ const monitoringsSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
+    },
   },
   { timestamps: true }
 );

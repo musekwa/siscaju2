@@ -16,11 +16,16 @@ const weedingsSchema = mongoose.Schema(
     weededAt: Date,
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
     },
     createdAt: {
       type: Date,
       default: Date.now,
+    },
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
     },
   },
   { timestamps: true }

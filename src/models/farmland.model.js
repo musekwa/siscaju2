@@ -126,6 +126,10 @@ const farmlandsSchema = mongoose.Schema(
           seedling: String,
           grafting: [String],
         },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
     farmer: {

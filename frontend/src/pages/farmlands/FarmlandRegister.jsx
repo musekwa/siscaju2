@@ -333,7 +333,7 @@ const FarmlandRegister = () => {
                   onChange={(event) => {
                     setFarmlandData((prevState) => ({
                       ...prevState,
-                      label: event.target.value,
+                      label: event.target.value < 20 ? event.target.value : event.target.value.slice(0,25),
                     }));
                   }}
                 />

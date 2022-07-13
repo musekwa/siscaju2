@@ -14,7 +14,7 @@ import Spinner from "./Spinner";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, division, flag, farmland }) => {
+const RepeatPruningModal = ({ openModal, setOpenModal, setReportData, reportData, division, flag, farmland }) => {
 
   const navigate = useNavigate();
 
@@ -52,13 +52,14 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,        
       })     
+      setOpenModal(false)
       // setReportData(null);
-      // if (flag !== 'pruning') {
-        // navigate('/monitoring-board', { state: { farmland }})
+      if (flag === 'pruning') {
         navigate('/monitoring-board', { state: { farmland }})
-        setOpenModal(false)
-      // }
-      
+      }
+      else {
+        navigate('/monitoring-board', { state: { farmland }})
+      }
       
 
 
@@ -67,40 +68,9 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
 
   }, [monitoring, isError, isSuccess, error, navigate])
 
-  const onReject = ()=>{
-
-    if (flag === 'pruning') {
-      navigate('/monitoring-board', { state: { farmland }})
-      // setReportData({
-      //   totallyPrunedTrees: '',
-      //   partiallyPrunedTrees: '',
-      //   pruningType: '',
-      //   prunedAt: null,
-      // });
-      setOpenModal(false)
-      return ;
-    }
-    else {
-      setOpenModal(false)
-    }
-  }
 
 
-
-  const onSubmit = async (e)=>{
-
-    // if (flag === 'pruning' && isSuccess) {
-    //   navigate(`/${flag}-add`, { state: { division, flag, farmland }})
-    //   setReportData({
-    //     totallyPrunedTrees: '',
-    //     partiallyPrunedTrees: '',
-    //     pruningType: '',
-    //     prunedAt: null,
-    //   });
-    //   // isSuccess = false;
-    //   setOpenModal(false)
-    //   return ;
-    // }
+  const onsubmit = async (e)=>{
 
       const normalizedData = {
         ...reportData,
@@ -213,7 +183,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
           }
 
           {                    
-            flag === "pruning"  &&  !isSuccess &&    
+            flag === "pruning"  &&     
             ( <Box>   
               <Box 
                 sx={{ 
@@ -249,29 +219,6 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                   )
           }
 
-          {                    
-            // flag === "pruning"  &&  isSuccess &&    
-            // ( <Box>   
-            //   <Box 
-            //     sx={{ 
-            //         backgroundColor: "#826DA3", 
-            //         borderRadius: "20px 20px 0px 0px",
-            //         width: "100%",
-            //         height: "auto"
-            //         // height: "80%"
-            //     }}
-            //     >
-            //         <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-            //            Poda
-            //         </Typography>
-            //     </Box>
-            //       <Box sx={{  textAlign: 'center', padding: "25px 10px 0px 10px" }} >
-            //           <Typography  variant="h6">Realizou-se outro tipo de poda de cajueiros nesta divisão?</Typography>
-            //         </Box>
-            //       </Box>
-            //       )
-          }
-
           
                 </Box>
                
@@ -300,7 +247,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                      }}>
                     <QuestionButton 
                       sx={{ color: "#eee" }}
-                      onClick={onSubmit}
+                      onClick={onsubmit}
                     >
                       Sim
                     </QuestionButton>
@@ -313,7 +260,9 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     }}>
                     <QuestionButton 
                         sx={{ color: "#eee", width: "20px" }}
-                        onClick={onReject}
+                        onClick={()=>{
+                            setOpenModal(false)
+                        }}
                     >
                             Não
                     </QuestionButton>
@@ -329,4 +278,4 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
   );
 };
 
-export default ConfirmModal;
+export default RepeatPruningModal;

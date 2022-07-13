@@ -1,22 +1,13 @@
 import React, {  startTransition, useEffect, useState } from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Navbar from "../../components/Navbar";
-import { Autocomplete, Box, Card, CardHeader, CardMedia, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, } from "@mui/material";
+import { Autocomplete, Box, CardMedia, Grid, Paper, Stack, TextField, } from "@mui/material";
 import Footer from "../../components/Footer";
-import { AddCircle } from "@mui/icons-material";
 import {Link, useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-// import SearchModal from "../../components/SearchModal";
-import { toast } from "react-toastify";
-import { useGetFarmersByQuery } from "../../features/api/apiSlice";
 import insecticide from '../../assets/images/insecticide.jpg'
-import fungicide from '../../assets/images/fungicide.jpg'
 import crop from '../../assets/images/crop.jpg'
 import plagues from '../../assets/images/plagues.jpg'
 import diseases from '../../assets/images/diseases.jpg'
@@ -26,6 +17,7 @@ import { styled } from "@mui/system";
 import { months } from "../../app/months";
 import { monitoringQuestions } from "../../app/monitoringQuestions";
 import MonitoringBoardModal from "../../components/MonitoringBoardModal";
+import { useGetMonitoringReportsQuery } from "../../features/api/apiSlice";
 
 
 const UserStack = styled(Stack)(({theme})=>({
@@ -36,6 +28,7 @@ const UserStack = styled(Stack)(({theme})=>({
 }))
 
 const styledTextField = {
+  color: "gray",
   "& label.Mui-focused": {
     color: "rebeccapurple"
   },
@@ -58,14 +51,6 @@ const MonitoringBoard = ({ user }) => {
       ? user?.address?.territory
       : null;
 
-  // const {
-  //   data: farmers,
-  //   isLoading,
-  //   isFetching,
-  //   isError,
-  //   isSuccess,
-  //   error,
-  // } = useGetFarmersByQuery(filterBy);
 
   const [openModal, setOpenModal] = useState(false);
   const [sowingYear, setSowingYear] = useState('');
@@ -75,6 +60,8 @@ const MonitoringBoard = ({ user }) => {
   });
   const [inputSowingYear, setInputSowingYear] = useState("");
   const [division, setDivision] = useState(null);
+  const [report, setReport] = useState(null);
+ 
 
   const handleSowingYear = (event) => {
     setSowingYear(event.target.value);
@@ -86,10 +73,18 @@ const MonitoringBoard = ({ user }) => {
   let farmland; 
   let sowingYears;
 
-  // if (farmland) {
-    farmland = location?.state?.farmland;
-    sowingYears = farmland?.divisions?.map(division=>division?.sowingYear);
-  // }
+
+  farmland = location?.state?.farmland;
+  sowingYears = farmland?.divisions?.map(division=>division?.sowingYear);
+
+  const { 
+    data: monitoringReports, 
+    isSuccess, 
+    isLoading, 
+    isError, 
+    error  
+  } = useGetMonitoringReportsQuery(division);
+
 
   useEffect(()=>{
 
@@ -99,12 +94,21 @@ const MonitoringBoard = ({ user }) => {
       setDivision(newDivision[0])
       // }
     }
+    if (isSuccess && monitoringReports && monitoringReports?.length > 0 && Array.isArray(monitoringReports)) {
+      let sortedReports = monitoringReports.sort(function(a, b){
+        return  b?.year - a?.year;
+      })
+      setReport(monitoringReports[sortedReports?.length-1]);
 
-  }, [sowingYear, farmland])
+    }
+    else {
+      setReport(null)
+    }
 
-  // console.log('sowing year: ', sowingYear)
+  }, [sowingYear, farmland, division, monitoringReports, report, isSuccess, isLoading, isError, error, location, navigate ])
 
-  useEffect(()=>{
+
+  // useEffect(()=>{
 
   // if (!farmland) {
   //   navigate('/monitorings-list')
@@ -142,11 +146,11 @@ const MonitoringBoard = ({ user }) => {
   //   navigate("/monitorings-list");
   //   return ;
   // }
-  }, [farmland])
+  // }, [farmland])
 
-//   if (isLoading || isFetching) {
-//       return <Spinner />
-//   }
+  if (isLoading) {
+      return <Spinner />
+  }
 
 //   const onAddMonitoring = (farmlandId) => {
 //     let farmer = farmers.find((farmer) => farmer._id === farmerId);
@@ -154,6 +158,21 @@ const MonitoringBoard = ({ user }) => {
 //       navigate("/farmlands", { state: { farmer: farmer } });
 //     });
 //   };
+
+if (!farmland) {
+  navigate('/monitorings-list')
+  return ;
+}
+
+const normalizeDate = (date) => {
+  return (
+    new Date(date).getDate() +
+    "/" +
+    months[new Date(date).getMonth()] +
+    "/" +
+    new Date(date).getFullYear()
+  );
+};
 
   return (
     <Box>
@@ -214,21 +233,11 @@ const MonitoringBoard = ({ user }) => {
         margin: 'auto',
         maxWidth: 500,
         flexGrow: 1,
-        marginTop: "20px",
+        marginTop: "10px",
         color: "gray"  }} 
        >
  
         <Stack direction="row" sx={{ padding: "10px 10px 10px 10px"}} >
-          <Box sx={{ maxWidth: "49%"}}>
-          <Typography 
-              variant="body1" 
-              sx={{ 
-                textAlign: "left", 
-              }}
-          >
-            Ano de plantio da divisão
-          </Typography>
-          </Box>
             <Autocomplete
               fullWidth
               required
@@ -237,7 +246,7 @@ const MonitoringBoard = ({ user }) => {
               id="combo-box-demo-2"
               value={sowingYear}
               options={sowingYears}
-              getOptionLabel={(option)=>option ? JSON.stringify(option) : 'Nenhum'}
+              getOptionLabel={(option)=>option ? JSON.stringify(option) : 'Seleccionar o ano de plantio'}
               onChange={(event, newSowingYear) => {
                 setSowingYear(newSowingYear);
               }}
@@ -251,11 +260,12 @@ const MonitoringBoard = ({ user }) => {
 
                 return (
                   <TextField
-                    sx={styledTextField}
+                    sx={styledTextField }
                     name="sowingYear"
                     {...params}
                     inputProps={inputProps}
                     required
+                   
                     label="Ano de plantio"
                   />
               )}}
@@ -271,7 +281,14 @@ const MonitoringBoard = ({ user }) => {
   
   <Box sx={{ position: "relative", bottom: "80px", marginTop: "100px", color: "gray" }}>
       <Typography variant="body2" sx={{margin: "2px 2px 5px 2px",  }}>
-        Última monitoria: 02/01/2021 por Evariste
+        { report 
+        ? 
+        <>
+          <span style={{ display: "block" }}>Última monitoria: {normalizeDate(report?.updatedAt)}</span> 
+          <span style={{ display: "block" }}>(por {report?.user?.fullname})</span>
+        </>
+        : `Esta será a primeira monitoria desta divisão!`} 
+        {/* Última monitoria: 02/01/2021 por Evariste */}
       </Typography>
         <Grid container direction="column" justifyContent="center" alignItems="center" >
         <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
@@ -474,6 +491,7 @@ const MonitoringBoard = ({ user }) => {
           question={question}
           division={division}
           farmland={farmland}
+          lastReportDate={report ? normalizeDate(report?.updatedAt) : normalizeDate(division?.createdAt)}
         />
       <Footer />
       </Box>

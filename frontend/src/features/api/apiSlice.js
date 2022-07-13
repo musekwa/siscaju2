@@ -13,7 +13,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "Farmer", "Farmland", "Division", "Monitoring", 'Weeding'],
+  tagTypes: ["User", "Farmer", "Farmland", "Division", "Monitoring"],
   endpoints: (build) => ({
     addFarmer: build.mutation({
       query: (body) => {
@@ -170,7 +170,7 @@ export const apiSlice = createApi({
     getPerformance: build.query({
       query: (currentUser) =>
         `/performances?userId=${currentUser?._id}&district=${currentUser?.address?.district}&province=${currentUser?.address?.province}`,
-      providesTags: ["Farmer", "Farmland", "Division", "Monitoring"],
+      providesTags: ["Farmer", "Farmland", "Division", "Weeding", "Monitoring"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -191,14 +191,34 @@ export const apiSlice = createApi({
 
     addMonitoringReport: build.mutation({
       query: (body) => {
-        
         return {
           url: `/monitorings/${body.flag}`,
           method: "POST",
           body: body,
         };
       },
-      invalidatesTags: ["Weeding, Monitoring"],
+      invalidatesTags: ["Monitoring"],
+      async onQueryStarted(
+        arg,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {},
+      async onCacheEntryAdded(
+        arg,
+        {
+          dispatch,
+          getState,
+          requestId,
+          extra,
+          getCacheEntry,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        }
+      ) {},
+    }),
+
+    getMonitoringReports: build.query({
+      query: (division) => `/monitorings/${division?._id}`,
+      providesTags: ["Monitoring" ],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -235,6 +255,7 @@ export const {
     useGetPerformanceQuery,
 
     // monitoring
-    useAddMonitoringReportMutation
+    useAddMonitoringReportMutation,
+    useGetMonitoringReportsQuery,
 
 } = apiSlice;
