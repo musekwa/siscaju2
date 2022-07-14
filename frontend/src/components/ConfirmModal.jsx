@@ -89,19 +89,6 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
 
   const onSubmit = async (e)=>{
 
-    // if (flag === 'pruning' && isSuccess) {
-    //   navigate(`/${flag}-add`, { state: { division, flag, farmland }})
-    //   setReportData({
-    //     totallyPrunedTrees: '',
-    //     partiallyPrunedTrees: '',
-    //     pruningType: '',
-    //     prunedAt: null,
-    //   });
-    //   // isSuccess = false;
-    //   setOpenModal(false)
-    //   return ;
-    // }
-
       const normalizedData = {
         ...reportData,
         division,
@@ -250,27 +237,52 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
           }
 
           {                    
-            // flag === "pruning"  &&  isSuccess &&    
-            // ( <Box>   
-            //   <Box 
-            //     sx={{ 
-            //         backgroundColor: "#826DA3", 
-            //         borderRadius: "20px 20px 0px 0px",
-            //         width: "100%",
-            //         height: "auto"
-            //         // height: "80%"
-            //     }}
-            //     >
-            //         <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-            //            Poda
-            //         </Typography>
-            //     </Box>
-            //       <Box sx={{  textAlign: 'center', padding: "25px 10px 0px 10px" }} >
-            //           <Typography  variant="h6">Realizou-se outro tipo de poda de cajueiros nesta divisão?</Typography>
-            //         </Box>
-            //       </Box>
-            //       )
+            flag === "disease"  &&  !isSuccess &&    
+            ( <Box>   
+              <Box 
+                sx={{ 
+                    backgroundColor: "#826DA3", 
+                    borderRadius: "20px 20px 0px 0px",
+                    width: "100%",
+                    height: "auto"
+                    // height: "80%"
+                }}
+                >
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                       {reportData?.diseaseName}
+                    </Typography>
+                </Box>
+                  <Box sx={{ p: "5px 15px 5px 15px",  }}>
+                      <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Severidade muito alta:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.higherSeverity || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Severidade alta:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.highSeverity || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Severidade moderada:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.averageSeverity || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Severidade baixa:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.lowSeverity || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Sem infecção:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>
+                            {division?.trees - 
+                          (Number(reportData?.higherSeverity) + Number(reportData?.highSeverity) + Number(reportData?.averageSeverity) + Number(reportData?.lowSeverity))}</Typography>
+                      </Stack>
+                      <Stack sx={{ p: "5px 0px 0px 0px",  }}>
+                          <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
+                      </Stack>
+                    </Box>
+                  </Box>
+                  )
           }
+
 
           
                 </Box>

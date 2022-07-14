@@ -217,7 +217,14 @@ export const apiSlice = createApi({
     }),
 
     getMonitoringReports: build.query({
-      query: (division) => `/monitorings/${division?._id}`,
+      query: (division) =>{
+
+      const id = division ? division?._id : "void";
+      return {
+       url: `/monitorings/${id}`,
+       method: 'GET'
+      }
+    },
       providesTags: ["Monitoring" ],
       async onQueryStarted(
         arg,

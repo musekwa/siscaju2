@@ -23,25 +23,25 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
 
     switch(flag) {
       case 'weeding':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }})
         break;
       case 'pruning':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }})
         break;
-      case 'diseases':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+      case 'disease':
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }})
         break;
-      case 'plagues':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+      case 'plague':
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }})
         break;
-      case 'insecticides':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+      case 'insecticide':
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }})
         break;
-      case 'fungicides':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }});
+      case 'fungicide':
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }});
         break;
       case 'harvest':
-        navigate(`/${flag}-add`, { state: { division, flag: flag, farmland }})
+        navigate(`/${flag}-add`, { state: { division, flag, farmland }})
         break;
       default:
         console.log(`Indicar a variavel: ${flag} que pretende monitorar`)

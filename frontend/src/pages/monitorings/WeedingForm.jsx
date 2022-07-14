@@ -208,12 +208,13 @@ function WeedingForm({ user }) {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        height: "80vh",
-        marginTop: "10px",
+        marginTop: "60px",
       }}
     >
 
-      <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+      <Box 
+        sx={{ position: "relative", bottom: "80px", marginTop: "100px"  }}
+        component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <Box sx={{ display: "block", width: "100%", color: "gray" }}>
             <Typography variant="body1">
               {`Nesta divisão, há ${division?.trees} cajueiros de ${new Date().getFullYear() - division?.sowingYear} anos de idade.`}

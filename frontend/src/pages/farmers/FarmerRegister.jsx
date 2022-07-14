@@ -46,7 +46,7 @@ function FarmerRegister() {
   let [farmerData, setFarmerData] = useState({
     fullname: '',
     gender: '',
-    birthDate: "",
+    birthDate: null,
     birthPlace : {
       province: "",
       district: "",

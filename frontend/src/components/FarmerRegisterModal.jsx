@@ -34,9 +34,10 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "300px",
+            width: "350px",
             height: "50vh",
             bgcolor: "background.paper",
+            borderRadius: "20px",
             boxShadow: 24,
             p: 2,
           }}
@@ -49,7 +50,8 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
                 left: 0,
                 backgroundColor: "#826DA3",
                 width: "100%",
-                height: "70px",
+                // height: "70px",
+                borderRadius: "20px 20px 0px 0px",
               }}
             >
               <Typography

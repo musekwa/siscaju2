@@ -9,15 +9,17 @@ import {Link, useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import insecticide from '../../assets/images/insecticide.jpg'
 import crop from '../../assets/images/crop.jpg'
-import plagues from '../../assets/images/plagues.jpg'
-import diseases from '../../assets/images/diseases.jpg'
+import plague from '../../assets/images/plague.jpg'
+import disease from '../../assets/images/disease.jpg'
 import weeding from '../../assets/images/weeding.jpg'
 import pruning from '../../assets/images/pruning.jpg'
 import { styled } from "@mui/system";
 import { months } from "../../app/months";
 import { monitoringQuestions } from "../../app/monitoringQuestions";
+import { monitoringVariables } from "../../app/monitoringVariables";
 import MonitoringBoardModal from "../../components/MonitoringBoardModal";
 import { useGetMonitoringReportsQuery } from "../../features/api/apiSlice";
+
 
 
 const UserStack = styled(Stack)(({theme})=>({
@@ -77,13 +79,15 @@ const MonitoringBoard = ({ user }) => {
   farmland = location?.state?.farmland;
   sowingYears = farmland?.divisions?.map(division=>division?.sowingYear);
 
+  
+
   const { 
     data: monitoringReports, 
     isSuccess, 
     isLoading, 
     isError, 
     error  
-  } = useGetMonitoringReportsQuery(division);
+  } = useGetMonitoringReportsQuery(division || "");
 
 
   useEffect(()=>{
@@ -108,56 +112,29 @@ const MonitoringBoard = ({ user }) => {
   }, [sowingYear, farmland, division, monitoringReports, report, isSuccess, isLoading, isError, error, location, navigate ])
 
 
-  // useEffect(()=>{
 
-  // if (!farmland) {
-  //   navigate('/monitorings-list')
-  // }
-  //   if (farmers && farmers.length === 0) {
-  //     toast.warning(
-  //       "Primeiro, regista-se produtores (proprietários) de pomares!",
-  //       {
-  //         autoClose: 5000,
-  //         position: toast.POSITION.TOP_RIGHT,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //       }
-  //     );
-  //   navigate("/");
-  //   return ;
-  // }
-  // if (!farmland) {
-   
-  //     toast.warning(
-  //       "Seleccionar pomar que pretende monitorar!",
-  //       {
-  //         autoClose: 5000,
-  //         position: toast.POSITION.TOP_RIGHT,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //       }
-  //     );
-  //   navigate("/monitorings-list");
-  //   return ;
-  // }
-  // }, [farmland])
+  // get all the last modified monitoring reports
+  let lastMonitorings = {};
+
+  if (report) {
+
+    for (let property in report) { // loop over the report 
+      let value = report[property];
+      if (((monitoringVariables.indexOf(property)) >= 0) && Array.isArray(value) && (value?.length > 0)) {
+
+        let lastModified = value?.sort((a,b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))[value.length - 1]
+        
+        lastMonitorings[`${property}`] = lastModified;
+
+      }
+    }
+    
+  }
 
   if (isLoading) {
       return <Spinner />
   }
 
-//   const onAddMonitoring = (farmlandId) => {
-//     let farmer = farmers.find((farmer) => farmer._id === farmerId);
-//     startTransition(() => {
-//       navigate("/farmlands", { state: { farmer: farmer } });
-//     });
-//   };
 
 if (!farmland) {
   navigate('/monitorings-list')
@@ -167,9 +144,9 @@ if (!farmland) {
 const normalizeDate = (date) => {
   return (
     new Date(date).getDate() +
-    "/" +
+    "-" +
     months[new Date(date).getMonth()] +
-    "/" +
+    "-" +
     new Date(date).getFullYear()
   );
 };
@@ -291,7 +268,7 @@ const normalizeDate = (date) => {
         {/* Última monitoria: 02/01/2021 por Evariste */}
       </Typography>
         <Grid container direction="column" justifyContent="center" alignItems="center" >
-        <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
+        <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
               {/* <Link to='/weeding-add'> */}
               <Box 
@@ -310,10 +287,11 @@ const normalizeDate = (date) => {
                 <CardMedia
                   component="img"
                   width= "150px"
-                  height="125px"
+                  height="105px"
                   image={weeding}
                   alt="weeding"
-              />
+                />
+                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.weeding ? normalizeDate(lastMonitorings?.weeding?.updatedAt) : `Ainda não monitorada`}</Typography>
               </Box>
              {/* </Link> */}
           </Paper>
@@ -336,16 +314,17 @@ const normalizeDate = (date) => {
               <CardMedia
                 component="img"
                 width= "150px"
-                height="125px"
+                height="105px"
                 image={pruning}
                 alt="pruning"
               />
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.pruning ? normalizeDate(lastMonitorings?.pruning?.updatedAt) : `Ainda não monitorada`}</Typography>
               </Box>
               {/* </Link> */}
           </Paper>
         </Stack>
 
-        <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
+        <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
               {/* <Link to='/diseases-add'> */}
             <Box 
@@ -354,8 +333,8 @@ const normalizeDate = (date) => {
                 onClick={()=>{
                   setQuestion(prevState=>({
                       ...prevState,
-                      question: monitoringQuestions.diseases,
-                      flag: 'diseases'
+                      question: monitoringQuestions?.disease,
+                      flag: 'disease'
                     }))
                   setOpenModal(true)
                 }}
@@ -364,10 +343,11 @@ const normalizeDate = (date) => {
               <CardMedia
                 component="img"
                 width= "150px"
-                height="125px"
-                image={diseases}
-                alt="diseases"
+                height="105px"
+                image={disease}
+                alt="disease"
                 />
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.disease ? normalizeDate(lastMonitorings?.disease?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
              {/* </Link> */}
           </Paper>
@@ -379,8 +359,8 @@ const normalizeDate = (date) => {
                 onClick={()=>{
                   setQuestion(prevState=>({
                     ...prevState,
-                    question: monitoringQuestions.plagues,
-                    flag: 'plagues'
+                    question: monitoringQuestions.plague,
+                    flag: 'plague'
                   }))
                   setOpenModal(true)
                 }}
@@ -389,16 +369,17 @@ const normalizeDate = (date) => {
                 <CardMedia
                   component="img"
                   width= "150px"
-                  height="125px"
-                  image={plagues}
+                  height="105px"
+                  image={plague}
                   alt="plague"
                 />
+                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.plague ? normalizeDate(lastMonitorings?.plague?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
             {/* </Link> */}
           </Paper>
         </Stack>
 
-        <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
+        <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
             {/* <Link to='/insecticide-add'> */}
             <Box 
@@ -407,8 +388,8 @@ const normalizeDate = (date) => {
                 onClick={()=>{
                   setQuestion(prevState=>({
                     ...prevState,
-                    question: monitoringQuestions.insecticides,
-                    flag: 'insecticides'
+                    question: monitoringQuestions.insecticide,
+                    flag: 'insecticide'
                   }))
                   setOpenModal(true)
                 }}
@@ -418,10 +399,11 @@ const normalizeDate = (date) => {
               <CardMedia
                 component="img"
                 width="150px"
-                height="125px"
+                height="105px"
                 image={insecticide}
                 alt="insecticide"
                 />
+                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.insecticide ? normalizeDate(lastMonitorings?.insecticide?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
           {/* </Link> */}
           </Paper>
@@ -433,8 +415,8 @@ const normalizeDate = (date) => {
                 onClick={()=>{
                   setQuestion(prevState=>({
                     ...prevState,
-                    question: monitoringQuestions.fungicides,
-                    flag: 'fungicides'
+                    question: monitoringQuestions.fungicide,
+                    flag: 'fungicide'
                   }))
                   setOpenModal(true)
                 }}
@@ -444,15 +426,16 @@ const normalizeDate = (date) => {
               <CardMedia
               component="img"
               width= "150px"
-              height="125px"
+              height="105px"
               image={insecticide}
               alt="fungicide"
               />
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.fungicide ? normalizeDate(lastMonitorings?.fungicide?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
             {/* </Link> */}
           </Paper>
         </Stack>
-        <Stack direction="row" spacing={3} sx={{ margin: "5px 5px 10px 5px"}}>
+        <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
               {/* <Link to='/crop-add'> */}
             <Box 
@@ -472,10 +455,11 @@ const normalizeDate = (date) => {
               <CardMedia
                 component="img"
                 width= "150px"
-                height="125px"
+                height="105px"
                 image={crop}
                 alt="crop"
                 />
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.harvest ? normalizeDate(lastMonitorings?.harvest?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
             {/* </Link> */}
           </Paper>
@@ -488,7 +472,7 @@ const normalizeDate = (date) => {
         <MonitoringBoardModal
           openModal={openModal}
           setOpenModal={setOpenModal}
-          question={question}
+          question={question} // question and flag
           division={division}
           farmland={farmland}
           lastReportDate={report ? normalizeDate(report?.updatedAt) : normalizeDate(division?.createdAt)}

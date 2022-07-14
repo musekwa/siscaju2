@@ -43,15 +43,26 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: "300px",
+            width: "350px",
             height: "50vh",
             bgcolor: 'background.paper',
+            borderRadius: "20px",
             boxShadow: 24,
             p: 2,
           }}>
             
               { (farmer && farmland)  &&
-              <Box sx={{position: "absolute", top: 0, left: 0, backgroundColor: "#826DA3",  width: "100%", height: "70px", }}>
+              <Box 
+                sx={{
+                  position: "absolute", 
+                  top: 0, 
+                  left: 0, 
+                  backgroundColor: "#826DA3",  
+                  width: "100%", 
+                  // height: "70px", 
+                  borderRadius: "20px 20px 0px 0px",
+                  }}
+                >
                 <Typography 
                   sx={{ textAlign: "center", width: "250px", ml: 3, mt: 1,  }}
                   id="keep-mounted-modal-title" 
@@ -65,7 +76,17 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
 
 
               { (farmer && farmlandDivision) &&
-              <Box sx={{position: "absolute", top: 0, left: 0, backgroundColor: "#826DA3",  width: "100%", height: "70px", }}>
+              <Box 
+                sx={{
+                  position: "absolute", 
+                  top: 0, 
+                  left: 0, 
+                  backgroundColor: "#826DA3",  
+                  width: "100%", 
+                  // height: "70px", 
+                  borderRadius: "20px 20px 0px 0px",
+                  }}
+                >
                 <Typography 
                   sx={{ textAlign: "center", width: "250px", ml: 3, mt: 1, }}
                   id="keep-mounted-modal-title" 

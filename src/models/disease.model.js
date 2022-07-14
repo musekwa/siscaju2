@@ -11,20 +11,19 @@ const diseasesSchema = mongoose.Schema(
       },
     },
     name: { type: String, trim: true },
-    trees: {
-      higherSeverity: Number,
-      highSeverity: Number,
-      averageSeverity: Number,
-      lowSeverity: Number,
-      noSeverity: Number,
-    },
-    controlledAt: {
-      type: Date,
-      default: Date.now,
-    },
+    higherSeverity: Number,
+    highSeverity: Number,
+    averageSeverity: Number,
+    lowSeverity: Number,
+    detectedAt: Date,
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
+    },
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
     },
     createdAt: {
       type: Date,

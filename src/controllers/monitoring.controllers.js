@@ -11,6 +11,7 @@ import asyncHandler from "express-async-handler";
 import Monitoring from '../models/monitoring.model.js';
 import Weeding from "../models/weeding.model.js";
 import Pruning from "../models/pruning.model.js";
+import Disease from "../models/disease.model.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -96,6 +97,50 @@ const addPruningReport = async (data)=>{
 };
 
 
+// add disease
+const addDiseaseReport = async (data)=>{
+  const newDiseaseReport = new Disease({
+    ...data,
+    division: ObjectId(data?.division._id),
+  });
+
+  let foundMonitoring = await Monitoring.findOne({
+    year: new Date().getFullYear(),
+    division: newDiseaseReport.division,
+  });
+  
+  if (!foundMonitoring) {
+
+    await newDiseaseReport.save();
+
+    const newMonitoringReport = {
+      disease: new Array(newDiseaseReport),
+      division: newDiseaseReport.division,
+      user: {
+        fullname: data?.user?.fullname,
+        email: data?.user?.email,
+        phone: data?.user?.phone,
+      },
+    };
+
+    return await new Monitoring(newMonitoringReport).save();
+  }
+  else {
+    if (!foundMonitoring?.disease?.length === 0) {
+      await newDiseaseReport.save();
+      return await new Monitoring({
+        ...foundMonitoring,
+        disease: new Array(newDiseaseReport),
+      }).save();
+    }
+    else {
+      foundMonitoring?.disease?.push(newDiseaseReport);
+      await newDiseaseReport.save();
+      return await foundMonitoring.save();
+    }
+}
+};
+
 
 // ------------------------- end services ---------------------------------
 
@@ -119,13 +164,14 @@ const addMonitoringReport = asyncHandler(async (req, res) => {
     case "pruning":
       result = await addPruningReport(body);
       break;
-    case "diseases":
+    case "disease":
+      result = await addDiseaseReport(body);
       break;
-    case "plagues":
+    case "plague":
       break;
-    case "insecticides":
+    case "insecticide":
       break;
-    case "fungicides":
+    case "fungicide":
       break;
     case "harvest":
       break;
@@ -149,9 +195,15 @@ const getMonitoringReports = asyncHandler(async (req, res)=>{
     res.status(400);
     throw new Error("Indique como parametro o ID da divisao!");
   }
+  else if (variable === 'void') {
+    return res.status(200).json({});
+  }
 
  let monitoringReports = 
-    await Monitoring.find({ division: ObjectId(variable) }).populate('weeding');
+    await Monitoring.find({ division: ObjectId(variable) })
+                              .populate('weeding')
+                              .populate('pruning')
+                              .populate('disease');
 
  return res.status(200).json(monitoringReports);
 })
