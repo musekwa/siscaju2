@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
+var Schema = mongoose.Schema;
+
 
 const harvestsSchema = mongoose.Schema(
   {
@@ -10,14 +12,21 @@ const harvestsSchema = mongoose.Schema(
         return new Date().getFullYear();
       },
     },
-    productiveTrees: Number,
-    appleQuantity: Number,
-    nutQuantity: Number,
-    harvestedAt: Date,
-    controlledAt: { type: Date, default: Date.now },
+    production: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Production",
+      },
+    ],
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
+    },
+
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
     },
     createdAt: {
       type: Date,

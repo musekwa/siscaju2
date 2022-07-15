@@ -11,11 +11,12 @@ export const applicationNumbers = [
     "primeira", 
     "segunda", 
     "terceira", 
-    "quarta", 
+    "intercalar"
 ];
 
 export const insecticideDoses = [
-    "50 g/l",
-    "125 g/l",
-    "222 g/l"
+    "50 g/L",
+    "125 g/L",
+    "222 g/L",
+    "outro"
 ]

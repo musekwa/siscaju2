@@ -41,13 +41,13 @@ function InsecticideForm({ user }) {
     insecticideName: '',
     treatedTrees: '',
     applicationNumber: '',
-    insecticideDose: '',
+    dose: '',
     appliedAt: null,
   });
 
   const [openModal, setOpenModal] = useState(false);
   const [inputInsecticideName, setInputInsecticideName] = useState('');
-  const [inputInsecticideDose, setInputInsecticideDose] = useState('');
+  const [inputDose, setInputDose] = useState('');
   const [inputApplicationNumber, setInputApplicationNumber] = useState('');
  
   const dispatch = useDispatch()
@@ -103,7 +103,7 @@ function InsecticideForm({ user }) {
       return;
     }
 
-    if (!(insecticideDoses.indexOf(reportData?.insecticideDose) >= 0))  {
+    if (!(insecticideDoses.indexOf(reportData?.dose) >= 0))  {
       toast.error("Seleccionar a dose da aplicação", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -139,7 +139,7 @@ function InsecticideForm({ user }) {
       <Navbar
         arrowBack={"block"}
         goBack={"/monitorings-list"}
-        pageDescription={"Doença detectada"}
+        pageDescription={"Insecticida aplicada"}
         user={user}
       />
     <Box
@@ -262,7 +262,7 @@ function InsecticideForm({ user }) {
             required
             label="Cajueiros tratados"
             id="fullWidth treatedTrees"
-            name="higherAttack"
+            name="treatedTrees"
             type="number"
             value={reportData?.treatedTrees || ''}
             placeholder="Cajueiros tratados"
@@ -284,18 +284,18 @@ function InsecticideForm({ user }) {
               size="small"
               disablePortal
               id="combo-box-demo-2"
-              value={reportData?.insecticideDose || ''}
+              value={reportData?.dose || ''}
               options={insecticideDoses}
               getOptionLabel={(option)=>option ? option : 'Seleccionar a dose aplicada'}
-              onChange={(event, newInsecticideDose) => {
+              onChange={(event, newDose) => {
                 setReportData(prevState=>({
                     ...reportData,
-                    insecticideDose: newInsecticideDose,
+                    dose: newDose,
                 }));
               }}
-              inputValue={inputInsecticideDose}
-              onInputChange={(event, inputInsecticideDose) => {
-                setInputInsecticideDose(inputInsecticideDose);
+              inputValue={inputDose}
+              onInputChange={(event, inputDose) => {
+                setInputDose(inputDose);
               }}
               renderInput={(params) => {
                 const inputProps = params.inputProps;
@@ -304,7 +304,7 @@ function InsecticideForm({ user }) {
                 return (
                   <TextField
                     sx={styledTextField }
-                    name="insecticideDose"
+                    name="dose"
                     {...params}
                     inputProps={inputProps}
                     required

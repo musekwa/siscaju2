@@ -360,7 +360,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                       </Stack>
                       <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
                           <Typography sx={{ width: "80%", textAlign: "left"}}>Dose aplicada:</Typography>
-                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.insecticideDose || 0}</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.dose || 0}</Typography>
                       </Stack>
                       <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
                           <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros não tratados:</Typography>
@@ -374,6 +374,94 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                   </Box>
                   )
           }
+
+
+
+
+
+          {                    
+            flag === "fungicide"  &&  !isSuccess &&    
+            ( <Box>   
+              <Box 
+                sx={{ 
+                    backgroundColor: "#826DA3", 
+                    borderRadius: "20px 20px 0px 0px",
+                    width: "100%",
+                    height: "auto"
+                    // height: "80%"
+                }}
+                >
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                       {reportData?.fungicideName}
+                    </Typography>
+                </Box>
+                  <Box sx={{ p: "5px 15px 5px 15px",  }}>
+                      <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros tratados:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.treatedTrees || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Número de aplicação:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.applicationNumber || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Dose aplicada:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.dose || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros não tratados:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>
+                            {division?.trees - (Number(reportData?.treatedTrees) )}</Typography>
+                      </Stack>
+                      <Stack sx={{ p: "5px 0px 0px 0px",  }}>
+                          <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
+                      </Stack>
+                    </Box>
+                  </Box>
+                  )
+          }
+
+
+          {                    
+            flag === "harvest"  &&  !isSuccess &&    
+            ( <Box>   
+              <Box 
+                sx={{ 
+                    backgroundColor: "#826DA3", 
+                    borderRadius: "20px 20px 0px 0px",
+                    width: "100%",
+                    height: "auto"
+                    // height: "80%"
+                }}
+                >
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                      Campanha {(new Date().getMonth()+1) < 3 ? (new Date().getFullYear() - 1) : (new Date().getFullYear())} 
+                       {' '}-{' '}{(new Date().getMonth()+1) < 3 ? (new Date().getFullYear()) : (new Date().getFullYear() + 1)}
+                    </Typography>
+                </Box>
+                  <Box sx={{ p: "5px 15px 5px 15px",  }}>
+                      <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros produtivos:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.productiveTrees || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Quilogramas de pêra:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.appleQuantity || 0} Kgs</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Quilogramas de castanha:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.nutQuantity || 0} Kgs</Typography>
+                      </Stack>
+                      <Stack sx={{ p: "5px 0px 0px 0px",  }}>
+                          <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
+                      </Stack>
+                    </Box>
+                  </Box>
+                  )
+          }
+
+
+
 
                 </Box>
                

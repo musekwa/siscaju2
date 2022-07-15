@@ -13,7 +13,11 @@ import Weeding from "../models/weeding.model.js";
 import Pruning from "../models/pruning.model.js";
 import Disease from "../models/disease.model.js";
 import Plague from "../models/plague.model.js";
-import { Insecticide, Application } from "../models/insecticide.model.js";
+import Insecticide from "../models/insecticide.model.js";
+import Fungicide from "../models/fungicide.model.js"
+import Pesticide from "../models/pesticide.model.js";
+import Harvest from '../models/harvest.model.js'
+import Production from '../models/production.model.js'
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -213,20 +217,25 @@ const addInsecticideReport = async (data) => {
     email: data?.user?.email,
     phone: data?.user?.phone,
   };
-  const { treatedTrees, applicationNumber, insecticideDose, appliedAt } = data;
+  const { treatedTrees, applicationNumber, dose, appliedAt } = data;
 
-  const newApplication = new Application({
+  const newPesticide = new Pesticide({
     treatedTrees,
     applicationNumber,
-    insecticideDose,
+    dose,
+    user,
     appliedAt,
   });
 
+  // await newPesticide.save();
+
   const newInsecticideReport = Insecticide({
     insecticideName: data?.insecticideName,
-    user,
     division: ObjectId(data?.division._id),
+    user,
   });
+
+
 
   // find the monitoring reports
   // and populate all the insecticide report for this year and division
@@ -237,7 +246,7 @@ const addInsecticideReport = async (data) => {
 
   // if no monitoring associated to this division in the current year is found 
   if (!foundMonitoring) {
-    newInsecticideReport?.application.push(newApplication);
+    newInsecticideReport?.application.push(newPesticide);
     await newInsecticideReport.save();
 
     const newMonitoringReport = {
@@ -256,7 +265,7 @@ const addInsecticideReport = async (data) => {
       foundMonitoring?.insecticide &&
       foundMonitoring?.insecticide?.length === 0
     ) {
-      newInsecticideReport?.application.push(newApplication);
+      newInsecticideReport?.application.push(newPesticide);
       await newInsecticideReport.save();
 
       foundMonitoring.user = user;
@@ -277,7 +286,8 @@ const addInsecticideReport = async (data) => {
           let foundInsecticideReport = await Insecticide.findOne({
             insecticideName: `${newInsecticideReport.insecticideName}`,
           });
-          foundInsecticideReport?.application.push(newApplication);
+          foundInsecticideReport?.application.push(newPesticide);
+          foundInsecticideReport.user = user;
           await foundInsecticideReport.save();
           foundMonitoring.user = user;    // update the user 
           return await foundMonitoring.save();
@@ -286,7 +296,7 @@ const addInsecticideReport = async (data) => {
           // if the insecticide names are different
           // then, create an new insecticide report with this new insecticide name
 
-          newInsecticideReport?.application.push(newApplication);
+          newInsecticideReport?.application.push(newPesticide);
           await newInsecticideReport.save();
           foundMonitoring?.insecticide.push(newInsecticideReport);
           foundMonitoring.user = user; // update the user
@@ -296,7 +306,221 @@ const addInsecticideReport = async (data) => {
       }
     }
   }
+  
 };
+
+
+
+// add fungicide
+const addFungicideReport = async (data) => {
+  const user = {
+    fullname: data?.user?.fullname,
+    email: data?.user?.email,
+    phone: data?.user?.phone,
+  };
+  const { treatedTrees, applicationNumber, dose, appliedAt } = data;
+
+  const newPesticide = new Pesticide({
+    treatedTrees,
+    applicationNumber,
+    dose,
+    user,
+    appliedAt,
+  });
+
+  // await newPesticide.save();
+
+  const newFungicideReport = Fungicide({
+    fungicideName: data?.fungicideName,
+    division: ObjectId(data?.division._id),
+    user,
+  });
+
+
+  // find the monitoring reports
+  // and populate all the insecticide report for this year and division
+  let foundMonitoring = await Monitoring.findOne({
+    year: new Date().getFullYear(),
+    division: newFungicideReport.division,
+  }).populate("fungicide");
+
+  // if no monitoring associated to this division in the current year is found 
+  if (!foundMonitoring) {
+    newFungicideReport?.application.push(newPesticide);
+    await newFungicideReport.save();
+
+    const newMonitoringReport = {
+      fungicide: new Array(newFungicideReport),
+      division: newFungicideReport.division,
+      user,
+    };
+
+    return await new Monitoring(newMonitoringReport).save();
+
+  } else {  // in case any related monitoring associated to this division in the current year is found
+
+    // check if there is any insecticide-related report registered so far
+    // if no insecticide-related report is found
+    if (
+      foundMonitoring?.fungicide &&
+      foundMonitoring?.fungicide?.length === 0
+    ) {
+      newFungicideReport?.application.push(newPesticide);
+      await newFungicideReport.save();
+
+      foundMonitoring.user = user;
+      foundMonitoring.fungicide = new Array(newFungicideReport);
+
+      return await foundMonitoring.save();
+    } else if ( // if an insecticide-relared report is found
+      foundMonitoring?.fungicide &&
+      foundMonitoring?.fungicide?.length > 0
+    ) {
+      let length = foundMonitoring?.fungicide.length;
+      let count = 0;
+      for (let index = 0; index < length; index++) {  
+        // check if there already exists a report with this same insecticide name
+        // if yes, append the new insecticide report of the same name to it.
+
+        if (
+          foundMonitoring?.fungicide[index].fungicideName === newFungicideReport.fungicideName  ) {
+          let foundFungicideReport = await Fungicide.findOne({
+            fungicideName: `${newFungicideReport.fungicideName}`,
+          });
+          foundFungicideReport?.application.push(newPesticide);
+          foundFungicideReport.user = user;
+          await foundFungicideReport.save();
+          foundMonitoring.user = user; // update the user
+          return await foundMonitoring.save();
+        } else if (count === length - 1) {
+          // if the insecticide names are different
+          // then, create an new insecticide report with this new insecticide name
+
+          newFungicideReport?.application.push(newPesticide);
+          await newFungicideReport.save();
+          foundMonitoring?.fungicide.push(newFungicideReport);
+          foundMonitoring.user = user; // update the user
+          return await foundMonitoring.save();
+        }
+        count++;
+      }
+    }
+  }
+};
+
+
+
+
+// add harvest
+const addHarvestReport = async (data) => {
+
+  const user = {
+    fullname: data?.user?.fullname,
+    email: data?.user?.email,
+    phone: data?.user?.phone,
+  };
+  const { 
+    productiveTrees, 
+    appleQuantity, 
+    nutQuantity, 
+    harvestedAt } = data;
+
+  const newProduction = new Production({
+    productiveTrees,
+    appleQuantity,
+    nutQuantity,
+    harvestedAt,
+    user,
+    year:
+      ((new Date().getMonth() + 1) < 3) // check if the harvest campain is not of the previous year
+        ? (new Date().getFullYear() - 1) // till march of following year, it's still of the previous campain
+        : new Date().getFullYear(),
+  });
+
+  // await newPesticide.save();
+
+  const newHarvestReport = Harvest({
+    division: ObjectId(data?.division._id),
+    year:
+      new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
+        ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
+        : new Date().getFullYear(),
+    user,
+  });
+
+
+  // find the monitoring reports
+  // and populate all the insecticide report for this year and division
+
+  
+  let foundMonitoring = await Monitoring.findOne({
+    year:
+      ((new Date().getMonth() + 1) < 3)   // check if the harvest campain is not of the previous year
+        ? (new Date().getFullYear() - 1) // till march of following year, it's still of the previous campain
+        : new Date().getFullYear(),
+    division: newHarvestReport.division,
+  }).populate("harvest");
+
+  if (!foundMonitoring) {
+    newHarvestReport?.production.push(newProduction);
+    await newHarvestReport.save();
+
+    const newMonitoringReport = {
+      harvest: new Array(newHarvestReport),
+      division: newHarvestReport.division,
+      year:
+        new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
+          ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
+          : new Date().getFullYear(),
+      user,
+    };
+
+    return await new Monitoring(newMonitoringReport).save();
+
+  } else if (foundMonitoring?.harvest && (foundMonitoring?.harvest.length === 0)) {  
+
+    newHarvestReport?.production.push(newProduction);
+    await newHarvestReport.save();
+
+    foundMonitoring.user = user;
+    foundMonitoring.harvest.push(newHarvestReport);
+
+    return await foundMonitoring.save();
+
+  }
+  else if (foundMonitoring?.harvest && (foundMonitoring?.harvest.length > 0)){
+    let year =  new Date().getMonth() + 1 < 3 ? new Date().getFullYear() - 1 : new Date().getFullYear();
+
+    let foundHarvestReport = await Harvest.findOne({
+      year: year, division: ObjectId(data.division._id)
+    });
+
+    if (!foundHarvestReport) {
+
+      newHarvestReport?.production.push(newProduction);
+      await newHarvestReport.save();
+
+      foundMonitoring.user = user;
+      foundMonitoring.harvest.push(newHarvestReport);
+
+      return await foundMonitoring.save();
+
+    }
+    else {
+      foundHarvestReport?.production.push(newProduction);
+      foundHarvestReport.user = user;
+      await foundHarvestReport.save();
+
+      foundMonitoring.user = user;
+      return  await foundMonitoring.save();
+
+    }
+  }
+};
+
+
+
+
 
 // ------------------------- end services ---------------------------------
 
@@ -332,8 +556,10 @@ const addMonitoringReport = asyncHandler(async (req, res) => {
       result = await addInsecticideReport(body);
       break;
     case "fungicide":
+      result = await addFungicideReport(body);
       break;
     case "harvest":
+      result = await addHarvestReport(body);
       break;
     default:
       res.status(400);
@@ -366,7 +592,9 @@ const getMonitoringReports = asyncHandler(async (req, res) => {
     .populate("pruning")
     .populate("disease")
     .populate("plague")
-    .populate("insecticide");
+    .populate("insecticide")
+    .populate("fungicide")
+    .populate('harvest');
 
   return res.status(200).json(monitoringReports);
 });

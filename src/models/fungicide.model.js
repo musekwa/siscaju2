@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
+var Schema = mongoose.Schema;
 
 const fungicidesSchema = mongoose.Schema(
   {
@@ -10,22 +11,21 @@ const fungicidesSchema = mongoose.Schema(
         return new Date().getFullYear();
       },
     },
-    name: { type: String },
-    treatedTrees: Number,
-    applicationNumber: {
-      type: String,
-      default: "primeira",
-      enum: {
-        values: ["primeira", "segunda", "terceira", "quarta", "quinta"],
-        message: ["Esta aplicação não é recomendada!"],
+    fungicideName: { type: String },
+    application: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Pesticide",
       },
+    ],
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
     },
-    appliedAt: Date,
-    controlledAt: { type: Date, default: Date.now },
-
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
     },
     createdAt: {
       type: Date,

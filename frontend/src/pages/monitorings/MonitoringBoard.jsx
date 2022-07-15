@@ -274,7 +274,7 @@ const transferedPackage = {
           <span style={{ display: "block" }}>Última monitoria: {normalizeDate(report?.updatedAt)}</span> 
           <span style={{ display: "block" }}>(por {report?.user?.fullname})</span>
         </>
-        : `Esta será a primeira monitoria desta divisão!`} 
+        : `Esta será a primeira monitoria nesta unidade de produção!`} 
         {/* Última monitoria: 02/01/2021 por Evariste */}
       </Typography>
         <Grid container direction="column" justifyContent="center" alignItems="center" >

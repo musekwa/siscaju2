@@ -135,7 +135,7 @@ function PlagueForm({ user }) {
       <Navbar
         arrowBack={"block"}
         goBack={"/monitorings-list"}
-        pageDescription={"Doença detectada"}
+        pageDescription={"Praga detectada"}
         user={user}
       />
     <Box
