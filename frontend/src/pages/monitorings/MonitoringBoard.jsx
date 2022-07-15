@@ -102,7 +102,7 @@ const MonitoringBoard = ({ user }) => {
       let sortedReports = monitoringReports.sort(function(a, b){
         return  b?.year - a?.year;
       })
-      setReport(monitoringReports[sortedReports?.length-1]);
+      setReport(sortedReports[0]);
 
     }
     else {
@@ -122,9 +122,7 @@ const MonitoringBoard = ({ user }) => {
       let value = report[property];
       if (((monitoringVariables.indexOf(property)) >= 0) && Array.isArray(value) && (value?.length > 0)) {
 
-        let lastModified = value?.sort((a,b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))[value.length - 1]
-        
-        lastMonitorings[`${property}`] = lastModified;
+        lastMonitorings[`${property}`] = value[value.length - 1];
 
       }
     }
@@ -150,6 +148,18 @@ const normalizeDate = (date) => {
     new Date(date).getFullYear()
   );
 };
+
+const transferedPackage = {
+  question: question?.question,
+  flag: question?.flag,
+  variableLastModifiedAt: lastMonitorings[question?.flag]
+                              ? normalizeDate(lastMonitorings[question?.flag].updatedAt)
+                              : report 
+                              ? normalizeDate(report?.updatedAt) 
+                              : normalizeDate(division?.createdAt),
+  division: division,
+  farmland: farmland,
+}
 
   return (
     <Box>
@@ -472,10 +482,11 @@ const normalizeDate = (date) => {
         <MonitoringBoardModal
           openModal={openModal}
           setOpenModal={setOpenModal}
-          question={question} // question and flag
-          division={division}
-          farmland={farmland}
-          lastReportDate={report ? normalizeDate(report?.updatedAt) : normalizeDate(division?.createdAt)}
+          // question={question} // question and flag
+          // division={division}
+          // farmland={farmland}
+          // lastReportDate={report ? normalizeDate(report?.updatedAt) : normalizeDate(division?.createdAt)}
+          transferedPackage={transferedPackage}
         />
       <Footer />
       </Box>

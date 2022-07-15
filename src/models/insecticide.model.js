@@ -1,6 +1,22 @@
 import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
+var Schema = mongoose.Schema;
+
+const applicationsSchema = mongoose.Schema({
+  treatedTrees: Number,
+  applicationNumber: {
+    type: String,
+    enum: {
+      values: ["primeira", "segunda", "terceira", "quarta"],
+      message: ["Esta aplicação não é recomendada!"],
+    },
+  },
+  insecticideDose: Number, // in g/l
+  appliedAt: Date,
+}, { timestamps: true });
+
+
 
 const insecticidesSchema = mongoose.Schema(
   {
@@ -10,22 +26,21 @@ const insecticidesSchema = mongoose.Schema(
         return new Date().getFullYear();
       },
     },
-    name: { type: String },
-    treatedTrees: Number,
-    applicationNumber: {
-      type: String,
-      default: "primeira",
-      enum: {
-        values: ["primeira", "segunda", "terceira", "quarta", "quinta"],
-        message: ["Esta aplicação não é recomendada!"],
+    insecticideName: { type: String },
+    application: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Application",
       },
-    },
-    appliedAt: Date,
-    controlledAt: { type: Date, default: Date.now },
-
+    ],
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
+    },
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
     },
     createdAt: {
       type: Date,
@@ -36,5 +51,9 @@ const insecticidesSchema = mongoose.Schema(
 );
 
 const Insecticide = mongoose.model("Insecticide", insecticidesSchema);
+const Application = mongoose.model("Application", applicationsSchema);
 
-export default Insecticide;
+export {
+Insecticide,
+Application,
+} 

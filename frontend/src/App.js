@@ -29,7 +29,8 @@ import PasswordUpdate from "./pages/users/PasswordUpdate";
 import WeedingForm from "./pages/monitorings/WeedingForm";
 import PruningForm from "./pages/monitorings/PruningForm";
 import DiseaseForm from "./pages/monitorings/DiseaseForm";
-
+import PlagueForm from "./pages/monitorings/PlagueForm";
+import InsecticideForm from './pages/monitorings/InsecticideForm';
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
@@ -118,6 +119,8 @@ if (isLoading) {
             <Route path="/weeding-add" element={<WeedingForm user={user} />} />
             <Route path="/pruning-add" element={<PruningForm user={user} />} />
             <Route path="/disease-add" element={<DiseaseForm user={user} />} />
+            <Route path="/plague-add" element={<PlagueForm user={user} />} />
+            <Route path="/insecticide-add" element={<InsecticideForm user={user} />} />
           </Route>
 
           {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}

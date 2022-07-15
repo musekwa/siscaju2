@@ -11,21 +11,21 @@ const plaguesSchema = mongoose.Schema(
       },
     },
     name: { type: String, trim: true },
-    trees: {
-      higherSeverity: Number,
-      highSeverity: Number,
-      averageSeverity: Number,
-      lowSeverity: Number,
-      noSeverity: Number,
-    },
-    controlledAt: {
+    higherAttack: Number,
+    highAttack: Number,
+    averageAttack: Number,
+    lowAttack: Number,
+    detectedAt: {
       type: Date,
-      default: Date.now,
     },
-
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
+    },
     division: {
       type: ObjectId,
-      ref: "FarmDivision",
+      // ref: "FarmDivision",
     },
     createdAt: {
       type: Date,

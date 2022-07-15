@@ -11,7 +11,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { BootstrapButton, QuestionButton } from "./Buttons";
 
 
-const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, farmland, lastReportDate }) => {
+const MonitoringBoardModal = ({ 
+                      openModal, 
+                      setOpenModal, 
+                      transferedPackage
+                      // division, 
+                      // question, 
+                      // farmland, 
+                      // lastReportDate 
+                    }) => {
 
   const navigate = useNavigate();
 
@@ -19,7 +27,9 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
 
   }, [navigate])
 
-  const onConfirm = (flag) =>{
+  const onConfirm = () =>{
+
+    const { division, flag, farmland } = transferedPackage;
 
     switch(flag) {
       case 'weeding':
@@ -103,13 +113,13 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
                 >
 
                     <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-                       Ano de plantio: {division?.sowingYear}
+                       Ano de plantio: {transferedPackage?.division?.sowingYear}
                     </Typography>
                 </Box>
                 <Box 
                   sx={{  textAlign: 'center', padding: "25px 10px 0px 10px" }}
                 >
-                <Typography  variant="h6">{question?.question}{", desde "} {lastReportDate}?</Typography>
+                <Typography  variant="h6">{transferedPackage?.question}{", desde "} {transferedPackage?.variableLastModifiedAt}?</Typography>
                 </Box>
             </Box>
             <Box
@@ -137,7 +147,7 @@ const MonitoringBoardModal = ({ openModal, setOpenModal, division, question, far
                      }}>
                     <QuestionButton 
                       sx={{ color: "#eee" }}
-                      onClick={()=>onConfirm(question?.flag)}
+                      onClick={onConfirm}
                     >
                       Sim
                     </QuestionButton>

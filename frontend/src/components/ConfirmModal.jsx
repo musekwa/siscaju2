@@ -284,7 +284,97 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
           }
 
 
-          
+          {                    
+            flag === "plague"  &&  !isSuccess &&    
+            ( <Box>   
+              <Box 
+                sx={{ 
+                    backgroundColor: "#826DA3", 
+                    borderRadius: "20px 20px 0px 0px",
+                    width: "100%",
+                    height: "auto"
+                    // height: "80%"
+                }}
+                >
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                       {reportData?.plagueName}
+                    </Typography>
+                </Box>
+                  <Box sx={{ p: "5px 15px 5px 15px",  }}>
+                      <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Grau de ataque muito alto:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.higherAttack || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Grau de ataque alto:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.highAttack || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Grau de ataque moderado:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.averageAttack || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Grau de ataque baixo:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.lowAttack || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Sem infecção:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>
+                            {division?.trees - 
+                          (Number(reportData?.higherAttack) + Number(reportData?.highAttack) + Number(reportData?.averageAttack) + Number(reportData?.lowAttack))}</Typography>
+                      </Stack>
+                      <Stack sx={{ p: "5px 0px 0px 0px",  }}>
+                          <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
+                      </Stack>
+                    </Box>
+                  </Box>
+                  )
+          }
+
+
+
+          {                    
+            flag === "insecticide"  &&  !isSuccess &&    
+            ( <Box>   
+              <Box 
+                sx={{ 
+                    backgroundColor: "#826DA3", 
+                    borderRadius: "20px 20px 0px 0px",
+                    width: "100%",
+                    height: "auto"
+                    // height: "80%"
+                }}
+                >
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                       {reportData?.insecticideName}
+                    </Typography>
+                </Box>
+                  <Box sx={{ p: "5px 15px 5px 15px",  }}>
+                      <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros tratados:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.treatedTrees || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Número de aplicação:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.applicationNumber || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Dose aplicada:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.insecticideDose || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros não tratados:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>
+                            {division?.trees - (Number(reportData?.treatedTrees) )}</Typography>
+                      </Stack>
+                      <Stack sx={{ p: "5px 0px 0px 0px",  }}>
+                          <Typography sx={{  textAlign: 'center', }} variant="h6">Confirma?</Typography>
+                      </Stack>
+                    </Box>
+                  </Box>
+                  )
+          }
+
                 </Box>
                
             </Box>
