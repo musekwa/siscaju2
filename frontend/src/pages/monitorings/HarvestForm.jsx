@@ -115,6 +115,22 @@ function InsecticideForm({ user }) {
       return;
     }
 
+    const date = new Date(reportData?.harvestedAt);
+
+    if ( !Date.parse(reportData?.harvestedAt) || (date > new Date())) {
+        toast.error("Indicar a data certa", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      return;
+    }
+
+
     setOpenModal(true)
     
   };
@@ -140,9 +156,9 @@ function InsecticideForm({ user }) {
       <Box
         sx={{ position: "relative", bottom: "80px", marginTop: "100px"  }}
         component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
-          <Box sx={{ display: "block", width: "100%", color: "gray" }}>
+          <Box sx={{ display: "block", width: "100%", color: "gray", padding: "5px 20px 0px 20px" }}>
             <Typography variant="body1">
-              {`Nesta divisão, há ${division?.trees} cajueiros de ${new Date().getFullYear() - division?.sowingYear} anos de idade.`}
+              {`Nesta unidade de produção, há ${division?.trees} cajueiros de ${new Date().getFullYear() - division?.sowingYear} anos de idade.`}
             </Typography>
           </Box>
           <Paper

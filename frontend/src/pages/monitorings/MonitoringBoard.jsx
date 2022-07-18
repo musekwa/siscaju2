@@ -98,37 +98,55 @@ const MonitoringBoard = ({ user }) => {
       setDivision(newDivision[0])
       // }
     }
-    if (isSuccess && monitoringReports && monitoringReports?.length > 0 && Array.isArray(monitoringReports)) {
-      let sortedReports = monitoringReports.sort(function(a, b){
-        return  b?.year - a?.year;
-      })
-      setReport(sortedReports[0]);
+    // if (isSuccess && monitoringReports && monitoringReports?.length > 0 && Array.isArray(monitoringReports)) {
+    //   let sortedReports = monitoringReports.sort(function(a, b){
+    //     return  b?.year - a?.year;
+    //   })
+    //   setReport(sortedReports[0]);
 
+    // }
+    if (isSuccess && monitoringReports){
+      setReport(monitoringReports[0])
     }
     else {
       setReport(null)
     }
 
-  }, [sowingYear, farmland, division, monitoringReports, report, isSuccess, isLoading, isError, error, location, navigate ])
+  }, [
+    sowingYear, 
+    farmland, 
+    division, 
+    monitoringReports, 
+    report, 
+    isSuccess, 
+    isLoading, 
+    isError, 
+    error, 
+    location, 
+    navigate ])
 
 
 
   // get all the last modified monitoring reports
   let lastMonitorings = {};
 
-  if (report) {
+  // if (report) {
+  //   console.log('report ', report)
+  //   for (let property in report) { 
+  //     let value = report[property];
+  //     if (((monitoringVariables.indexOf(property)) >= 0) && Array.isArray(value) && (value?.length > 0))   {
 
-    for (let property in report) { // loop over the report 
-      let value = report[property];
-      if (((monitoringVariables.indexOf(property)) >= 0) && Array.isArray(value) && (value?.length > 0)) {
+  //       lastMonitorings[`${property}`] = value[value?.length - 1];
 
-        lastMonitorings[`${property}`] = value[value.length - 1];
+  //     }
 
-      }
-    }
+  //   }
     
-  }
+  // }
 
+  // console.log('report:', report)
+
+  
   if (isLoading) {
       return <Spinner />
   }
@@ -148,6 +166,7 @@ const normalizeDate = (date) => {
     new Date(date).getFullYear()
   );
 };
+
 
 const transferedPackage = {
   question: question?.question,
@@ -301,7 +320,7 @@ const transferedPackage = {
                   image={weeding}
                   alt="weeding"
                 />
-                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.weeding ? normalizeDate(lastMonitorings?.weeding?.updatedAt) : `Ainda não monitorada`}</Typography>
+                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.weeding ? normalizeDate(report?.weeding?.updatedAt) : `Ainda não monitorada`}</Typography>
               </Box>
              {/* </Link> */}
           </Paper>
@@ -328,7 +347,7 @@ const transferedPackage = {
                 image={pruning}
                 alt="pruning"
               />
-              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.pruning ? normalizeDate(lastMonitorings?.pruning?.updatedAt) : `Ainda não monitorada`}</Typography>
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.pruning ? normalizeDate(report?.pruning?.updatedAt) : `Ainda não monitorada`}</Typography>
               </Box>
               {/* </Link> */}
           </Paper>
@@ -357,7 +376,7 @@ const transferedPackage = {
                 image={disease}
                 alt="disease"
                 />
-              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.disease ? normalizeDate(lastMonitorings?.disease?.updatedAt) : `Ainda não monitorada`}</Typography>
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.disease ? normalizeDate(report?.disease?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
              {/* </Link> */}
           </Paper>
@@ -383,7 +402,7 @@ const transferedPackage = {
                   image={plague}
                   alt="plague"
                 />
-                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.plague ? normalizeDate(lastMonitorings?.plague?.updatedAt) : `Ainda não monitorada`}</Typography>
+                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.plague ? normalizeDate(report?.plague?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
             {/* </Link> */}
           </Paper>
@@ -413,7 +432,7 @@ const transferedPackage = {
                 image={insecticide}
                 alt="insecticide"
                 />
-                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.insecticide ? normalizeDate(lastMonitorings?.insecticide?.updatedAt) : `Ainda não monitorada`}</Typography>
+                <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.insecticide ? normalizeDate(report?.insecticide?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
           {/* </Link> */}
           </Paper>
@@ -440,7 +459,7 @@ const transferedPackage = {
               image={insecticide}
               alt="fungicide"
               />
-              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.fungicide ? normalizeDate(lastMonitorings?.fungicide?.updatedAt) : `Ainda não monitorada`}</Typography>
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.fungicide ? normalizeDate(report?.fungicide?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
             {/* </Link> */}
           </Paper>
@@ -469,7 +488,7 @@ const transferedPackage = {
                 image={crop}
                 alt="crop"
                 />
-              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{lastMonitorings?.harvest ? normalizeDate(lastMonitorings?.harvest?.updatedAt) : `Ainda não monitorada`}</Typography>
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.harvest ? normalizeDate(report?.harvest?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
             {/* </Link> */}
           </Paper>

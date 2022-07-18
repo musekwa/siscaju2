@@ -9,8 +9,11 @@ import mongoose from "mongoose";
 // } from "../services/monitoring.services.js";
 import asyncHandler from "express-async-handler";
 import Monitoring from "../models/monitoring.model.js";
+import Monitoring2 from "../models/monitoring.model.v2.js";
 import Weeding from "../models/weeding.model.js";
+import Weeding2 from "../models/weeding.model.v2.js";
 import Pruning from "../models/pruning.model.js";
+import Pruning2 from "../models/pruning.model.v2.js";
 import Disease from "../models/disease.model.js";
 import Plague from "../models/plague.model.js";
 import Insecticide from "../models/insecticide.model.js";
@@ -19,9 +22,13 @@ import Pesticide from "../models/pesticide.model.js";
 import Harvest from '../models/harvest.model.js'
 import Production from '../models/production.model.js'
 
+import { addWeedingRecommendation } from "./recomendation.controllers.js";
+
 const ObjectId = mongoose.Types.ObjectId;
 
 // ------------------------------------- start services --------------------------
+
+
 // add weeding
 const addWeedingReport = async (data) => {
   const user = {
@@ -33,6 +40,9 @@ const addWeedingReport = async (data) => {
     ...data,
     division: ObjectId(data?.division._id),
   });
+
+     // adding recommendation according to the weeding report
+    // await addWeedingRecommendation(data)
 
   let foundMonitoring = await Monitoring.findOne({
     year: new Date().getFullYear(),
@@ -48,6 +58,7 @@ const addWeedingReport = async (data) => {
       user,
     };
 
+ 
     return await new Monitoring(newMonitoringReport).save();
   } else {
     await newWeedingReport.save();
@@ -523,6 +534,12 @@ const addHarvestReport = async (data) => {
 
 
 // ------------------------- end services ---------------------------------
+
+
+
+
+
+// ------------------ end rethinking the models and control--------------
 
 const addMonitoringReport = asyncHandler(async (req, res) => {
   const {

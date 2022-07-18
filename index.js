@@ -13,6 +13,7 @@ import divisionRoutes from "./src/routes/division.routes.js";
 import monitoringRoutes from "./src/routes/monitoring.routes.js";
 import userPerformanceRoutes from "./src/routes/performance.routes.js";
 import emailRoutes from './src/routes/email.routes.js'
+import recommendationRoutes from "./src/routes/recommendation.routes.js"
 import dbConnection from "./config/db.js";
 
 import {
@@ -52,6 +53,7 @@ app.use(farmerRoutes);
 app.use(farmlandRoutes);
 app.use(divisionRoutes);
 app.use(monitoringRoutes);
+app.use(recommendationRoutes);
 app.use(userPerformanceRoutes);
 app.use(emailRoutes);
 
