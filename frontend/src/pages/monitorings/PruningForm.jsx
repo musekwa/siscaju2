@@ -176,21 +176,12 @@ function PruningForm({ user }) {
             >
 
         <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-
-       {/* <Box
-        sx={{         
-        margin: 'auto',
-        maxWidth: 500,
-        flexGrow: 1,
-        marginTop: "10px",
-        color: "gray"  }} 
-       > */}
  
         {/* <Stack direction="row" sx={{ padding: "10px 10px 10px 10px"}} > */}
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.pruningType || ''}
@@ -241,7 +232,7 @@ function PruningForm({ user }) {
                 type="number"
                 value={reportData?.totallyPrunedTrees || ''}
                 placeholder="Cajueiros totalmente podados"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -263,7 +254,7 @@ function PruningForm({ user }) {
                 type="number"
                  value={reportData?.partiallyPrunedTrees || ''}
                 placeholder="Cajueiros parcialmente podados"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -287,7 +278,7 @@ function PruningForm({ user }) {
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="prunedAt"
                     fullWidth 
                     sx={styledTextField}

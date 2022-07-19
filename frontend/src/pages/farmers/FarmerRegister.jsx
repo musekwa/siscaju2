@@ -346,7 +346,7 @@ const [
             name="fullname"
             type="text"
             placeholder="Nome completo"
-            size="small"
+            size="medium"
             onChange={(event)=>{
               setFarmerData((prevState)=>({
                 ...prevState,
@@ -365,8 +365,9 @@ const [
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
+              blurOnSelect
               id="combo-box-demo"
               value={gender}
               options={genders}
@@ -412,7 +413,7 @@ const [
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="birthDate"
                     fullWidth 
                     sx={styledTextField}
@@ -441,8 +442,9 @@ const [
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
+              blurOnSelect
               id="combo-box-demo"
               value={birthPlace.province}
               options={provinces || ['']}
@@ -481,8 +483,9 @@ const [
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
+              blurOnSelect
               id="combo-box-demo"
               value={birthPlace?.district}
               options={
@@ -541,8 +544,9 @@ const [
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
+              blurOnSelect
               id="combo-box-demo"
               value={birthPlace?.territory}
               options={
@@ -602,7 +606,7 @@ const [
               value={birthPlace.village}
               placeholder="Localidade"
               helperText="Nascimento"
-              size="small"
+              size="medium"
               onChange={(event)=>{
                 setFarmerData((prevState)=>({
                   ...prevState,
@@ -632,8 +636,9 @@ const [
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
+              blurOnSelect
               id="combo-box-demo"
               value={address?.territory2}
               options={
@@ -681,7 +686,7 @@ const [
               value={address.village2}
               placeholder="Localidade"
               helperText="Residência"
-              size="small"
+              size="medium"
               onChange={(event)=>{
                 setFarmerData((prevState)=>({
                   ...prevState,
@@ -700,7 +705,7 @@ const [
               name="phone"
               type="number"
               placeholder="Telefone"
-              size="small"
+              size="medium"
               onChange={(event)=>{
                 setFarmerData((prevState)=>({
                   ...prevState,

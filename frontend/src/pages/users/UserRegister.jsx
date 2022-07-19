@@ -369,7 +369,7 @@ function UserRegister() {
               name="fullname"
               type="text"
               placeholder="Nome completo"
-              size="small"
+              size="medium"
               value={userData.fullname}
               onChange={(event) => {
                 setUserData((prevState) => ({
@@ -389,7 +389,7 @@ function UserRegister() {
               name="email"
               type="email"
               placeholder="Email"
-              size="small"
+              size="medium"
               value={userData.email}
               onChange={(event) => {
                 setUserData((prevState) => ({
@@ -401,31 +401,6 @@ function UserRegister() {
           </div>
           <div style={{ padding: "10px 5px 10px 5px" }}>
 
-
-            {/* <OutlinedInput
-              id="outlined-adornment-password"
-              sx={styledTextField}
-              fullWidth
-              size="small"
-              type={userData.showPassword ? 'text' : 'password'}
-              value={userData.password}
-              onChange={handleChange('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {userData.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              placeholder="Password"
-            /> */}
-
-
             <TextField
               sx={styledTextField}
               required
@@ -435,7 +410,7 @@ function UserRegister() {
               name="password"
               type={userData.showPassword ? 'text' : 'password'}
               placeholder="Password"
-              size="small"
+              size="medium"
               value={userData.password}
               onChange={(event) => {
                 setUserData((prevState) => ({
@@ -471,7 +446,7 @@ function UserRegister() {
               name="password2"
               type={userData.showPassword2 ? 'text' : 'password'}
               placeholder="Password"
-              size="small"
+              size="medium"
               onChange={(event) => {
                 setUserData((prevState) => ({
                   ...prevState,
@@ -504,7 +479,7 @@ function UserRegister() {
               <Autocomplete
                 fullWidth
                 required
-                size="small"
+                size="medium"
                 disablePortal
                 id="combo-box-demo-2"
                 value={userData.gender}
@@ -549,7 +524,7 @@ function UserRegister() {
                 name="phone"
                 type="number"
                 placeholder="Telefone"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setUserData((prevState) => ({
                     ...prevState,
@@ -565,7 +540,7 @@ function UserRegister() {
               <Autocomplete
                 fullWidth
                 required
-                size="small"
+                size="medium"
                 disablePortal
                 id="combo-box-demo-1"
                 value={role}
@@ -621,7 +596,7 @@ function UserRegister() {
               <Autocomplete
                 fullWidth
                 required
-                size="small"
+                size="medium"
                 disablePortal
                 id="combo-box-demo-3"
                 options={provinces || [""]}
@@ -662,7 +637,7 @@ function UserRegister() {
               <Autocomplete
                 fullWidth
                 required
-                size="small"
+                size="medium"
                 disablePortal
                 id="combo-box-demo-4"
                 value={address?.district}
@@ -727,7 +702,7 @@ function UserRegister() {
               <Autocomplete
                 fullWidth
                 required
-                size="small"
+                size="medium"
                 disablePortal
                 id="combo-box-demo-5"
                 value={address?.territory}

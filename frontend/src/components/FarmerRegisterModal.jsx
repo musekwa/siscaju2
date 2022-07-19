@@ -55,7 +55,11 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
               }}
             >
               <Typography
-                sx={{ textAlign: "center", width: "250px", ml: 3, mt: 1 }}
+                sx={{ 
+                  textAlign: "center", 
+                  // width: "250px", 
+                  mt: 1 
+                }}
                 id="keep-mounted-modal-title"
                 component="p"
                 variant="body1"

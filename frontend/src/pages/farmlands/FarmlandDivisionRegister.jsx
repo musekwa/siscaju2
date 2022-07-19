@@ -72,21 +72,6 @@ const FarmlandDivisionRegister = ({ user }) => {
     { data: division, isLoading, isSuccess, error, isError, reset },
   ] = useAddDivisionMutation();
 
-  // const { farmer: farmerFromState, farmland: farmlandFromState } = location.state;
-  // console.log('farmer: ', farmerFromState)
-  // console.log('farmland: ', farmlandFromState)
-
-  // const { user } = useSelector((state)=>state.auth)
-//   const { farmer, isLoading: isFarmerLoading, isError: isFarmerError, isSuccess: isFarmerSuccess, message: farmerMessage } = useSelector((state)=>state.farmer)
-//   const { farmland, isLoading: isFarmlandLoading, isError: isFarmlandError, isSuccess: isFarmlandSuccess, message: farmlandMessage } = useSelector((state)=>state.farmland)
-//   const { farmlandDivision, isError, isSuccess, isLoading, message } = useSelector((state)=>state.farmlandDivision)
-
-
-  // useEffect(()=>{
-  //   setTimeout(2000);
-  // }, [])
-
-
   useEffect(()=>{
 
     if (isError && error.status === 'FETCH_ERROR') {
@@ -306,7 +291,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                       name="sowingYear"
                       type="number"
                       placeholder="Ano de plantio"
-                      size="small"
+                      size="medium"
                       onChange={(event)=>{
                         setDivisionData((prevState)=>({
                           ...prevState,
@@ -326,7 +311,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                       name="trees"
                       type="number"
                       placeholder="Número de cajueiros"
-                      size="small"
+                      size="medium"
                       onChange={(event)=>{
                         setDivisionData((prevState)=>({
                           ...prevState,
@@ -351,7 +336,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                       name="plantedArea"
                       type="number"
                       placeholder="Área (hectares)"
-                      size="small"
+                      size="medium"
                       onChange={(event)=>{
                         setDivisionData((prevState)=>({
                           ...prevState,
@@ -374,7 +359,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                         name="x"
                         type="number"
                         placeholder=""
-                        size="small"
+                        size="medium"
                         onChange={(event)=>{
                           setDivisionData((prevState)=>({
                             ...prevState,
@@ -394,7 +379,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                             name="y"
                             type="number"
                             placeholder=""
-                            size="small"
+                            size="medium"
                             onChange={(event)=>{
                               setDivisionData((prevState)=>({
                                 ...prevState,
@@ -415,7 +400,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                     <Autocomplete
                       fullWidth
                       required
-                      size="small"
+                      size="medium"
                       disablePortal
                       id="combo-box-demo"
                       options={plantingTechniquesList}
@@ -463,7 +448,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                       <TextField
                           {...params}
                           label="Tipos de clones"
-                          size="small"
+                          size="medium"
                           placeholder="Selecciona clone"
                           sx={styledTextField}
                       />

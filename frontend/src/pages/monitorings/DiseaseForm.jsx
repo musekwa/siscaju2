@@ -197,7 +197,7 @@ function DiseaseForm({ user }) {
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.diseaseName || ''}
@@ -247,7 +247,7 @@ function DiseaseForm({ user }) {
                 type="number"
                 value={reportData?.higherSeverity || ''}
                 placeholder="Cajueiros com severidade muito alta"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -269,7 +269,7 @@ function DiseaseForm({ user }) {
                 type="number"
                  value={reportData?.highSeverity || ''}
                 placeholder="Cajueiros com severidade alta"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -290,7 +290,7 @@ function DiseaseForm({ user }) {
                 type="number"
                 value={reportData?.averageSeverity || ''}
                 placeholder="Cajueiros com severidade moderada"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -312,7 +312,7 @@ function DiseaseForm({ user }) {
                 type="number"
                  value={reportData?.lowSeverity || ''}
                 placeholder="Cajueiros com severidade baixa"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -335,7 +335,7 @@ function DiseaseForm({ user }) {
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="detectedAt"
                     fullWidth 
                     sx={styledTextField}

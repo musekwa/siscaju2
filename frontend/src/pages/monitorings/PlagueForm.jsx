@@ -197,7 +197,7 @@ function PlagueForm({ user }) {
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.plagueName || ''}
@@ -247,7 +247,7 @@ function PlagueForm({ user }) {
                 type="number"
                 value={reportData?.higherAttack || ''}
                 placeholder="Cajueiros com grau de ataque muito alto"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -269,7 +269,7 @@ function PlagueForm({ user }) {
                 type="number"
                  value={reportData?.highAttack || ''}
                 placeholder="Cajueiros com grau de ataque alto"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -290,7 +290,7 @@ function PlagueForm({ user }) {
                 type="number"
                 value={reportData?.averageAttack || ''}
                 placeholder="Cajueiros com grau de ataque moderado"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -312,7 +312,7 @@ function PlagueForm({ user }) {
                 type="number"
                  value={reportData?.lowAttack || ''}
                 placeholder="Cajueiros com grau de ataque baixo"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -335,7 +335,7 @@ function PlagueForm({ user }) {
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="detectedAt"
                     fullWidth 
                     sx={styledTextField}

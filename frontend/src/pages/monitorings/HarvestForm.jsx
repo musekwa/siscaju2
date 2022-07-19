@@ -184,7 +184,7 @@ function InsecticideForm({ user }) {
             type="number"
             value={reportData?.productiveTrees || ''}
             placeholder="Cajueiros produtivos"
-            size="small"
+            size="medium"
             onChange={(event) => {
                 setReportData((prevState) => ({
                 ...prevState,
@@ -205,7 +205,7 @@ function InsecticideForm({ user }) {
             type="number"
             value={reportData?.appleQuantity || ''}
             placeholder="Quilogramas de pêra produzida"
-            size="small"
+            size="medium"
             onChange={(event) => {
                 setReportData((prevState) => ({
                 ...prevState,
@@ -226,7 +226,7 @@ function InsecticideForm({ user }) {
             type="number"
             value={reportData?.nutQuantity || ''}
             placeholder="Quilogramas de castanha produzida"
-            size="small"
+            size="medium"
             onChange={(event) => {
                 setReportData((prevState) => ({
                 ...prevState,
@@ -249,7 +249,7 @@ function InsecticideForm({ user }) {
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="harvestedAt"
                     fullWidth 
                     sx={styledTextField}

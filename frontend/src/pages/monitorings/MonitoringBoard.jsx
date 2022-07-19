@@ -247,7 +247,7 @@ const transferedPackage = {
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={sowingYear}

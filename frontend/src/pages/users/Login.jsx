@@ -186,7 +186,8 @@ function Login() {
                 name="email"
                 type="email"
                 placeholder="Email"
-                size="small"
+                size="medium"
+                InputProps={{ }}
                 value={email}
                 onChange={(event) => {
                   setUserData((prevState) => ({
@@ -206,7 +207,7 @@ function Login() {
                 name="password"
                 type={userData.showPassword ? 'text' : 'password'}
                 placeholder="Password"
-                size="small"
+                size="medium"
                 value={password}
                 onChange={(event) => {
                   setUserData((prevState) => ({

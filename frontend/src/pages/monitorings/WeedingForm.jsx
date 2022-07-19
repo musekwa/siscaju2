@@ -55,91 +55,6 @@ function WeedingForm({ user }) {
 
   }, [reportData])
 
-  // useEffect(() => {
-  //   if (isSuccess && user && JSON.stringify(user)?.includes('timed out after')) {
-  //       toast.error(`Verifique a conexão da Internet!`, {
-  //         autoClose: 5000,
-  //         position: toast.POSITION.TOP_CENTER,
-  //       });
-  //       localStorage.removeItem('user');
-  //       dispatch(resetUser());
-  //       return ;
-  //   } 
-  //   else if (isSuccess) {
-  //     toast.success(
-  //       `Olá ${user?.fullname?.split(" ")[0]}, Bem-vindo a SisCaju!`,
-  //       {
-  //         autoClose: 5000,
-  //         position: toast.POSITION.TOP_CENTER,
-  //       }
-  //     );
-  //     navigate("/", { state: { user } });
-  //     setUserData({
-  //       fullname: "",
-  //       email: "",
-  //       password: "",
-  //       password2: "",
-  //       gender: "",
-  //       role: "",
-  //       phone: "",
-  //       address: {
-  //         province: "",
-  //         district: "",
-  //         territory: "",
-  //       },
-  //     });
-  //   }
-  //   else if (isError && message === 'Network Error') {
-  //     toast.error("Verifique a conexão da Internet!", {
-  //       autoClose: 5000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   }
-  //   else if (isError && message?.includes('status code 400')) {
-  //     toast.error("Credenciais inválidas!", {
-  //       autoClose: 5000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   }
-  //   else if (isError && message?.includes('status code 409')) {
-  //     toast.error("Este utilizador já foi registado!", {
-  //       autoClose: 5000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   }
-  //   else if (isError) {
-  //     toast.error(message ? message : "O registo falhou!", {
-  //       autoClose: 5000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //   }
-  //   dispatch(reset());
-  // }, [user, isError, isSuccess, message, navigate, register, dispatch]);
-
-  // useEffect(() => {
-  //   if ((address.province && address.district) || address.province) {
-  //     setUserData((prevState)=>({
-  //       ...prevState,
-  //       address: { ...prevState.address, district: "", territory: "" }
-  //     }))
-  //   }
-  // }, [address.province]);
-
-  // useEffect(() => {
-  //   if ((address.district && address.territory) || address.district) {
-  //     setUserData((prevState)=>({
-  //       ...prevState,
-  //       address: { ...prevState.address, territory: "" }
-  //     }))
-  //   }
-  // }, [address.district]);
-
-  // if (isSuccess) {
-  //   window.location.reload(false)
-  //    return <Navigate to={'/'} replace />
-  // }
-
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -194,21 +109,8 @@ function WeedingForm({ user }) {
     
     
     setOpenModal(true)
-
-    // const normalizedWeedingData = {
-    //   ...weedingData,
-    //   division,
-    // };
-
-    // if (!isLoading) {
-    //   dispatch(register(normalizedUserData));
-    // }
     
   };
-
-  // if (isLoading) {
-  //   return <Spinner />;
-  // }
 
 
   return (
@@ -257,7 +159,7 @@ function WeedingForm({ user }) {
                 name="totallyCleanedTrees"
                 type="number"
                 placeholder="Cajueiros totalmente limpos"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -278,7 +180,7 @@ function WeedingForm({ user }) {
                 name="partiallyCleanedTrees"
                 type="number"
                 placeholder="Cajueiros parcialmente limpos"
-                size="small"
+                size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
                     ...prevState,
@@ -302,7 +204,7 @@ function WeedingForm({ user }) {
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="weededAt"
                     fullWidth 
                     sx={styledTextField}

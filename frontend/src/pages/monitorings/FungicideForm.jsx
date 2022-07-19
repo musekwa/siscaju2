@@ -196,7 +196,7 @@ function InsecticideForm({ user }) {
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.fungicideName || ''}
@@ -237,7 +237,7 @@ function InsecticideForm({ user }) {
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.applicationNumber || ''}
@@ -286,7 +286,7 @@ function InsecticideForm({ user }) {
             type="number"
             value={reportData?.treatedTrees || ''}
             placeholder="Cajueiros tratados"
-            size="small"
+            size="medium"
             onChange={(event) => {
                 setReportData((prevState) => ({
                 ...prevState,
@@ -301,7 +301,7 @@ function InsecticideForm({ user }) {
             <Autocomplete
               fullWidth
               required
-              size="small"
+              size="medium"
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.dose || ''}
@@ -352,7 +352,7 @@ function InsecticideForm({ user }) {
                 renderInput={(params)=>(
                   <TextField {...params}
                     id="date"
-                    size="small"
+                    size="medium"
                     name="appliedAt"
                     fullWidth 
                     sx={styledTextField}

@@ -308,7 +308,7 @@ const FarmlandRegister = () => {
                   name="declaredArea"
                   type="number"
                   placeholder="Área (hectares)"
-                  size="small"
+                  size="medium"
                   onChange={(event) => {
                     setFarmlandData((prevState) => ({
                       ...prevState,
@@ -329,7 +329,7 @@ const FarmlandRegister = () => {
                   name="label"
                   type="text"
                   placeholder="Localização geográfica "
-                  size="small"
+                  size="medium"
                   onChange={(event) => {
                     setFarmlandData((prevState) => ({
                       ...prevState,
@@ -364,7 +364,7 @@ const FarmlandRegister = () => {
                       {...params}
                       label="Culturas consorciadas"
                       placeholder="Selecciona culturas"
-                      size="small"
+                      size="medium"
                       sx={styledTextField}
                     />
                   )}
@@ -409,7 +409,7 @@ const FarmlandRegister = () => {
                   name="sowingYear"
                   type="number"
                   placeholder="Ano de plantio"
-                  size="small"
+                  size="medium"
                   onChange={(event) => {
                     setFarmlandData((prevState) => ({
                       ...prevState,
@@ -429,7 +429,7 @@ const FarmlandRegister = () => {
                   name="trees"
                   type="number"
                   placeholder="Número de cajueiros"
-                  size="small"
+                  size="medium"
                   onChange={(event) => {
                     setFarmlandData((prevState) => ({
                       ...prevState,
@@ -457,7 +457,7 @@ const FarmlandRegister = () => {
                   name="plantedArea"
                   type="number"
                   placeholder="Área (hectares)"
-                  size="small"
+                  size="medium"
                   onChange={(event) => {
                     setFarmlandData((prevState) => ({
                       ...prevState,
@@ -488,7 +488,7 @@ const FarmlandRegister = () => {
                     name="x"
                     type="number"
                     placeholder=""
-                    size="small"
+                    size="medium"
                     onChange={(event) => {
                       setFarmlandData((prevState) => ({
                         ...prevState,
@@ -514,7 +514,7 @@ const FarmlandRegister = () => {
                     name="y"
                     type="number"
                     placeholder=""
-                    size="small"
+                    size="medium"
                     onChange={(event) => {
                       setFarmlandData((prevState) => ({
                         ...prevState,
@@ -540,7 +540,7 @@ const FarmlandRegister = () => {
                 <Autocomplete
                   fullWidth
                   required
-                  size="small"
+                  size="medium"
                   disablePortal
                   id="combo-box-demo"
                   options={plantingTechniquesList}
@@ -594,7 +594,7 @@ const FarmlandRegister = () => {
                     <TextField
                       {...params}
                       label="Tipos de clones"
-                      size="small"
+                      size="medium"
                       placeholder="Selecciona clone"
                       sx={styledTextField}
                     />
