@@ -33,6 +33,7 @@ import SearchModal from "../../components/SearchModal";
 import { useGetFarmlandsByQuery } from "../../features/api/apiSlice";
 import { useEffect } from "react";
 import FarmlandCard from "./FarmlandCard";
+import { borderTop } from "@mui/system";
 
 
 
@@ -137,80 +138,111 @@ const MonitoringsList = ({ user }) => {
         isSearchIcon={true}
         user={user}
       />
-      {farmlands && farmlands.length === 0 && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center ",
-            width: "100%",
-            height: "90vh",
+  {
+  farmlands && farmlands.length === 0 && (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center ",
+        width: "100%",
+        height: "90vh",
+      }}
+    >
+      <Box sx={{  maxWidth: "500px" }}>
+        <Typography>Nenhum pomar para ser monitorado!</Typography>
+      </Box>
+    </Box>
+  )}
+
+  {
+  (isError && !farmlands) && (
+    <Box 
+      sx={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center ", 
+        width: "100%", 
+        height: "90vh", 
+        }}
+    >
+      <Box sx={{  maxWidth: "500px"}}>
+        <Typography sx={{ color: "red" }} >
+            Verifique a conexão da Internet e volte a carregar!
+        </Typography>
+      </Box>
+    </Box>
+  )}
+
+  <Box 
+    sx={{ 
+      margin: "auto",
+      flexGrow: 1,
+      position: "relative", 
+      bottom: "60px", 
+      marginTop: "100px"  
+      }}
+  >
+    <List
+      sx={{
+        marginTop: "45px",
+        // width: "100%",
+        // maxWidth: 360,
+        // bgcolor: "background.paper",
+      }}
+    >
+
+    {
+  Object?.keys(byFarmers)?.map(farmerId =>(
+    <Paper 
+    key={farmerId?.toString()}  
+    sx={{ 
+        margin: "15px 10px 0px 10px", 
+        borderRadius: "10px" 
+      }}
+    >
+
+      <Box  
+        sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          // backgroundColor: "#826DA3", 
+          padding: "5px", 
+          borderRadius: "10px 10px 0px 0px",  
+          borderTop: "5px solid rebeccapurple",
+          }}
+      >
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="" />
+        </ListItemAvatar>
+        <Typography
+          variant="body2"
+          sx={{ 
+            fontWeight: 400, 
+            fontSize: "14px", 
+            // color: "#ffffff" 
+            color: "gray"
           }}
         >
-          <Box sx={{  maxWidth: "500px" }}>
-            <Typography>Nenhum pomar para ser monitorado!</Typography>
-          </Box>
-        </Box>
-      )}
-
-    {
-        (isError && !farmlands) && (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
-                <Box sx={{  maxWidth: "500px"}}>
-                <Typography sx={{ color: "red" }} >
-                    Verifique a conexão da Internet e volte a carregar!
-                </Typography>
-                </Box>
-            </Box>
-        )
-    }
-
-    <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
-      <List
-        sx={{
-          marginTop: "45px",
-          width: "100%",
-          maxWidth: 360,
-          bgcolor: "background.paper",
-        }}
-      >
-
-    {
-      Object?.keys(byFarmers)?.map(farmerId =>(
-        <Paper key={farmerId?.toString()}  sx={{ margin: "15px 15px 0px 15px", borderRadius: "10px" }}>
-
-            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "#826DA3", padding: "5px", borderRadius: "10px 10px 0px 0px"  }}>
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="" />
-              </ListItemAvatar>
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 400, fontSize: "14px", color: "#ffffff" }}
-              >
-                {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}
-                {" "}
-                {`(${byFarmers[`${farmerId}`][0]?.farmer?.category})`}
-              </Typography>
-            </Box>
-
-          <Fragment>
-
-          {
-            byFarmers[farmerId]?.map(farmland=>(
-              <FarmlandCard
-                key={farmland._id}
-                farmland={farmland}
-              />
-        ))}
-        </Fragment>
-      </Paper>         
-      )) }
-      </List>
+          {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}
+          {" "}
+          {`(${byFarmers[`${farmerId}`][0]?.farmer?.category})`}
+        </Typography>
       </Box>
-
-      <SearchModal open={false} />
-      <Footer />
-    </Box>
+      <Fragment>
+      {
+        byFarmers[farmerId]?.map(
+          farmland=><FarmlandCard key={farmland._id} farmland={farmland} />)
+      }
+      </Fragment>
+    </Paper>         
+    )) 
+  }
+    </List>
+  </Box>
+  <SearchModal open={false} />
+    <Footer />
+  </Box>
   );
 };
 

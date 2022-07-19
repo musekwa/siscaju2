@@ -140,111 +140,133 @@ const FarmlandsList = ({ user }) => {
         )
     }
 
-    <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
+    <Box sx={{ 
+      margin: "auto",
+      flexGrow: 1,
+      position: "relative", 
+      bottom: "60px", 
+      marginTop: "100px"  
+      }}
+    >
       <List
         sx={{
           marginTop: "45px",
-          width: "100%",
-          maxWidth: 360,
+          // width: "100%",
+          // maxWidth: 360,
           bgcolor: "background.paper",
         }}
       >
 
+  {
+  Object?.keys(byFarmers)?.map(farmerId =>(
+    <Paper key={farmerId?.toString()}  
+      sx={{ 
+        margin: "15px", 
+        borderRadius: "10px" 
+        }}
+    >
+
+      <Box  
+        sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          // backgroundColor: "#826DA3", 
+          padding: "5px", 
+          borderRadius: "10px 10px 0px 0px",
+          borderTop: "5px solid rebeccapurple"
+          }}
+      >
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="" />
+        </ListItemAvatar>
+          <Typography
+            variant="body2"
+            sx={{ 
+              fontWeight: 400, 
+              fontSize: "14px", 
+              color: "gray" 
+            }}
+          >
+            {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}
+            {" "}
+            {`(${byFarmers[`${farmerId}`][0]?.farmer?.category})`}
+          </Typography>
+      </Box>
+
+    <Fragment>
+
     {
-      Object?.keys(byFarmers)?.map(farmerId =>(
-        <Paper key={farmerId?.toString()}  sx={{ margin: "15px", borderRadius: "10px" }}>
-
-          {/* started farmer data */}
-
-            <Box  sx={{ display: "flex", alignItems: "center", backgroundColor: "#826DA3", padding: "5px", borderRadius: "10px 10px 0px 0px"  }}>
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="" />
-              </ListItemAvatar>
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 400, fontSize: "14px", color: "#ffffff" }}
-              >
-                {`${byFarmers[`${farmerId}`][0]?.farmer?.fullname}`}
-                {" "}
-                {`(${byFarmers[`${farmerId}`][0]?.farmer?.category})`}
-              </Typography>
-            </Box>
-
-
-          {/* ended farmer data  */}
-
-          <Fragment>
-
-          {
-            byFarmers[farmerId]?.map(farmland=>(
-            <Box key={farmland?._id.toString()} 
-              sx={{ 
-                borderTop: "2px solid #826DA3", 
-                borderRadius: "10px 10px 0px 0px", 
-                marginTop: "2px", }}>
-            <Link to="/farmland" state={{ farmland, farmer: farmland.farmer }}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                primary={
-                  <Fragment>
-                    <Typography
-                      variant="body1"
-                      sx={{ fontWeight: 600, color: "gray" }}
-                    >
-                      {`${farmland?.farmlandType}`}{" "}
-                      <span style={{ fontWeight: 400, fontSize: "11px" }}>
-                        (
-                        {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
-                        )
-                      </span>
+      byFarmers[farmerId]?.map(farmland=>(
+        <Box key={farmland?._id.toString()} 
+          sx={{ 
+            borderTop: "2px solid lightgray",
+            borderRadius: "10px 10px 0px 0px", 
+            marginTop: "2px", 
+          }}
+        >
+        <Link to="/farmland" state={{ farmland, farmer: farmland.farmer }}>
+        <ListItem alignItems="flex-start">
+          <ListItemText
+            primary={
+              <Fragment>
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: 600, color: "gray" }}
+                >
+                  {`${farmland?.farmlandType}`}{" "}
+                  <span style={{ fontWeight: 400, fontSize: "11px" }}>
+                    (
+                    {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
+                    )
+                  </span>
+                </Typography>
+                <Stack direction="row">
+                  <Box sx={{ width: "50%" }}>
+                    <Typography component="span" variant="body2">
+                      {" "}
+                      {`Declarada: ${farmland?.declaredArea} ha`}{" "}
                     </Typography>
-                    <Stack direction="row">
-                      <Box sx={{ width: "50%" }}>
-                        <Typography component="span" variant="body2">
-                          {" "}
-                          {`Declarada: ${farmland?.declaredArea} ha`}{" "}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ width: "50%" }}>
-                        <Typography component="span" variant="body2">
-                          {" "}
-                          {`Plantada: ${farmland?.actualArea} ha`}{" "}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                    <Stack direction="row">
-                      <Box sx={{ width: "50%" }}>
-                        <Typography component="span" variant="body2">
-                          {" "}
-                          {`Cajueiros: ${farmland?.totalTrees}`}{" "}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ width: "50%" }}>
-                        <Typography component="span" variant="body2">
-                          {" "}
-                          {`Idade : `}
-                          {getTreesAverageAge(
-                            farmland?.divisions
-                          )} {` anos`}{" "}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  </Fragment>
-                }
-                secondary={
-                  <Typography component="div" sx={{ width: "100%" }}>
-                    <span style={{ textAlign: "rigth", fontSize: "11px" }}>
-                      Registo:{`${normalizeDate(farmland?.createdAt)}`}
-                    </span>{" "}
-                    <span
-                      style={{ textAlign: "rigth", fontSize: "11px" }}
-                    >{` por ${farmland?.user?.fullname}`}</span>
-                  </Typography>
-                }
-              />
-            </ListItem>
-          </Link>
-        </Box>
+                  </Box>
+                  <Box sx={{ width: "50%" }}>
+                    <Typography component="span" variant="body2">
+                      {" "}
+                      {`Plantada: ${farmland?.actualArea} ha`}{" "}
+                    </Typography>
+                  </Box>
+                </Stack>
+                <Stack direction="row">
+                  <Box sx={{ width: "50%" }}>
+                    <Typography component="span" variant="body2">
+                      {" "}
+                      {`Cajueiros: ${farmland?.totalTrees}`}{" "}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "50%" }}>
+                    <Typography component="span" variant="body2">
+                      {" "}
+                      {`Idade : `}
+                      {getTreesAverageAge(
+                        farmland?.divisions
+                      )} {` anos`}{" "}
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Fragment>
+            }
+            secondary={
+              <Typography component="div" sx={{ width: "100%" }}>
+                <span style={{ textAlign: "rigth", fontSize: "11px" }}>
+                  Registo:{`${normalizeDate(farmland?.createdAt)}`}
+                </span>{" "}
+                <span
+                  style={{ textAlign: "rigth", fontSize: "11px" }}
+                >{` por ${farmland?.user?.fullname}`}</span>
+              </Typography>
+            }
+          />
+        </ListItem>
+       </Link>
+     </Box>
       ))}
       </Fragment>
       </Paper>       

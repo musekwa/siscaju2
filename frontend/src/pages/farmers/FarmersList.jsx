@@ -92,7 +92,15 @@ const FarmersList = ()=> {
             )
         }
 
-        <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
+    <Box 
+    sx={{ 
+        margin: "auto",
+        flexGrow: 1,
+        position: "relative", 
+        bottom: "60px", 
+        marginTop: "100px"  
+        }}
+    >
         
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {

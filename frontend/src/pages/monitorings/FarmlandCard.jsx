@@ -48,72 +48,73 @@ const FarmlandCard = ({ farmland, }) => {
   return (
     <Box 
         sx={{ 
-        borderTop: "2px solid #826DA3", 
-        borderRadius: "10px 10px 0px 0px", 
-        marginTop: "10px",  }}
+            borderTop: "2px solid lightgray", 
+            borderRadius: "10px 10px 0px 0px", 
+            marginTop: "10px",  
+        }}
     >
                 
-        <Grid container sx={{ mt: 1, mr: 2, ml: 2, mb: 1, }}>
-            <Grid item xs={7}>
-                <Typography
-                    variant="body1"
-                    sx={{ fontWeight: 600, color: "gray", textAlign: "left", }}
-                >
-                    {`${farmland?.farmlandType}`}{" "} <br />
-                    <span style={{ fontWeight: 400, fontSize: "11px" }}>
-                    (
-                    {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
-                    )
-                    </span>
-                </Typography>
-            </Grid>
-            <Grid item xs={2.5} >
-                <IconButton onClick={()=>{}}> 
-                    <Badge badgeContent={4} color="error"  sx={{ mt: 1, mr: 1 }}>
-                        <NotificationsNoneSharp fontSize="medium" sx={{ color: "#826DA3"}} />
-                    </Badge>
-                </IconButton>
-            </Grid>
-            <Grid item xs={2.5}>
-                <IconButton 
-                    aria-label="more"
-                    id="long-button"
-                    aria-controls={openMoreVert ? 'long-menu' : undefined}
-                    aria-expanded={openMoreVert ? 'true' : undefined}
-                    aria-haspopup="true"
-                    onClick={handleClickMoreVert}
-                >
-                    <Badge>
-                        <MoreVert fontSize="medium" sx={{ color: "#826DA3"}}  />
-                    </Badge>
-                </IconButton>
-            </Grid>
+    <Grid container sx={{ mt: 1, mr: 2, ml: 2, mb: 1, }}>
+        <Grid item xs={7}>
+            <Typography
+                variant="body1"
+                sx={{ fontWeight: 600, color: "gray", textAlign: "left", }}
+            >
+                {`${farmland?.farmlandType}`}{" "} <br />
+                <span style={{ fontWeight: 400, fontSize: "11px" }}>
+                (
+                {`${farmland?.farmer?.address?.territory}: ${farmland?.label}`}
+                )
+                </span>
+            </Typography>
         </Grid>
+        <Grid item xs={2} >
+            <IconButton onClick={()=>{}}> 
+                <Badge badgeContent={4} color="error"  sx={{ mt: 1, mr: 1 }}>
+                    <NotificationsNoneSharp fontSize="medium" sx={{ color: "rebeccapurple"}} />
+                </Badge>
+            </IconButton>
+        </Grid>
+        <Grid item xs={3}>
+            <IconButton 
+                aria-label="more"
+                id="long-button"
+                aria-controls={openMoreVert ? 'long-menu' : undefined}
+                aria-expanded={openMoreVert ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClickMoreVert}
+            >
+                <Badge>
+                    <MoreVert fontSize="medium" sx={{ color: "rebeccapurple"}}  />
+                </Badge>
+            </IconButton>
+        </Grid>
+    </Grid>
 
-             {/* -----------------------start recommendation-------------------------------------------------------------- */}
+        {/* -----------------------start recommendation-------------------------------------------------------------- */}
 
-              <Stack sx={{  }}>
-                    <Accordion 
-                      expanded={expanded === farmland._id } 
-                      onChange={handleChangeAccordion(farmland._id)}
-                      >
-                        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "#826DA3" }}  />} aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: "#eee" }}>
-                          <Typography variant="body1" sx={{ textAlign: "left", color: "#826DA3" }}>
-                              Acção recomendada
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Stack sx={{ }} spacing={1}>
-                                <Alert  severity="error" >
-                                    This is an error alert 
-                                </Alert>
-                                <Alert  severity="error">
-                                    This is an error alert 
-                                </Alert>
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
+    <Stack sx={{  }}>
+        <Accordion 
+            expanded={expanded === farmland._id } 
+            onChange={handleChangeAccordion(farmland._id)}
+            >
+            <AccordionSummary expandIcon={<ExpandMore sx={{ color: "red" }}  />} aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: "" }}>
+                <Typography variant="body1" sx={{ textAlign: "left", color: "red" }}>
+                    Acção recomendada
+                </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                <Stack sx={{ }} spacing={1}>
+                    <Alert  severity="error" >
+                        This is an error alert 
+                    </Alert>
+                    <Alert  severity="error">
+                        This is an error alert 
+                    </Alert>
                 </Stack>
+            </AccordionDetails>
+        </Accordion>
+    </Stack>
                 {/* -------------------start MoreVert menu -------------- */}
                 <Menu
                   id="long-menu"

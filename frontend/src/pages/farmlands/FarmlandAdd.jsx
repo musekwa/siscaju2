@@ -77,20 +77,28 @@ const FarmlandAdd = ({ user }) => {
         isSearchIcon={true}
         user={user}
       />
-      <Box sx={{ position: "relative", bottom: "60px", marginTop: "100px"  }}>
+      <Box 
+      sx={{ 
+        margin: "auto",
+        flexGrow: 1,
+        position: "relative", 
+        bottom: "60px", 
+        marginTop: "100px"  
+        }}
+      >
       <List
         sx={{
           marginTop: "45px",
-          width: "100%",
-          maxWidth: 360,
+          // width: "100%",
+          // maxWidth: 360,
           bgcolor: "background.paper",
         }}
       >
         {farmers &&
           farmers?.map((farmer) => (
             <Paper key={farmer?._id} sx={{ 
-              borderTop: "2px solid #826DA3", 
-              margin: "10px 15px 3px 15px",
+              borderTop: "5px solid rebeccapurple", 
+              margin: "10px 10px 3px 10px",
               borderRadius: "10px", 
               }}
             >
