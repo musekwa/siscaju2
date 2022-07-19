@@ -106,7 +106,7 @@ const FarmlandsList = ({ user }) => {
       <Tooltip
         onClick={onAddFarmland}
         title="Adicine produtor"
-        sx={{ position: "fixed", bottom: 60, right: 25 }}
+        sx={{ position: "fixed", bottom: 80, right: 25 }}
       >
         <Fab aria-label="add" color="rebecca">
           <Add fontSize="large" color="white" />

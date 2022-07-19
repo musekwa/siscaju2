@@ -117,7 +117,10 @@ const MonitoringBoardModal = ({
                     </Typography>
                 </Box>
                 <Box 
-                  sx={{  textAlign: 'center', padding: "25px 10px 0px 10px" }}
+                  sx={{  
+                    textAlign: 'center', 
+                    color: "gray",
+                    padding: "25px 10px 0px 10px" }}
                 >
                 <Typography  variant="h6">{transferedPackage?.question}{", desde "} {transferedPackage?.variableLastModifiedAt}?</Typography>
                 </Box>
@@ -159,7 +162,7 @@ const MonitoringBoardModal = ({
                         // border: "1px solid"
                     }}>
                     <QuestionButton 
-                        sx={{ color: "#eee", width: "20px" }}
+                        sx={{ color: "#eee" }}
                         onClick={()=>{
                           setOpenModal(false)
                         }}

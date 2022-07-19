@@ -64,7 +64,7 @@ const FarmersList = ()=> {
   return (
     <Box>
         <Navbar pageDescription={user?.address?.district} isManageSearch={true} isSearchIcon={true} user={user} />
-        <Tooltip onClick={onAddFarmer} title="Adicine produtor" sx={{ position: "fixed", bottom: 60, right: 25 }}>
+        <Tooltip onClick={onAddFarmer} title="Adicine produtor" sx={{ position: "fixed", bottom: 80, right: 25 }}>
             <Fab  aria-label="add" color="rebecca">
                 <Add fontSize='large' color="white" />
             </Fab>
@@ -102,12 +102,26 @@ const FarmersList = ()=> {
         }}
     >
         
-        <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {
-                farmers?.map((farmer, key)=>(
-            <Paper key={farmer._id.toString()} sx={{ margin: "15px", borderRadius: "10px", borderTop: "5px solid #826DA3" }} >
-            <Link to="/farmer" state={{ farmer }}>
-            <ListItem alignItems="flex-start" >
+    <List 
+    sx={{ 
+        marginTop: "45px", 
+        // width: '100%', 
+        // maxWidth: 360, 
+        bgcolor: 'background.paper' 
+    }}
+    >
+    {
+    farmers?.map((farmer, key)=>(
+    <Paper 
+        key={farmer._id.toString()} 
+        sx={{ 
+            margin: "15px", 
+            borderRadius: "10px", 
+            borderTop: "5px solid #826DA3" 
+        }} 
+        >
+        <Link to="/farmer" state={{ farmer }}>
+        <ListItem alignItems="flex-start" >
                 {/* <ListItemButton> */}
                 {/* <Box sx={{ backgroundColor: "#826DA3"}}> */}
                 <ListItemAvatar sx={{ }} >

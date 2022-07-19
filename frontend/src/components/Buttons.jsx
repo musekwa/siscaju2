@@ -41,9 +41,9 @@ export const BootstrapButton = styled(Button)({
 export const QuestionButton = styled(Button)({
   boxShadow: "none",
   textTransform: "none",
-  minWidth: "60px",
+  minWidth: "100px",
   fontSize: 16,
-  padding: "6px 12px",
+  padding: "6px",
   border: "1px solid",
   borderRadius: "10px",
   lineHeight: 1.5,
