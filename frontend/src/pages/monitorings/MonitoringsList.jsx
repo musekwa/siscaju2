@@ -59,7 +59,8 @@ const options = [
 const MonitoringsList = ({ user }) => {
 
 
-
+  const [openModal, setOpenModal] = useState(false);
+  const modalFlag = 'monitoring';
 
 
   const navigate = useNavigate();
@@ -137,6 +138,8 @@ const MonitoringsList = ({ user }) => {
         isManageSearch={true}
         isSearchIcon={true}
         user={user}
+        setOpenModal={setOpenModal}
+        modalFlag={modalFlag}
       />
   {
   farmlands && farmlands.length === 0 && (
@@ -240,7 +243,12 @@ const MonitoringsList = ({ user }) => {
   }
     </List>
   </Box>
-  <SearchModal open={false} />
+  <SearchModal 
+        openModal={openModal}
+        modalFlag={modalFlag}
+        setOpenModal={setOpenModal}
+ 
+    />
     <Footer />
   </Box>
   );

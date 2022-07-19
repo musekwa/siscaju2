@@ -164,10 +164,10 @@ const Farmer = ({ user }) => {
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
         <Typography>       
-          [ <span>{`${farmer?.birthPlace?.province} `}</span>
-          <span>{`${farmer?.birthPlace?.district} `}</span>
-          <span>{`${farmer?.birthPlace?.territory} `}</span>
-          <span>{`${farmer?.birthPlace?.village} `}</span>]
+          [ <span>{`${farmer?.address?.province} `}</span>
+          <span>{`${farmer?.address?.district} `}</span>
+          <span>{`${farmer?.address?.territory} `}</span>
+          <span>{`${farmer?.address?.village} `}</span>]
         </Typography>
       </Box>
     </Stack>

@@ -26,6 +26,8 @@ const FarmlandsList = ({ user }) => {
 
   const navigate = useNavigate();
   const [byFarmers, setByFarmers] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+  const modalFlag = 'farmlands';
 
   let filterBy =
     user?.role === "Extensionista"
@@ -102,6 +104,8 @@ const FarmlandsList = ({ user }) => {
         isManageSearch={true}
         isSearchIcon={true}
         user={user}
+        setOpenModal={setOpenModal}
+        modalFlag={modalFlag}
       />
       <Tooltip
         onClick={onAddFarmland}
@@ -273,7 +277,11 @@ const FarmlandsList = ({ user }) => {
       )) }
       </List>
       </Box>
-      <SearchModal open={false} />
+      <SearchModal 
+        openModal={openModal}
+        modalFlag={modalFlag}
+        setOpenModal={setOpenModal}       
+        />
       <Footer />
     </Box>
   );

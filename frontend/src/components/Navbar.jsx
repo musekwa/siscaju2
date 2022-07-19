@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ArrowBackIos, Logout, ManageSearch, PersonAdd, Search as SearchIcon, Settings } from '@mui/icons-material';
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { resetUser } from "../features/users/userSlice";
@@ -64,7 +64,16 @@ const UserBox = styled(Box)(({ theme }) => ({
     
 // }))
 
-const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isManageSearch }) => {
+const Navbar = ({ 
+    arrowBack, 
+    goBack, 
+    pageDescription, 
+    user, 
+    isSearchIcon, 
+    isManageSearch, 
+    modalFlag, 
+    openModal, 
+    setOpenModal }) => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -130,27 +139,57 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
         }}
       >
         <StyledToolbar>
-          {/* <Typography
-            variant="h6"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            SisCaju
-          </Typography> */}
-        {  user ? ( <>
-
+        {  user ? ( 
+        
+        <Fragment>
           <Stack
             direction="row"
             sx={{ width: "100%", textAlign: "center" }}
-            gap={3}
+            gap={5}
           >
-            <Grid item sx={{ display: arrowBack ? `${arrowBack}` : 'none'  }}>
+            <Box sx={{ display: arrowBack ? `${arrowBack}` : 'none'}} >
+              <Link to={`${goBack}`}>
+                <ArrowBackIos fontSize="medium" sx={{ color: "#ffffff"}} />
+              </Link>
+            </Box>
+            <Box>
+              {pageDescription && (
+                <Typography
+                  variant="body1"
+                  fontWeight={100}
+                  component="p"
+                  sx={{ p: "6px 0px 0px 0px" }}
+                >
+                  {pageDescription}
+                </Typography>
+              )}
+            </Box>
+            <Box>
+              {
+                isManageSearch && (
+                  <IconButton  onClick={()=>{
+                    setOpenModal(true)
+                  }}>
+                    <ManageSearch sx={{ color: "#eee"}} fontSize="large" />
+                  </IconButton>
+              )}
+            </Box>
+            <Box>
+              {
+                isSearchIcon && (
+                  <IconButton>
+                    <SearchIcon sx={{ color: "#eee"}} fontSize="large" />
+                  </IconButton>
+              )}
+            </Box>
+            {/* <Grid item sx={{ display: arrowBack ? `${arrowBack}` : 'none'  }}>
               <Link to={`${goBack}`}>
                 <ArrowBackIos fontSize="medium" sx={{ color: "#ffffff"}} />
               </Link>
             </Grid>
             
           
-           <Grid item xs={6}>
+           <Grid item xs={1}>
               {pageDescription && (
                 <Typography
                   variant="body1"
@@ -162,17 +201,24 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
                 </Typography>
               )}
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={1}>
               {
-                isManageSearch && <ManageSearch fontSize="large" />
-                // <Search>
-                //   <InputBase placeholder="Procurar produtor..." />
-                // </Search>
-              }
+                isManageSearch && (
+                  <IconButton  onClick={()=>{
+                    setOpenModal(true)
+                  }}>
+                    <ManageSearch sx={{ color: "#eee"}} fontSize="large" />
+                  </IconButton>
+              )}
             </Grid>
-            <Grid item xs={3}>
-              {isSearchIcon && <SearchIcon fontSize="large" />}
-            </Grid>
+            <Grid item xs={1}>
+              {
+                isSearchIcon && (
+                  <IconButton>
+                    <SearchIcon sx={{ color: "#eee"}} fontSize="large" />
+                  </IconButton>
+              )}
+            </Grid> */}
           </Stack>
           <Tooltip title={`${user?.fullname.split(" ")[0]}`}>
             <IconButton             
@@ -184,9 +230,6 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
               aria-expanded={open ? 'true' : undefined}
             >
               <Avatar
-                // onClick={() => {}}
-                // sx={{ width: "40px", height: "40px" }}
-                // src="#"
               />
             </IconButton>
           </Tooltip>
@@ -211,7 +254,7 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
               {user?.fullname.split(" ")[0]}
             </Typography>
           </UserBox>
-        </>
+        </Fragment>
         ) 
         : 
         (<Grid container>
@@ -234,24 +277,6 @@ const Navbar = ({ arrowBack, goBack, pageDescription, user, isSearchIcon, isMana
         )
         }
         </StyledToolbar>
-        {/* <Box onClick={handleClick}> */}
-        {/* <Menu
-          id="demo-positioned-menu"
-          aria-labelledby="demo-positioned-button"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          <MenuItem onClick={() => {}}>Minha conta</MenuItem>
-          <MenuItem onClick={() => onLogout()}>Terminar a sessão</MenuItem>
-          <MenuItem onClick={() => {}}>Configurações</MenuItem>
-        </Menu> */}
-        {/* </Box> */}
-
 
         {/* -----------------------start account menu-------------------------- */}
 

@@ -303,19 +303,19 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                 </Box>
                   <Box sx={{ p: "5px 15px 5px 15px",  }}>
                       <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
-                          <Typography sx={{ width: "80%", textAlign: "left"}}>Vítimas de ataque muito alto:</Typography>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Ataque muito alto:</Typography>
                           <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.higherAttack || 0}</Typography>
                       </Stack>
                       <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
-                          <Typography sx={{ width: "80%", textAlign: "left"}}>Vítimas de ataque alto:</Typography>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Ataque alto:</Typography>
                           <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.highAttack || 0}</Typography>
                       </Stack>
                       <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
-                          <Typography sx={{ width: "80%", textAlign: "left"}}>Vítimas de ataque moderado:</Typography>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Ataque moderado:</Typography>
                           <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.averageAttack || 0}</Typography>
                       </Stack>
                       <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >
-                          <Typography sx={{ width: "80%", textAlign: "left"}}>Vítimas de ataque baixo:</Typography>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Ataque baixo:</Typography>
                           <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.lowAttack || 0}</Typography>
                       </Stack>
                       <Stack direction="row" sx={{ p: "1px 0px 0px 0px",  }} >

@@ -1,5 +1,5 @@
 
-import React, {Fragment, startTransition } from 'react';
+import React, {Fragment, startTransition, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -21,6 +21,8 @@ import { useSelector } from 'react-redux';
 const FarmersList = ()=> {
 
 
+    const [openModal, setOpenModal] = useState(false);
+    const modalFlag = 'farmers';
 
     const { user, isloading: userIsLoading, isError: userIsError, isSuccess: userIsSuccess, } = useSelector((state)=>state.user);
 
@@ -63,7 +65,14 @@ const FarmersList = ()=> {
 
   return (
     <Box>
-        <Navbar pageDescription={user?.address?.district} isManageSearch={true} isSearchIcon={true} user={user} />
+        <Navbar 
+            pageDescription={user?.address?.district} 
+            isManageSearch={true} isSearchIcon={true} 
+            user={user} 
+            setOpenModal={setOpenModal}
+            modalFlag={modalFlag}
+                        
+        />
         <Tooltip onClick={onAddFarmer} title="Adicine produtor" sx={{ position: "fixed", bottom: 80, right: 25 }}>
             <Fab  aria-label="add" color="rebecca">
                 <Add fontSize='large' color="white" />
@@ -179,7 +188,12 @@ const FarmersList = ()=> {
             }
         </List>
         </Box>
-        <SearchModal open={false} />
+        <SearchModal 
+            openModal={openModal}
+            modalFlag={modalFlag}
+            setOpenModal={setOpenModal}
+            
+        />
         <Footer />
     </Box>
   );

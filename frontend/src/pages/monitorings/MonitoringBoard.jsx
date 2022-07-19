@@ -482,7 +482,7 @@ const transferedPackage = {
                 }}
                 
             >
-              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Colheitas</Typography>
+              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Colheita</Typography>
               <CardMedia
                 component="img"
                 width= "150px"

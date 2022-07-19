@@ -97,6 +97,7 @@ const addPruningReport2 = async (data) => {
       await newPruningReport.save();
 
       foundMonitoring.pruning = newPruningReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundPruningReport.rounds = new Array(...foundPruningReport.rounds, {
@@ -108,6 +109,7 @@ const addPruningReport2 = async (data) => {
       });
 
       await foundPruningReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
   }
@@ -181,6 +183,7 @@ const addWeedingReport2 = async (data) => {
       await newWeedingReport.save();
 
       foundMonitoring.weeding = newWeedingReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundWeedingReport.rounds = new Array(...foundWeedingReport.rounds, {
@@ -191,6 +194,7 @@ const addWeedingReport2 = async (data) => {
       });
 
       await foundWeedingReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
 
@@ -278,6 +282,7 @@ const addDiseaseReport2 = async (data) => {
       await newDiseaseReport.save();
 
       foundMonitoring.disease = newDiseaseReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundDiseaseReport.rounds = new Array(...foundDiseaseReport.rounds, {
@@ -290,6 +295,7 @@ const addDiseaseReport2 = async (data) => {
       });
 
       await foundDiseaseReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
 
@@ -374,6 +380,7 @@ const addPlagueReport2 = async (data) => {
       await newPlagueReport.save();
 
       foundMonitoring.plague = newPlagueReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundPlagueReport.rounds = new Array(...foundPlagueReport.rounds, {
@@ -387,6 +394,7 @@ const addPlagueReport2 = async (data) => {
       });
 
       await foundPlagueReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
 
@@ -465,6 +473,7 @@ const addInsecticideReport2 = async (data) => {
       await newInsecticideReport.save();
 
       foundMonitoring.insecticide = newInsecticideReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundInsecticideReport.rounds = new Array(
@@ -480,6 +489,7 @@ const addInsecticideReport2 = async (data) => {
       );
 
       await foundInsecticideReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
 
@@ -562,6 +572,7 @@ const addFungicideReport2 = async (data) => {
       await newFungicideReport.save();
 
       foundMonitoring.fungicide = newFungicideReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundFungicideReport.rounds = new Array(...foundFungicideReport.rounds, {
@@ -574,6 +585,7 @@ const addFungicideReport2 = async (data) => {
       });
 
       await foundFungicideReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
 
@@ -676,6 +688,7 @@ const addHarvestReport2 = async (data) => {
       await newHarvestReport.save();
 
       foundMonitoring.harvest = newHarvestReport;
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     } else {
       foundHarvestReport.rounds = new Array(...foundHarvestReport.rounds, {
@@ -687,6 +700,7 @@ const addHarvestReport2 = async (data) => {
       });
 
       await foundHarvestReport.save();
+      foundMonitoring.user = user;
       return await foundMonitoring.save();
     }
 
