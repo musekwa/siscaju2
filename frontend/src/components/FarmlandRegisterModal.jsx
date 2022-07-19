@@ -64,7 +64,10 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
                   }}
                 >
                 <Typography 
-                  sx={{ textAlign: "center", width: "250px",  mt: 1,  }}
+                  sx={{ 
+                    textAlign: "center", 
+                    // width: "250px",  
+                    mt: 1,  }}
                   id="keep-mounted-modal-title" 
                   variant='body1'
                   color="#eee"

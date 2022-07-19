@@ -336,20 +336,7 @@ function UserRegister() {
           mb: "40px",
         }}
       >
-        {/* <Typography color="primary" sx={{ fontSize: "19px", textAlign: "right", marginRight: "20px"}}>
-            <Link to="/login" >login</Link>
-        </Typography> */}
-{/* 
-        <Typography
-          variant="h6"
-          fontWeight={400}
-          component="p"
-          sx={{ p: "20px 0px 5px 0px", color: "gray" }}
-        >
-          
-        </Typography> */}
-
-        <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+       <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <Paper
             sx={{
             maxWidth: "500px",
@@ -481,6 +468,7 @@ function UserRegister() {
                 required
                 size="medium"
                 disablePortal
+                blurOnSelect
                 id="combo-box-demo-2"
                 value={userData.gender}
                 options={genders}
@@ -542,6 +530,7 @@ function UserRegister() {
                 required
                 size="medium"
                 disablePortal
+                blurOnSelect
                 id="combo-box-demo-1"
                 value={role}
                 options={roles}
@@ -598,6 +587,7 @@ function UserRegister() {
                 required
                 size="medium"
                 disablePortal
+                blurOnSelect
                 id="combo-box-demo-3"
                 options={provinces || [""]}
                 value={address?.province}
@@ -639,6 +629,7 @@ function UserRegister() {
                 required
                 size="medium"
                 disablePortal
+                blurOnSelect
                 id="combo-box-demo-4"
                 value={address?.district}
                 options={
@@ -704,6 +695,7 @@ function UserRegister() {
                 required
                 size="medium"
                 disablePortal
+                blurOnSelect
                 id="combo-box-demo-5"
                 value={address?.territory}
                 options={

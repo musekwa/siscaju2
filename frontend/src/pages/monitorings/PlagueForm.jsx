@@ -183,21 +183,11 @@ function PlagueForm({ user }) {
             >
 
         <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-
-       {/* <Box
-        sx={{         
-        margin: 'auto',
-        maxWidth: 500,
-        flexGrow: 1,
-        marginTop: "10px",
-        color: "gray"  }} 
-       > */}
- 
-        {/* <Stack direction="row" sx={{ padding: "10px 10px 10px 10px"}} > */}
-            <Autocomplete
+          <Autocomplete
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.plagueName || ''}
@@ -231,8 +221,6 @@ function PlagueForm({ user }) {
                 value === undefined || value === "" || option === value
               }
             />
-        {/* </Stack> */}
-        {/* </Box> */}
 
             </div>
 
@@ -241,12 +229,12 @@ function PlagueForm({ user }) {
                 sx={styledTextField}
                 fullWidth
                 required
-                label="Cajueiros com grau de ataque muito alto"
+                label="Cajueiros vítimas de ataque muito alto"
                 id="fullWidth higherAttack"
                 name="higherAttack"
                 type="number"
                 value={reportData?.higherAttack || ''}
-                placeholder="Cajueiros com grau de ataque muito alto"
+                placeholder="Cajueiros vítimas de ataque muito alto"
                 size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
@@ -263,12 +251,12 @@ function PlagueForm({ user }) {
                 sx={styledTextField}
                 fullWidth
                 required
-                label="Cajueiros com grau de ataque alto"
+                label="Cajueiros vítimas de ataque alto"
                 id="fullWidth highAttack"
                 name="highAttack"
                 type="number"
                  value={reportData?.highAttack || ''}
-                placeholder="Cajueiros com grau de ataque alto"
+                placeholder="Cajueiros vítimas de ataque alto"
                 size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
@@ -284,12 +272,12 @@ function PlagueForm({ user }) {
                 sx={styledTextField}
                 fullWidth
                 required
-                label="Cajueiros com grau de ataque moderado"
+                label="Cajueiros vítimas de ataque moderado"
                 id="fullWidth averageAttack"
                 name="averageAttack"
                 type="number"
                 value={reportData?.averageAttack || ''}
-                placeholder="Cajueiros com grau de ataque moderado"
+                placeholder="Cajueiros vítimas de ataque moderado"
                 size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({
@@ -306,12 +294,12 @@ function PlagueForm({ user }) {
                 sx={styledTextField}
                 fullWidth
                 required
-                label="Cajueiros com grau de ataque baixo"
+                label="Cajueiros vítimas de ataque baixo"
                 id="fullWidth lowAttack"
                 name="highAttack"
                 type="number"
                  value={reportData?.lowAttack || ''}
-                placeholder="Cajueiros com grau de ataque baixo"
+                placeholder="Cajueiros vítimas de ataque baixo"
                 size="medium"
                 onChange={(event) => {
                   setReportData((prevState) => ({

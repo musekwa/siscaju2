@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { BootstrapButton, QuestionButton } from "./Buttons";
+import { useSelector } from "react-redux";
+import { useAddMonitoringReportMutation } from "../features/api/apiSlice";
 
 
 const MonitoringBoardModal = ({ 
@@ -22,6 +24,19 @@ const MonitoringBoardModal = ({
                     }) => {
 
   const navigate = useNavigate();
+
+  const { 
+    user, 
+    isloading: userIsLoading, 
+    isError: userIsError, 
+    isSuccess: userIsSuccess, 
+  } = useSelector((state)=>state.user);
+
+  const [ 
+      addMonitoringReport, 
+      { data: monitoring, isSuccess, isError, isLoading, error} 
+    ] = useAddMonitoringReportMutation()
+
 
   useEffect(()=>{
 
@@ -58,6 +73,28 @@ const MonitoringBoardModal = ({
 
     }
 
+  }
+
+  const onReject = async () =>{
+
+    const { division, flag } = transferedPackage;
+
+    const normalizedData = {
+      flag,
+      division,
+      user: {
+         fullname: user?.fullname,
+          email: user?.email,
+          phone: user?.phone,
+      },
+      status: "rejected",
+    }
+
+    setOpenModal(false);
+
+    if (!isLoading && !userIsLoading && normalizedData) {
+      await addMonitoringReport(normalizedData)
+    }
   }
 
   return (
@@ -163,9 +200,7 @@ const MonitoringBoardModal = ({
                     }}>
                     <QuestionButton 
                         sx={{ color: "#eee" }}
-                        onClick={()=>{
-                          setOpenModal(false)
-                        }}
+                        onClick={onReject}
                     >
                       Não
                     </QuestionButton>

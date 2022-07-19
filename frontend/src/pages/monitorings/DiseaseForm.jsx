@@ -183,21 +183,11 @@ function DiseaseForm({ user }) {
             >
 
         <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-
-       {/* <Box
-        sx={{         
-        margin: 'auto',
-        maxWidth: 500,
-        flexGrow: 1,
-        marginTop: "10px",
-        color: "gray"  }} 
-       > */}
- 
-        {/* <Stack direction="row" sx={{ padding: "10px 10px 10px 10px"}} > */}
-            <Autocomplete
+          <Autocomplete
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.diseaseName || ''}
@@ -231,9 +221,6 @@ function DiseaseForm({ user }) {
                 value === undefined || value === "" || option === value
               }
             />
-        {/* </Stack> */}
-        {/* </Box> */}
-
             </div>
 
             <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>

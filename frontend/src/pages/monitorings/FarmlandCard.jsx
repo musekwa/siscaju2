@@ -8,6 +8,8 @@ const ITEM_HEIGHT = 35;
 
 const FarmlandCard = ({ farmland, }) => {
 
+    // console.log('farmland', farmland)
+
     
     // --------- start MoreVert ------------------------------------
 

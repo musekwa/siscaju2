@@ -87,14 +87,14 @@ const FarmlandRegister = () => {
 
 
   
-  useEffect(()=>{
-    if ((userIsError || !user) && !flag) {
-      setFlag(true);
-    }
-    else {
-      setFlag(false);
-    }
-  }, [flag, userIsError, user, userIsLoading])
+  // useEffect(()=>{
+  //   if ((userIsError || !user) && !flag) {
+  //     setFlag(true);
+  //   }
+  //   else {
+  //     setFlag(false);
+  //   }
+  // }, [flag, userIsError, user, userIsLoading])
 
 
  
@@ -105,6 +105,13 @@ const FarmlandRegister = () => {
 
 
   useEffect(()=>{
+
+    if ((userIsError || !user) && !flag) {
+      setFlag(true);
+    }
+    else {
+      setFlag(false);
+    }
 
     if (isError && error.status === 'FETCH_ERROR') {
       toast.error("Verifique a conexão da Internet!", {
@@ -119,12 +126,13 @@ const FarmlandRegister = () => {
         position: toast.POSITION.TOP_CENTER,
       });
     } 
-    else if (isSuccess) {
+    else if (isSuccess && !flag) {
       toast.success(`Foi registado com sucesso o pomar ${label} de ${farmer.fullname}!`, {
         autoClose: 5000,
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,        
-      })     
+      })    
+      setFlag(true); 
       setOpen(true)
       setFarmlandData({
         label: '',
@@ -348,6 +356,7 @@ const FarmlandRegister = () => {
               >
                 <Autocomplete
                   multiple
+                  blurOnSelect
                   id="tags-outlined"
                   options={interCropsList}
                   getOptionLabel={(crop) => crop}
@@ -542,6 +551,7 @@ const FarmlandRegister = () => {
                   required
                   size="medium"
                   disablePortal
+                  blurOnSelect
                   id="combo-box-demo"
                   options={plantingTechniquesList}
                   onChange={(event, newSeedling) => {
@@ -576,6 +586,7 @@ const FarmlandRegister = () => {
               >
                 <Autocomplete
                   multiple
+                  blurOnSelect
                   id="tags-outlined"
                   options={clones}
                   getOptionLabel={(clone) => clone}

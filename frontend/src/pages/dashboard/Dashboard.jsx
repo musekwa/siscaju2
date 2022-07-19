@@ -106,7 +106,7 @@ const Dashboard = () => {
 
           <Grid item xs={4} sx={{}}>
             <Item>
-              <Link to="/monitoring-add">
+              <Link to="/monitorings-list">
                 <LegendToggle
                   fontSize="large"
                   sx={{ color: "rebeccapurple" }}

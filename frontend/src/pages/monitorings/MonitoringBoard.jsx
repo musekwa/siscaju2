@@ -7,12 +7,13 @@ import { Autocomplete, Box, CardMedia, Grid, Paper, Stack, TextField, } from "@m
 import Footer from "../../components/Footer";
 import {Link, useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-import insecticide from '../../assets/images/insecticide.jpg'
+import insecticide from '../../assets/images/insecticide.jpeg'
 import crop from '../../assets/images/crop.jpg'
 import plague from '../../assets/images/plague.jpg'
 import disease from '../../assets/images/disease.jpg'
 import weeding from '../../assets/images/weeding.jpg'
 import pruning from '../../assets/images/pruning.jpg'
+import fungicide from '../../assets/images/fungicide.jpeg'
 import { styled } from "@mui/system";
 import { months } from "../../app/months";
 import { monitoringQuestions } from "../../app/monitoringQuestions";
@@ -248,6 +249,7 @@ const transferedPackage = {
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={sowingYear}
@@ -380,7 +382,7 @@ const transferedPackage = {
             </Box>
              {/* </Link> */}
           </Paper>
-          <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
+          <Paper sx={{ width: "152px", height: "150px", backgroundColor: "#826DA3" }}>
             {/* <Link to='/plagues-add'> */}
             <Box 
                 component="button" 
@@ -456,7 +458,7 @@ const transferedPackage = {
               component="img"
               width= "150px"
               height="105px"
-              image={insecticide}
+              image={fungicide}
               alt="fungicide"
               />
               <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.fungicide ? normalizeDate(report?.fungicide?.updatedAt) : `Ainda não monitorada`}</Typography>

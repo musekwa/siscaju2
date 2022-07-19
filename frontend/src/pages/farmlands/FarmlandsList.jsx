@@ -244,7 +244,7 @@ const FarmlandsList = ({ user }) => {
                   <Box sx={{ width: "50%" }}>
                     <Typography component="span" variant="body2">
                       {" "}
-                      {`Idade : `}
+                      {`Idade média: `}
                       {getTreesAverageAge(
                         farmland?.divisions
                       )} {` anos`}{" "}

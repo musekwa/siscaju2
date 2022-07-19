@@ -192,6 +192,7 @@ function InsecticideForm({ user }) {
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.insecticideName || ''}
@@ -233,6 +234,7 @@ function InsecticideForm({ user }) {
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.applicationNumber || ''}
@@ -297,6 +299,7 @@ function InsecticideForm({ user }) {
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.dose || ''}

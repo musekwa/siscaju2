@@ -402,6 +402,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                       required
                       size="medium"
                       disablePortal
+                      blurOnSelect
                       id="combo-box-demo"
                       options={plantingTechniquesList}
                       onChange={(event, newSeedling) => {
@@ -433,6 +434,7 @@ const FarmlandDivisionRegister = ({ user }) => {
                 <Box component="div" sx={{ width: "100%", padding: "10px 10px 10px 10px" }}>
                   <Autocomplete
                       multiple
+                      blurOnSelect
                       id="tags-outlined"
                       options={clones}
                       getOptionLabel={(clone) => clone}

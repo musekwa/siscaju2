@@ -176,12 +176,11 @@ function PruningForm({ user }) {
             >
 
         <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
- 
-        {/* <Stack direction="row" sx={{ padding: "10px 10px 10px 10px"}} > */}
-            <Autocomplete
+           <Autocomplete
               fullWidth
               required
               size="medium"
+              blurOnSelect
               disablePortal
               id="combo-box-demo-2"
               value={reportData?.pruningType || ''}
@@ -216,9 +215,6 @@ function PruningForm({ user }) {
                 value === undefined || value === "" || option === value
               }
             />
-        {/* </Stack> */}
-        {/* </Box> */}
-
             </div>
 
             <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>

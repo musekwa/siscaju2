@@ -35,6 +35,29 @@ const addPruningReport2 = async (data) => {
     phone: data?.user?.phone,
   };
 
+  // in case there is no updates in regards to the pruning the farmland division
+  if (data?.status === "rejected") {
+    let foundPruningReport = await Pruning2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, pruning: foundPruningReport._id },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
   const { pruningType, totallyPrunedTrees, partiallyPrunedTrees, prunedAt } =
     data;
 
@@ -98,6 +121,29 @@ const addWeedingReport2 = async (data) => {
     phone: data?.user?.phone,
   };
 
+  // in case there is no updates in regards to the weeding the farmland division
+  if (data?.status === "rejected") {
+    let foundWeedingReport = await Weeding2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, weeding: foundWeedingReport._id },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
   const { totallyCleanedTrees, partiallyCleanedTrees, weededAt } = data;
 
   const newWeedingReport = new Weeding2({
@@ -137,7 +183,7 @@ const addWeedingReport2 = async (data) => {
       foundMonitoring.weeding = newWeedingReport;
       return await foundMonitoring.save();
     } else {
-      foundWeedingReport.rounds = new Array(...foundWeedingReport.rounds,{
+      foundWeedingReport.rounds = new Array(...foundWeedingReport.rounds, {
         totallyCleanedTrees,
         partiallyCleanedTrees,
         weededAt,
@@ -159,6 +205,30 @@ const addDiseaseReport2 = async (data) => {
     email: data?.user?.email,
     phone: data?.user?.phone,
   };
+
+  // in case there is no updates in regards to the disease in this farmland division
+  if (data?.status === "rejected") {
+    let foundDiseaseReport = await Disease2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, disease: foundDiseaseReport._id },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
 
   const {
     diseaseName,
@@ -235,23 +305,46 @@ const addPlagueReport2 = async (data) => {
     phone: data?.user?.phone,
   };
 
+  // in case there is no updates in regards to the plague the farmland division
+  if (data?.status === "rejected") {
+    let foundPlagueReport = await Plague2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, plague: foundPlagueReport._id  },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
   const {
     plagueName,
     higherAttack,
     highAttack,
     averageAttack,
     lowAttack,
-    detectedAt
-  } = data
-  const newPlagueReport = new Plague2({
-    rounds: new Array({    
-    plagueName,
-    higherAttack,
-    highAttack,
-    averageAttack,
-    lowAttack,
     detectedAt,
-    user
+  } = data;
+  const newPlagueReport = new Plague2({
+    rounds: new Array({
+      plagueName,
+      higherAttack,
+      highAttack,
+      averageAttack,
+      lowAttack,
+      detectedAt,
+      user,
     }),
     division: ObjectId(data?.division._id),
   });
@@ -295,7 +388,6 @@ const addPlagueReport2 = async (data) => {
 
       await foundPlagueReport.save();
       return await foundMonitoring.save();
-
     }
 
     // return await foundMonitoring.save();
@@ -309,7 +401,32 @@ const addInsecticideReport2 = async (data) => {
     email: data?.user?.email,
     phone: data?.user?.phone,
   };
-  const { insecticideName, treatedTrees, applicationNumber, dose, appliedAt } = data;
+
+  // in case there is no updates in regards to the insecticide the farmland division
+  if (data?.status === "rejected") {
+    let foundInsecticideReport = await Insecticide2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, insecticide: foundInsecticideReport._id },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
+  const { insecticideName, treatedTrees, applicationNumber, dose, appliedAt } =
+    data;
 
   const newInsecticideReport = Insecticide2({
     rounds: new Array({
@@ -326,10 +443,9 @@ const addInsecticideReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newInsecticideReport.division,
-  })
+  });
 
   if (!foundMonitoring) {
-
     await newInsecticideReport.save();
 
     const newMonitoringReport = {
@@ -339,11 +455,10 @@ const addInsecticideReport2 = async (data) => {
     };
 
     return await new Monitoring2(newMonitoringReport).save();
-  } 
-  else {
+  } else {
     let foundInsecticideReport = await Insecticide2.findOne({
-        year: new Date().getFullYear(),
-        division: ObjectId(data?.division._id),
+      year: new Date().getFullYear(),
+      division: ObjectId(data?.division._id),
     });
 
     if (!foundInsecticideReport) {
@@ -352,14 +467,17 @@ const addInsecticideReport2 = async (data) => {
       foundMonitoring.insecticide = newInsecticideReport;
       return await foundMonitoring.save();
     } else {
-      foundInsecticideReport.rounds = new Array(...foundInsecticideReport.rounds, {
-        insecticideName,
-        treatedTrees,
-        applicationNumber,
-        dose,
-        appliedAt,
-        user,
-      });
+      foundInsecticideReport.rounds = new Array(
+        ...foundInsecticideReport.rounds,
+        {
+          insecticideName,
+          treatedTrees,
+          applicationNumber,
+          dose,
+          appliedAt,
+          user,
+        }
+      );
 
       await foundInsecticideReport.save();
       return await foundMonitoring.save();
@@ -376,8 +494,32 @@ const addFungicideReport2 = async (data) => {
     email: data?.user?.email,
     phone: data?.user?.phone,
   };
-  const { fungicideName, treatedTrees, applicationNumber, dose, appliedAt } = data;
 
+  // in case there is no updates in regards to the fungicide the farmland division
+  if (data?.status === "rejected") {
+    let foundFungicideReport = await Fungicide2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year: new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, fungicide: foundFungicideReport._id },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
+  const { fungicideName, treatedTrees, applicationNumber, dose, appliedAt } =
+    data;
 
   const newFungicideReport = Fungicide2({
     rounds: new Array({
@@ -396,8 +538,8 @@ const addFungicideReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newFungicideReport.division,
-  })
-//   .populate("fungicide");
+  });
+  //   .populate("fungicide");
 
   // if no monitoring associated to this division in the current year is found
   if (!foundMonitoring) {
@@ -412,27 +554,27 @@ const addFungicideReport2 = async (data) => {
     return await new Monitoring2(newMonitoringReport).save();
   } else {
     let foundFungicideReport = await Fungicide2.findOne({
-        year: new Date().getFullYear(),
-        division: ObjectId(data?.division._id),
+      year: new Date().getFullYear(),
+      division: ObjectId(data?.division._id),
     });
 
     if (!foundFungicideReport) {
-        await newFungicideReport.save();
+      await newFungicideReport.save();
 
-        foundMonitoring.fungicide = newFungicideReport;
-        return await foundMonitoring.save();
+      foundMonitoring.fungicide = newFungicideReport;
+      return await foundMonitoring.save();
     } else {
-        foundFungicideReport.rounds = new Array(...foundFungicideReport.rounds, {
-          fungicideName,
-          treatedTrees,
-          applicationNumber,
-          dose,
-          appliedAt,
-          user,
-        });
+      foundFungicideReport.rounds = new Array(...foundFungicideReport.rounds, {
+        fungicideName,
+        treatedTrees,
+        applicationNumber,
+        dose,
+        appliedAt,
+        user,
+      });
 
-        await foundFungicideReport.save();
-        return await foundMonitoring.save();
+      await foundFungicideReport.save();
+      return await foundMonitoring.save();
     }
 
     // return await foundMonitoring.save();
@@ -446,17 +588,51 @@ const addHarvestReport2 = async (data) => {
     email: data?.user?.email,
     phone: data?.user?.phone,
   };
+
+  // in case there is no updates in regards to the harvest the farmland division
+  if (data?.status === "rejected") {
+    let foundHarvestReport = await Harvest2.findOneAndUpdate(
+      {
+        year:
+          new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
+            ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
+            : new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      {},
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    let foundMonitoringReport = await Monitoring2.findOneAndUpdate(
+      {
+        year:
+          new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
+            ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
+            : new Date().getFullYear(),
+        division: ObjectId(data?.division._id),
+      },
+      { user, harvest: foundHarvestReport._id },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return foundMonitoringReport;
+  }
+
   const { productiveTrees, appleQuantity, nutQuantity, harvestedAt } = data;
 
-  
   const newHarvestReport = Harvest2({
-    rounds: new Array({productiveTrees, appleQuantity, nutQuantity, harvestedAt, user }),
+    rounds: new Array({
+      productiveTrees,
+      appleQuantity,
+      nutQuantity,
+      harvestedAt,
+      user,
+    }),
     division: ObjectId(data?.division._id),
     year:
       new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
         ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
         : new Date().getFullYear(),
-    user,
   });
 
   // find the monitoring reports
@@ -468,11 +644,10 @@ const addHarvestReport2 = async (data) => {
         ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
         : new Date().getFullYear(),
     division: newHarvestReport.division,
-  })
-//   .populate("harvest");
+  });
+  //   .populate("harvest");
 
   if (!foundMonitoring) {
-
     await newHarvestReport.save();
 
     const newMonitoringReport = {
@@ -486,24 +661,15 @@ const addHarvestReport2 = async (data) => {
     };
 
     return await new Monitoring2(newMonitoringReport).save();
-  } else if (
-    foundMonitoring?.harvest &&
-    foundMonitoring?.harvest.length === 0
-  ) {
-    newHarvestReport?.production.push(newProduction);
-    await newHarvestReport.save();
 
-    foundMonitoring.user = user;
-    foundMonitoring.harvest.push(newHarvestReport);
-
-    return await foundMonitoring.save();
-  } else {
+  } 
+  else {
     let foundHarvestReport = await Harvest2.findOne({
-        year:   
-          new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
+      year:
+        new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
           ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
           : new Date().getFullYear(),
-        division: ObjectId(data?.division._id),
+      division: ObjectId(data?.division._id),
     });
 
     if (!foundHarvestReport) {
@@ -525,7 +691,6 @@ const addHarvestReport2 = async (data) => {
     }
 
     // return await foundMonitoring.save();
-
   }
 };
 
