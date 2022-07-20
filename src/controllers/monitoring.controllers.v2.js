@@ -760,7 +760,7 @@ const addMonitoringReport2 = asyncHandler(async (req, res) => {
   res.status(200).json(result);
 });
 
-const getMonitoringReports2 = asyncHandler(async (req, res) => {
+const getMonitoringReportsByDivisionId2 = asyncHandler(async (req, res) => {
   const {
     params: { variable },
   } = req;
@@ -793,50 +793,20 @@ const getMonitoringReports2 = asyncHandler(async (req, res) => {
 
 
 
-//@desc
-//@route
-//@access
-// const getMonitorings = asyncHandler(async (req, res) => {
-//   const {
-//     query: { divisionId, variable, year },
-//   } = req;
+// @desc
+// @route
+// @access
+const getAllMonitoringReports = asyncHandler(async (req, res) => {
 
-//   if (!divisionId) {
-//     res.status(400);
-//     throw new Error("Deve especificar 'divisionId'!");
-//   }
+  let reports;
+  
+  
 
-//   // try {
-//   let monitoring;
-//   if (divisionId && !variable && !year) {
-//     monitoring = await getMonitoringService(divisionId); // ok
-//   } else if (divisionId && !variable && year) {
-//     monitoring = await getMonitoringByYearService(divisionId, year); // ok
-//   } else if (divisionId && variable && !year) {
-//     monitoring = await getMonitoringByVariabilityService(divisionId, variable); // ok
-//   } else if (divisionId && variable && year) {
-//     monitoring = await getMonitoringByVariablityAndYearService(
-//       divisionId,
-//       variable,
-//       year
-//     ); // ok
-//   }
 
-//   return res.status(200).json({ status: "OK", data: monitoring });
-//   // } catch (error) {
-//   //   res.status(error?.status || 500);
-//   //   throw new Error(error.message);
-//   // }
-// });
+});
 
 export {
-  // addMonitoringByVariability,
-  // getMonitoringByYear,
-//   getMonitorings,
-//   addMonitoringReport,
-//   getMonitoringReports,
+  getAllMonitoringReports,
   addMonitoringReport2,
-  getMonitoringReports2,
-  // updateMonitoring,
-  // deleteMonitoring,
+  getMonitoringReportsByDivisionId2,
 };

@@ -19,7 +19,7 @@ import { months } from "../../app/months";
 import { monitoringQuestions } from "../../app/monitoringQuestions";
 import { monitoringVariables } from "../../app/monitoringVariables";
 import MonitoringBoardModal from "../../components/MonitoringBoardModal";
-import { useGetMonitoringReportsQuery } from "../../features/api/apiSlice";
+import { useGetMonitoringReportsByDivisionIdQuery } from "../../features/api/apiSlice";
 
 
 
@@ -88,7 +88,7 @@ const MonitoringBoard = ({ user }) => {
     isLoading, 
     isError, 
     error  
-  } = useGetMonitoringReportsQuery(division || "");
+  } = useGetMonitoringReportsByDivisionIdQuery(division || "");
 
 
   useEffect(()=>{

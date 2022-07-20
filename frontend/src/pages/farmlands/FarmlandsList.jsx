@@ -52,11 +52,11 @@ const FarmlandsList = ({ user }) => {
     if (farmlands && farmlands.length > 0) {
       let groupedByFarmers = { }
       farmlands?.map(farmland=> {
-        if (!groupedByFarmers.hasOwnProperty(farmland.farmer._id)) {
-          groupedByFarmers[`${farmland.farmer._id}`] = new Array(farmland);
+        if (!groupedByFarmers.hasOwnProperty(farmland?.farmer?._id)) {
+          groupedByFarmers[`${farmland?.farmer?._id}`] = new Array(farmland);
         }
         else {
-          groupedByFarmers[`${farmland.farmer._id}`].push(farmland);
+          groupedByFarmers[`${farmland?.farmer?._id}`].push(farmland);
         }
       })
 
@@ -67,7 +67,7 @@ const FarmlandsList = ({ user }) => {
 
   }, [farmlands])
 
-
+// console.log('farmland: ', farmlands)
 
   if (isLoading) {
     return <Spinner />;
@@ -79,8 +79,8 @@ const FarmlandsList = ({ user }) => {
 
   const getTreesAverageAge = (divisions) => {
     let sum = 0;
-    divisions.forEach((div) => {
-      sum += div.sowingYear;
+    divisions?.forEach((div) => {
+      sum += div?.sowingYear;
     });
     return new Date().getFullYear() - Math.ceil(sum / divisions?.length);
   };
@@ -163,7 +163,7 @@ const FarmlandsList = ({ user }) => {
 
   {
   Object?.keys(byFarmers)?.map(farmerId =>(
-    <Paper key={farmerId?.toString()}  
+    <Paper key={farmerId ? farmerId.toString() : new Date()}  
       sx={{ 
         margin: "15px", 
         borderRadius: "10px" 
@@ -201,7 +201,7 @@ const FarmlandsList = ({ user }) => {
 
     {
       byFarmers[farmerId]?.map(farmland=>(
-        <Box key={farmland?._id.toString()} 
+        <Box key={ farmland?._id ? farmland?._id.toString() : new Date() } 
           sx={{ 
             borderTop: "2px solid lightgray",
             borderRadius: "10px 10px 0px 0px", 

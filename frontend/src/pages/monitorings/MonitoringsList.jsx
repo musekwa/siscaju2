@@ -88,13 +88,13 @@ const MonitoringsList = ({ user }) => {
 
       farmlands?.map(farmland=> {
 
-        if (!groupedByFarmers.hasOwnProperty(farmland.farmer._id)) {
-          groupedByFarmers[`${farmland.farmer._id}`] = new Array(farmland);
+        if (!groupedByFarmers.hasOwnProperty(farmland?.farmer?._id)) {
+          groupedByFarmers[`${farmland?.farmer?._id}`] = new Array(farmland);
         }
         else {
-          groupedByFarmers[`${farmland.farmer._id}`].push(farmland);
+          groupedByFarmers[`${farmland.farmer._id}`]?.push(farmland);
         }
-      })
+      });
 
       setByFarmers(prevState=>{
         return groupedByFarmers;
@@ -102,6 +102,8 @@ const MonitoringsList = ({ user }) => {
     }
 
   }, [farmlands])
+
+  // console.log('farmlands:', farmlands);
 
 
 

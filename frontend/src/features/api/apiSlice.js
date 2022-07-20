@@ -216,16 +216,41 @@ export const apiSlice = createApi({
       ) {},
     }),
 
-    getMonitoringReports: build.query({
-      query: (division) =>{
+    getMonitoringReportsByDivisionId: build.query({
+      query: (division) => {
+        const id = division ? division?._id : "void";
+        return {
+          url: `/monitorings/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Monitoring"],
+      async onQueryStarted(
+        arg,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {},
+      async onCacheEntryAdded(
+        arg,
+        {
+          dispatch,
+          getState,
+          requestId,
+          extra,
+          getCacheEntry,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        }
+      ) {},
+    }),
 
-      const id = division ? division?._id : "void";
-      return {
-       url: `/monitorings/${id}`,
-       method: 'GET'
-      }
-    },
-      providesTags: ["Monitoring" ],
+    getAllMonitoringReports: build.query({
+      query: () => {
+        return {
+          url: `/monitorings`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Monitoring"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -263,6 +288,6 @@ export const {
 
     // monitoring
     useAddMonitoringReportMutation,
-    useGetMonitoringReportsQuery,
+    useGetMonitoringReportsByDivisionIdQuery,
 
 } = apiSlice;
