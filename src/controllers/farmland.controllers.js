@@ -193,6 +193,15 @@ const getFarmlands = asyncHandler(async (req, res) => {
   else if (user?.role === "Extensionista") {
     farmlands = await Farmland.find({ district: from }).populate("farmer");
 
+    reports = await Monitoring2.find({ year: new Date().getFullYear() })
+                                                                        .populate("weeding")
+                                                                        .populate("pruning")
+                                                                        .populate("disease")
+                                                                        .populate("plague")
+                                                                        .populate("insecticide")
+                                                                        .populate("fungicide")
+                                                                        .populate("harvest");
+    
     // let reports;
     // let divisionIds;
     // for (let i = 0; i < farmlands.length; i++) {
@@ -209,7 +218,7 @@ const getFarmlands = asyncHandler(async (req, res) => {
     //                                                                     .populate("insecticide")
     //                                                                     .populate("fungicide")
     //                                                                     .populate("harvest");
-   
+
     // console.log("divisions: ", divisionIds);
     // let farmlandLength = farmlands.length;
     // let foundFarmlands = farmlands;
@@ -220,8 +229,6 @@ const getFarmlands = asyncHandler(async (req, res) => {
     //     let divisions = foundFarmlands[i].divisions;
 
     //     if (divisions && divisions.length > 0){
-
-        
 
     //     let divisionLength = divisions.length;
 
@@ -238,58 +245,53 @@ const getFarmlands = asyncHandler(async (req, res) => {
 
     // }
 
+    // console.log('report is present----------------------------')
+    // let modifiedFarmlands = farmlands?.map(farmland=>{
 
+    //   for( let index = 0; index < farmland.divisions.length; index++ ){
+    //     let divisionReport = reports.find(
+    //       (report) =>
+    //         JSON.stringify(report.division) ===
+    //         JSON.stringify(farmland.divisions[index]._id)
+    //     );
+    //     if (divisionReport) {
+    //       farmland.divisions[index]['report'] = divisionReport;
+    //       console.log("farmland division report:", farmland.divisions[index]);
+    //     }
+    //   }
+    //   // let divisions = farmland.divisions.map(division=>{
+    //   let divisionReport = reports.find(report=>JSON.stringify(report.division) === JSON.stringify(division._id));
 
-      // console.log('report is present----------------------------')
-      // let modifiedFarmlands = farmlands?.map(farmland=>{
-        
-      //   for( let index = 0; index < farmland.divisions.length; index++ ){
-      //     let divisionReport = reports.find(
-      //       (report) =>
-      //         JSON.stringify(report.division) ===
-      //         JSON.stringify(farmland.divisions[index]._id)
-      //     );
-      //     if (divisionReport) {
-      //       farmland.divisions[index]['report'] = divisionReport;
-      //       console.log("farmland division report:", farmland.divisions[index]);
-      //     }
-      //   }
-      //   // let divisions = farmland.divisions.map(division=>{
-        //   let divisionReport = reports.find(report=>JSON.stringify(report.division) === JSON.stringify(division._id));
+    //   if (divisionReport) {
+    //     //  console.log("report: ---------------------", divisionReport);
 
-        //   if (divisionReport) {
-        //     //  console.log("report: ---------------------", divisionReport);
-           
+    //     return  {
+    //       ...division, report: divisionReport
+    //     }
+    //   }
+    //   return division;
+    // })
+    // // console.log("farmland divisions: ---------------------", divisions);
+    // farmland.divisions = divisions;
 
-        //     return  {
-        //       ...division, report: divisionReport
-        //     }
-        //   }
-        //   return division;
-        // })
-        // // console.log("farmland divisions: ---------------------", divisions);
-        // farmland.divisions = divisions;
-        
-        // return farmland;
-      // });
-      
-    // } 
+    // return farmland;
+    // });
 
-   // if (farmlands) {
+    // }
+
+    // if (farmlands) {
     //   farmlands = farmlands.map(farmland=>{
     //     farmland.divisions = farmland.divisions?.map(async (division)=>{
-    //       let reports = 
+    //       let reports =
     //       division = { ...division, report: reports};
 
-         
     //       return division;
     //     })
-        
+
     //     return farmland;
     //   })
     // }
     // farmlands
-
   } else {
     farmlands = await Farmland.find({ province: from }).populate("farmer");
      

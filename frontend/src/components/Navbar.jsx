@@ -1,20 +1,25 @@
 import {
   AppBar,
   Avatar,
+  Backdrop,
   Box,
+  Chip,
   Divider,
+  Fade,
   Grid,
   IconButton,
+  InputBase,
   ListItemIcon,
   Menu,
   MenuItem,
+  Modal,
   Stack,
   styled,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ArrowBackIos, Logout, ManageSearch, PersonAdd, Search as SearchIcon, Settings } from '@mui/icons-material';
+import { ArrowBack, ArrowBackIos, Logout, ManageSearch, PersonAdd, Search as SearchIcon, Settings } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,6 +31,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
   height: "100%",
 }));
+
+
 
 const Icons = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -50,19 +57,16 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+const Search = styled("div")(({theme})=>({
+    // backgroundColor: "",
+    // padding: "0 10px",
+    borderRadius: "10px",
+    // height: "20px",
+    // border: "2px solid gray",
+    // width: "70%"
+}))
 
-// const Search = styled("div")(({theme})=>({
-//     backgroundColor: "white",
-//     padding: "0 10px",
-//     width: "80%",
-//     marginLeft: "25px",
-//     marginRight: "10px",
-//     borderRadius: theme.shape.borderRadius,
-//     [theme.breakpoints.up('md')]: {
-//       width: "40%",
-//     },
-    
-// }))
+
 
 const Navbar = ({ 
     arrowBack, 
@@ -79,7 +83,8 @@ const Navbar = ({
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [open, setOpen] = useState(Boolean(anchorEl));
+  const [isSearch, setIsSearch] = useState(false);
+  // const [openSearchModal, setOpenSearchModal] = useState(true)
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -116,6 +121,10 @@ const Navbar = ({
     
   }
 
+  useEffect(()=>{
+
+  }, [isSearch])
+
     
 
 
@@ -127,18 +136,20 @@ const Navbar = ({
         top: 0,
         right: 0,
         left: 0,
-        height: "30px"
+        height: "30px",
        
       }}
     >
+{
+ !isSearch ? (
       <AppBar
         sx={{
-          height: "60px",
-          backgroundColor: "rebeccapurple",
-         
-        }}
+            height: "60px",
+            backgroundColor: "rebeccapurple",
+          }}
       >
-        <StyledToolbar>
+
+      <StyledToolbar>
         {  user ? ( 
         
         <Fragment>
@@ -147,12 +158,12 @@ const Navbar = ({
             sx={{ width: "100%", textAlign: "center" }}
             gap={5}
           >
-            <Box sx={{ display: arrowBack ? `${arrowBack}` : 'none'}} >
+            <Box sx={{ display: arrowBack ? `${arrowBack}` : 'none', paddingTop: "6px" }} >
               <Link to={`${goBack}`}>
                 <ArrowBackIos fontSize="medium" sx={{ color: "#ffffff"}} />
               </Link>
             </Box>
-            <Box>
+            <Box sx={{ paddingTop: "6px" }}>
               {pageDescription && (
                 <Typography
                   variant="body1"
@@ -177,48 +188,13 @@ const Navbar = ({
             <Box>
               {
                 isSearchIcon && (
-                  <IconButton>
+                  <IconButton onClick={()=>{
+                    setIsSearch(true)
+                  }}>
                     <SearchIcon sx={{ color: "#eee"}} fontSize="large" />
                   </IconButton>
               )}
             </Box>
-            {/* <Grid item sx={{ display: arrowBack ? `${arrowBack}` : 'none'  }}>
-              <Link to={`${goBack}`}>
-                <ArrowBackIos fontSize="medium" sx={{ color: "#ffffff"}} />
-              </Link>
-            </Grid>
-            
-          
-           <Grid item xs={1}>
-              {pageDescription && (
-                <Typography
-                  variant="body1"
-                  fontWeight={100}
-                  component="p"
-                  sx={{ p: "6px 0px 0px 0px" }}
-                >
-                  {pageDescription}
-                </Typography>
-              )}
-            </Grid>
-            <Grid item xs={1}>
-              {
-                isManageSearch && (
-                  <IconButton  onClick={()=>{
-                    setOpenModal(true)
-                  }}>
-                    <ManageSearch sx={{ color: "#eee"}} fontSize="large" />
-                  </IconButton>
-              )}
-            </Grid>
-            <Grid item xs={1}>
-              {
-                isSearchIcon && (
-                  <IconButton>
-                    <SearchIcon sx={{ color: "#eee"}} fontSize="large" />
-                  </IconButton>
-              )}
-            </Grid> */}
           </Stack>
           <Tooltip title={`${user?.fullname.split(" ")[0]}`}>
             <IconButton             
@@ -277,6 +253,9 @@ const Navbar = ({
         )
         }
         </StyledToolbar>
+  
+
+
 
         {/* -----------------------start account menu-------------------------- */}
 
@@ -346,6 +325,92 @@ const Navbar = ({
 
       {/* -----------------------end account menu ------------------------------ */}
       </AppBar>
+    ) 
+    :
+  // If isSearch is clicked
+    
+      // <AppBar
+      //   sx={{
+            // height: "180px",
+            // bgcolor: "background.paper",
+            // padding: "25px 5px 5px 15px",
+      //     }}
+      // >
+
+      // </AppBar>
+    
+  
+  
+  
+
+  
+   ( <AppBar>
+
+    <Modal
+      keepMounted
+      open={isSearch}
+      onClose={(event) => setIsSearch(false)}
+      aria-labelledby="keep-mounted-modal-title"
+      aria-describedby="keep-mounted-modal-description"
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={isSearch}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "19%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            // borderRadius: "20px",
+            height: "40vh",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            // p: 2,
+          }}
+        >
+        
+        <Stack direction="row" gap={3} 
+          sx={{             
+            bgcolor: "background.paper",
+            padding: "25px 5px 10px 15px",
+            }}
+          >
+          <ArrowBack fontSize="large" sx={{ color: "gray"}} />
+          <Search><InputBase sx={{ color: "gray", fontSize: "20px", }} placeholder="Pesquisar..." /></Search>
+        </Stack>
+        <Divider />  
+          <Box sx={{ p: 2 }} gap={2}>      
+            <Chip   
+              sx={{ m: 1 }}
+              label={`posto de ` + user?.address?.territory}
+              onClick={()=>{}}
+              // onDelete={()=>{}} 
+            />
+            <Chip  
+              sx={{ m: 1 }} 
+              label={`distrito de `+ user?.address?.district}
+              onClick={()=>{}}
+              // onDelete={()=>{}} 
+            />
+            <Chip  
+              sx={{ m: 1 }} 
+              label={`província de `+ user?.address?.province}
+              onClick={()=>{}}
+              // onDelete={()=>{}} 
+            />
+          </Box>
+        </Box>
+      </Fade>
+    </Modal>
+    </AppBar>
+ ) }
+
+  {/* ------------------------- Search Modal ---------------------------------------------- */}
     </Box>
   );
 };
