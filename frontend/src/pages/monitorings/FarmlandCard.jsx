@@ -1,20 +1,44 @@
 
 import { ExpandMore, MoreVert, NotificationsNoneSharp, Preview, QueryStats } from '@mui/icons-material'
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Badge, Box, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem, Stack, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Badge, Box, Divider, Grid, IconButton, List, ListItem, ListItemIcon, Menu, MenuItem, Stack, Typography } from '@mui/material'
+import React, { Fragment, useState } from 'react'
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/Spinner';
+import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
+import { checkWeeding } from '../../libraries/monitoring';
 
 const ITEM_HEIGHT = 35;
 
 const FarmlandCard = ({ farmland, }) => {
 
-    // console.log('farmland', farmland)
+    const [report, setReport] = useState([]);
+    const [expanded, setExpanded] = useState(false);
 
-    
-    // --------- start MoreVert ------------------------------------
+    const handleChangeAccordion = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
     const [anchorElMoreVert, setAnchorElMoreVert] = useState(null);
     const openMoreVert = Boolean(anchorElMoreVert);
+
+    const navigate = useNavigate()
+
+  
+    const { data, isError, isSuccess, error, isLoading, 
+            } = useGetMonitoringReportsByFarmlandIdQuery(farmland._id );
+
+
+
+    useEffect(()=>{
+
+        if (isSuccess && data) {
+            setReport(data);
+        }
+
+
+    }, [report, data, isError, isSuccess, error, isLoading])
+
 
     const handleClickMoreVert = (event) => {
         setAnchorElMoreVert(event.currentTarget);
@@ -24,27 +48,15 @@ const FarmlandCard = ({ farmland, }) => {
         setAnchorElMoreVert(null);
     };
     
-    // ---------------- end MoreVert -----------------------------------------------
-
-
-    // --------------- start Accordion --------------------------------
-
-    const [expanded, setExpanded] = useState(false);
-
-    const handleChangeAccordion = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-
-    // ---------------- end Accordion ---------------------
-
-
-    const navigate = useNavigate()
 
     const onAddMonitoring = (farmland) => {
         navigate("/monitoring-board", { state: { farmland, }});
     };
 
-    // console.log('farmland --:', farmland)
+
+    if (isLoading) {
+        return <Spinner />
+    }
 
 
   return (
@@ -106,14 +118,30 @@ const FarmlandCard = ({ farmland, }) => {
                 </Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <Stack sx={{ }} spacing={1}>
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Limpeza'}</Typography>
+                <Fragment>
+                    {
+                        checkWeeding(report, farmland)?.map(
+                            (round)=>(
+                                <Box key={round.sowingYear}>
+                                    <Alert severity={round.status}>
+                                        Unidade de {round.sowingYear}: {round.message}.
+                                    </Alert>
+                                    <Divider />
+                                </Box>
+                            ))
+                    }
+
+                </Fragment>
+                {/* <Stack sx={{ }} spacing={1}>
+                    
                     <Alert  severity="error" >
                         This is an error alert 
                     </Alert>
                     <Alert  severity="error">
                         This is an error alert 
                     </Alert>
-                </Stack>
+                </Stack> */}
             </AccordionDetails>
         </Accordion>
     </Stack>

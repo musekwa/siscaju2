@@ -50,6 +50,7 @@ const addPruningReport2 = async (data) => {
       {
         year: new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
       { user, pruning: foundPruningReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -75,6 +76,7 @@ const addPruningReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newPruningReport.division,
+    farmland: ObjectId(data?.farmland)
   });
 
   if (!foundMonitoring) {
@@ -83,6 +85,7 @@ const addPruningReport2 = async (data) => {
     const newMonitoringReport = {
       pruning: newPruningReport,
       division: newPruningReport.division,
+      farmland: ObjectId(data?.farmland),
       user,
     };
 
@@ -138,6 +141,7 @@ const addWeedingReport2 = async (data) => {
       {
         year: new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
       { user, weeding: foundWeedingReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -161,6 +165,7 @@ const addWeedingReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newWeedingReport.division,
+    farmland: ObjectId(data?.farmland),
   });
 
   if (!foundMonitoring) {
@@ -169,6 +174,7 @@ const addWeedingReport2 = async (data) => {
     const newMonitoringReport = {
       weeding: newWeedingReport,
       division: newWeedingReport.division,
+      farmland: ObjectId(data?.farmland),
       user,
     };
 
@@ -225,6 +231,7 @@ const addDiseaseReport2 = async (data) => {
       {
         year: new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
       { user, disease: foundDiseaseReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -259,6 +266,7 @@ const addDiseaseReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newDiseaseReport.division,
+    farmland: ObjectId(data?.farmland),
   });
 
   if (!foundMonitoring) {
@@ -267,6 +275,7 @@ const addDiseaseReport2 = async (data) => {
     const newMonitoringReport = {
       disease: newDiseaseReport,
       division: newDiseaseReport.division,
+      farmland: ObjectId(data?.farmland),
       user,
     };
 
@@ -326,8 +335,9 @@ const addPlagueReport2 = async (data) => {
       {
         year: new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
-      { user, plague: foundPlagueReport._id  },
+      { user, plague: foundPlagueReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -358,6 +368,7 @@ const addPlagueReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newPlagueReport.division,
+    farmland: ObjectId(data?.farmland),
   });
 
   if (!foundMonitoring) {
@@ -425,6 +436,7 @@ const addInsecticideReport2 = async (data) => {
       {
         year: new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
       { user, insecticide: foundInsecticideReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -451,6 +463,7 @@ const addInsecticideReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newInsecticideReport.division,
+    farmland: ObjectId(data?.farmland),
   });
 
   if (!foundMonitoring) {
@@ -520,6 +533,7 @@ const addFungicideReport2 = async (data) => {
       {
         year: new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
       { user, fungicide: foundFungicideReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -548,6 +562,7 @@ const addFungicideReport2 = async (data) => {
   let foundMonitoring = await Monitoring2.findOne({
     year: new Date().getFullYear(),
     division: newFungicideReport.division,
+    farmland: ObjectId(data?.farmland),
   });
   //   .populate("fungicide");
 
@@ -558,6 +573,7 @@ const addFungicideReport2 = async (data) => {
     const newMonitoringReport = {
       fungicide: newFungicideReport,
       division: newFungicideReport.division,
+      farmland: ObjectId(data?.farmland),
       user,
     };
 
@@ -622,6 +638,7 @@ const addHarvestReport2 = async (data) => {
             ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
             : new Date().getFullYear(),
         division: ObjectId(data?.division._id),
+        farmland: ObjectId(data?.farmland),
       },
       { user, harvest: foundHarvestReport._id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -656,6 +673,7 @@ const addHarvestReport2 = async (data) => {
         ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
         : new Date().getFullYear(),
     division: newHarvestReport.division,
+    farmland: ObjectId(data?.farmland),
   });
   //   .populate("harvest");
 
@@ -788,6 +806,28 @@ const getMonitoringReportsByDivisionId2 = asyncHandler(async (req, res) => {
   return res.status(200).json(monitoringReports);
 });
 
+
+const getMonitoringReportsByFarmlandId2 = asyncHandler(async (req, res) => {
+
+  const { farmlandId } = req.query;
+
+  let monitoringReports = await Monitoring2.find({
+    farmland: ObjectId(farmlandId),
+    year: new Date().getFullYear(),
+  })
+    .populate("weeding")
+    .populate("pruning")
+    .populate("disease")
+    .populate("plague")
+    .populate("insecticide")
+    .populate("fungicide")
+    .populate("harvest");
+
+  return res.status(200).json(monitoringReports);
+
+});
+
+
 // ------------------ end rethinking the models and control--------------
 
 
@@ -796,17 +836,18 @@ const getMonitoringReportsByDivisionId2 = asyncHandler(async (req, res) => {
 // @desc
 // @route
 // @access
-const getAllMonitoringReports = asyncHandler(async (req, res) => {
+// const getAllMonitoringReports = asyncHandler(async (req, res) => {
 
-  let reports;
+//   let reports;
+
   
-  
 
 
-});
+// });
 
 export {
-  getAllMonitoringReports,
+  // getAllMonitoringReports,
   addMonitoringReport2,
   getMonitoringReportsByDivisionId2,
+  getMonitoringReportsByFarmlandId2,
 };

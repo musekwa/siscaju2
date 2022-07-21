@@ -103,10 +103,6 @@ const MonitoringsList = ({ user }) => {
 
   }, [farmlands])
 
-  // console.log('farmlands:', farmlands);
-
-
-
   if (isLoading) {
     return <Spinner />;
   }

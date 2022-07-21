@@ -67,7 +67,6 @@ const FarmlandsList = ({ user }) => {
 
   }, [farmlands])
 
-// console.log('farmland: ', farmlands)
 
   if (isLoading) {
     return <Spinner />;

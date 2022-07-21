@@ -86,17 +86,6 @@ const FarmlandRegister = () => {
   ] = useAddFarmlandMutation();
 
 
-  
-  // useEffect(()=>{
-  //   if ((userIsError || !user) && !flag) {
-  //     setFlag(true);
-  //   }
-  //   else {
-  //     setFlag(false);
-  //   }
-  // }, [flag, userIsError, user, userIsLoading])
-
-
  
   if (!farmer || !user){
     navigate('/')

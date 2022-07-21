@@ -12,38 +12,40 @@ const monitoringsSchema = mongoose.Schema(
       },
     },
     disease: {
-        type: Schema.Types.ObjectId,
-        ref: "Disease2",
+      type: Schema.Types.ObjectId,
+      ref: "Disease2",
     },
     plague: {
-        type: Schema.Types.ObjectId,
-        ref: "Plague2",
+      type: Schema.Types.ObjectId,
+      ref: "Plague2",
     },
     weeding: {
-        type: Schema.Types.ObjectId,
-        ref: "Weeding2",
+      type: Schema.Types.ObjectId,
+      ref: "Weeding2",
     },
-    pruning:
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Pruning2",
-      },
+    pruning: {
+      type: Schema.Types.ObjectId,
+      ref: "Pruning2",
+    },
 
     insecticide: {
-        type: Schema.Types.ObjectId,
-        ref: "Insecticide2",
+      type: Schema.Types.ObjectId,
+      ref: "Insecticide2",
     },
     fungicide: {
-        type: Schema.Types.ObjectId,
-        ref: "Fungicide2",
+      type: Schema.Types.ObjectId,
+      ref: "Fungicide2",
     },
     harvest: {
-        type: Schema.Types.ObjectId,
-        ref: "Harvest2",
+      type: Schema.Types.ObjectId,
+      ref: "Harvest2",
     },
     division: {
       type: ObjectId,
-      // ref: "FarmDivision",
+    },
+    farmland: {
+      type: Schema.Types.ObjectId,
+      ref: "Farmland",
     },
     createdAt: {
       type: Date,

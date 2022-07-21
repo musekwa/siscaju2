@@ -68,21 +68,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
   }, [monitoring, isError, isSuccess, error, navigate])
 
   const onReject = ()=>{
-
-    if (flag === 'pruning') {
-      navigate('/monitoring-board', { state: { farmland }})
-      // setReportData({
-      //   totallyPrunedTrees: '',
-      //   partiallyPrunedTrees: '',
-      //   pruningType: '',
-      //   prunedAt: null,
-      // });
       setOpenModal(false)
-      return ;
-    }
-    else {
-      setOpenModal(false)
-    }
   }
 
 
@@ -99,6 +85,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
           phone: user?.phone,
         },
         status: 'approved',
+        farmland: farmland._id,
       }  
     
     if (!isLoading && normalizedData) {

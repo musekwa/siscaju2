@@ -193,15 +193,15 @@ const getFarmlands = asyncHandler(async (req, res) => {
   else if (user?.role === "Extensionista") {
     farmlands = await Farmland.find({ district: from }).populate("farmer");
 
-    reports = await Monitoring2.find({ year: new Date().getFullYear() })
-                                                                        .populate("weeding")
-                                                                        .populate("pruning")
-                                                                        .populate("disease")
-                                                                        .populate("plague")
-                                                                        .populate("insecticide")
-                                                                        .populate("fungicide")
-                                                                        .populate("harvest");
-    
+    // reports = await Monitoring2.find({ year: new Date().getFullYear() })
+    //                                                                     .populate("weeding")
+    //                                                                     .populate("pruning")
+    //                                                                     .populate("disease")
+    //                                                                     .populate("plague")
+    //                                                                     .populate("insecticide")
+    //                                                                     .populate("fungicide")
+    //                                                                     .populate("harvest");
+    // console.log('reports:', reports)
     // let reports;
     // let divisionIds;
     // for (let i = 0; i < farmlands.length; i++) {

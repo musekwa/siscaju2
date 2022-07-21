@@ -3,17 +3,16 @@ import {
   // getMonitorings,
   // addMonitoringByVariability,
   // addMonitoringReport,
-  getAllMonitoringReports,
+  // getAllMonitoringReports,
   addMonitoringReport2,
   getMonitoringReportsByDivisionId2,
+  getMonitoringReportsByFarmlandId2,
   // updateMonitoring,
   // deleteMonitoring,
 } from "../controllers/monitoring.controllers.v2.js";
 import { protect } from "../middleware/authMiddleware.js";
 
-router
-  .route("/monitorings")
-  .get(protect, getAllMonitoringReports)
+router.route("/monitorings").get(protect, getMonitoringReportsByFarmlandId2);
   // .post(protect, addMonitoringByVariability);
 
 router

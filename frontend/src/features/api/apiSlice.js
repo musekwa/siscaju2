@@ -268,26 +268,78 @@ export const apiSlice = createApi({
         }
       ) {},
     }),
+
+    getMonitoringReportsByFarmlandId: build.query({
+      query: (farmlandId) => {
+        return {
+          url: `/monitorings?farmlandId=${farmlandId}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Monitoring"],
+      async onQueryStarted(
+        arg,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {},
+      async onCacheEntryAdded(
+        arg,
+        {
+          dispatch,
+          getState,
+          requestId,
+          extra,
+          getCacheEntry,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        }
+      ) {},
+    }),
+
+    getAllMonitoringReports: build.query({
+      query: () => {
+        return {
+          url: `/monitorings`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Monitoring"],
+      async onQueryStarted(
+        arg,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {},
+      async onCacheEntryAdded(
+        arg,
+        {
+          dispatch,
+          getState,
+          requestId,
+          extra,
+          getCacheEntry,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        }
+      ) {},
+    }),
   }),
 });
 
-export const { 
+export const {
+  // farmer
+  useAddFarmerMutation,
+  useGetFarmersByQuery,
 
-    // farmer
-    useAddFarmerMutation,
-    useGetFarmersByQuery,
+  // farmland
+  useAddFarmlandMutation,
+  useAddDivisionMutation,
+  useGetFarmlandsByQuery,
+  useAddCoordinatesMutation,
 
-    // farmland
-    useAddFarmlandMutation,
-    useAddDivisionMutation,
-    useGetFarmlandsByQuery,
-    useAddCoordinatesMutation,
+  // performance
+  useGetPerformanceQuery,
 
-    // performance
-    useGetPerformanceQuery,
-
-    // monitoring
-    useAddMonitoringReportMutation,
-    useGetMonitoringReportsByDivisionIdQuery,
+  // monitoring
+  useAddMonitoringReportMutation,
+  useGetMonitoringReportsByDivisionIdQuery,
+  useGetMonitoringReportsByFarmlandIdQuery,
 
 } = apiSlice;

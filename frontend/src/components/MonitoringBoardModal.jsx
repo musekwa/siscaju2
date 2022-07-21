@@ -77,7 +77,7 @@ const MonitoringBoardModal = ({
 
   const onReject = async () =>{
 
-    const { division, flag } = transferedPackage;
+    const { division, flag, farmland } = transferedPackage;
 
     const normalizedData = {
       flag,
@@ -87,6 +87,7 @@ const MonitoringBoardModal = ({
           email: user?.email,
           phone: user?.phone,
       },
+      farmland: farmland?._id,
       status: "rejected",
     }
 

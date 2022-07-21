@@ -57,14 +57,6 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Search = styled("div")(({theme})=>({
-    // backgroundColor: "",
-    // padding: "0 10px",
-    borderRadius: "10px",
-    // height: "20px",
-    // border: "2px solid gray",
-    // width: "70%"
-}))
 
 
 
@@ -338,13 +330,66 @@ const Navbar = ({
       // >
 
       // </AppBar>
-    
-  
-  
-  
+    (
+      <AppBar         
+        sx={{
+            // height: "120px",
+            bgcolor: "background.paper",
+            color: "gray",
+          }}>
+        <Box >
+                  <Stack direction="row"  
+          sx={{             
+            bgcolor: "background.paper",
+            padding: "10px 0px 10px 10px",
+            }}
+          >
+          <IconButton onClick={()=>{
+            setIsSearch(false)
+          }}>
+            <ArrowBack fontSize="large" sx={{ color: "gray"}} />
+          </IconButton>
+          <Box sx={{ paddingTop: "10px" }}>
+            <InputBase type="search"  sx={{ color: "gray", fontSize: "18px", }} placeholder="Pesquisar..." />
+          </Box>
+          <IconButton  type="submit" sx={{ }} aria-label="search">
+            <SearchIcon fontSize="large" />
+          </IconButton>
+        </Stack>
+        <Divider />  
+          <Typography sx={{ p: 1 }} >      
+            <Chip   
+              sx={{ m: 0.5 }}
+              label={`posto ` + user?.address?.territory}
+              onClick={()=>{}}
+              // onDelete={()=>{}} 
+            />
 
+            <Chip  
+              sx={{ m: 0.5 }} 
+              label={`distrito `+ user?.address?.district}
+              onClick={()=>{}}
+              // onDelete={()=>{}} 
+            />
+
+            <Chip  
+              sx={{ m: 0.5 }} 
+              label={`província `+ user?.address?.province}
+              onClick={()=>{}}
+              // onDelete={()=>{}} 
+            />
+          </Typography>
+
+
+        </Box>
+      </AppBar>
+    )
   
-   ( <AppBar>
+  
+}
+{
+  
+   (false && <AppBar>
 
     <Modal
       keepMounted
@@ -362,48 +407,59 @@ const Navbar = ({
         <Box
           sx={{
             position: "absolute",
-            top: "19%",
+            top: "10%",
             left: "50%",
+            // right: 0,
             transform: "translate(-50%, -50%)",
             width: "100%",
             // borderRadius: "20px",
-            height: "40vh",
+            // height: "30vh",
+            paddingTop: "60px",
             bgcolor: "background.paper",
             boxShadow: 24,
             // p: 2,
           }}
         >
         
-        <Stack direction="row" gap={3} 
+        <Stack direction="row"  
           sx={{             
             bgcolor: "background.paper",
-            padding: "25px 5px 10px 15px",
+            padding: "10px 0px 10px 10px",
             }}
           >
-          <ArrowBack fontSize="large" sx={{ color: "gray"}} />
-          <Search><InputBase sx={{ color: "gray", fontSize: "20px", }} placeholder="Pesquisar..." /></Search>
+          <IconButton>
+            <ArrowBack fontSize="large" sx={{ color: "gray"}} />
+          </IconButton>
+          <Box sx={{ paddingTop: "10px" }}>
+            <InputBase type="search"  sx={{ color: "gray", fontSize: "18px", }} placeholder="Pesquisar..." />
+          </Box>
+          <IconButton  type="submit" sx={{ }} aria-label="search">
+            <SearchIcon fontSize="large" />
+          </IconButton>
         </Stack>
         <Divider />  
-          <Box sx={{ p: 2 }} gap={2}>      
+          <Typography sx={{ p: 1 }} >      
             <Chip   
-              sx={{ m: 1 }}
-              label={`posto de ` + user?.address?.territory}
+              sx={{ m: 0.5 }}
+              label={`posto ` + user?.address?.territory}
               onClick={()=>{}}
               // onDelete={()=>{}} 
             />
+
             <Chip  
-              sx={{ m: 1 }} 
-              label={`distrito de `+ user?.address?.district}
+              sx={{ m: 0.5 }} 
+              label={`distrito `+ user?.address?.district}
               onClick={()=>{}}
               // onDelete={()=>{}} 
             />
+
             <Chip  
-              sx={{ m: 1 }} 
-              label={`província de `+ user?.address?.province}
+              sx={{ m: 0.5 }} 
+              label={`província `+ user?.address?.province}
               onClick={()=>{}}
               // onDelete={()=>{}} 
             />
-          </Box>
+          </Typography>
         </Box>
       </Fade>
     </Modal>
