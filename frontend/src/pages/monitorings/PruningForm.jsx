@@ -58,12 +58,19 @@ function PruningForm({ user }) {
   const { division, flag, farmland } = location?.state;
 
 
-  if ((new Date().getFullYear - division?.sowingYear) <= 3) {
-    newPruningTypes = pruningTypes?.filter(type=>!type.includes('rejuvenescimento'));
+  if ((new Date().getFullYear() - division?.sowingYear) <= 5) {
+    newPruningTypes = pruningTypes?.filter(type=>(!type.includes('rejuvenescimento')));
+    
   }
   else {
-    newPruningTypes = pruningTypes?.filter(type=>!type.includes('formação'));
+    newPruningTypes = pruningTypes;
   }
+  // else if (((new Date().getFullYear - division?.sowingYear) < 5) ){
+  //   newPruningTypes = pruningTypes?.filter(type=>(!type.includes('rejuvenescimento')) || !type.includes('formação'));
+  // }
+  // else {
+  //      newPruningTypes = pruningTypes?.filter(type=>(!type.includes('formação')) || !type.includes('formação'));
+  // }
 
   useEffect(()=>{
 

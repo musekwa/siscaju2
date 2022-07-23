@@ -150,10 +150,11 @@ const addWeedingReport2 = async (data) => {
     return foundMonitoringReport;
   }
 
-  const { totallyCleanedTrees, partiallyCleanedTrees, weededAt } = data;
+  const { weedingType, totallyCleanedTrees, partiallyCleanedTrees, weededAt } = data;
 
   const newWeedingReport = new Weeding2({
     rounds: new Array({
+      weedingType,
       totallyCleanedTrees,
       partiallyCleanedTrees,
       weededAt,
@@ -193,6 +194,7 @@ const addWeedingReport2 = async (data) => {
       return await foundMonitoring.save();
     } else {
       foundWeedingReport.rounds = new Array(...foundWeedingReport.rounds, {
+        weedingType,
         totallyCleanedTrees,
         partiallyCleanedTrees,
         weededAt,

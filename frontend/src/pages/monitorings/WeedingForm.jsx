@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
 import { BootstrapButton } from "../../components/Buttons";
 
-
 import {
+  Autocomplete,
   Box,
   Paper,
   Stack,
@@ -18,6 +18,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { DatePicker } from "@mui/x-date-pickers";
 import ConfirmModal from "../../components/ConfirmModal";
+import { weedingTypes } from "../../app/weedingTypes";
 
 
 
@@ -38,13 +39,17 @@ const styledTextField = {
 function WeedingForm({ user }) {
   
   const [reportData, setReportData] = useState({
+    weedingType: '',
     totallyCleanedTrees: null,
     partiallyCleanedTrees: null,
     weededAt: null,
   });
 
   const [openModal, setOpenModal] = useState(false);
- 
+  const [inputWeedingType, setInputWeedingType] = useState('');
+  
+  // let newWeedingTypes;
+
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const location = useLocation()
@@ -60,6 +65,19 @@ function WeedingForm({ user }) {
     e.preventDefault();
 
     const remainder = division?.trees - (Number(reportData?.totallyCleanedTrees) + Number(reportData?.partiallyCleanedTrees));
+
+    if (!(weedingTypes.indexOf(reportData?.weedingType) >= 0))  {
+      toast.error("Indicar o tipo de limpeza", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
 
     if (!reportData?.totallyCleanedTrees || !reportData?.partiallyCleanedTrees)  {
       toast.error("Completar informação obrigatória", {
@@ -149,6 +167,50 @@ function WeedingForm({ user }) {
             p: "10px 0px 10px 0px",
             }}
             >
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+           <Autocomplete
+              fullWidth
+              required
+              size="medium"
+              blurOnSelect
+              disablePortal
+              id="combo-box-demo-2"
+              value={reportData?.weedingType || ''}
+              options={weedingTypes}
+              getOptionLabel={(option)=>option ? option : 'Seleccionar o tipo de limpeza'}
+              onChange={(event, newWeedingType) => {
+                setReportData(prevState=>({
+                    ...reportData,
+                    weedingType: newWeedingType,
+                }));
+              }}
+              inputValue={inputWeedingType}
+              onInputChange={(event, newInputWeedingType) => {
+                setInputWeedingType(newInputWeedingType);
+              }}
+              renderInput={(params) => {
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = "off";
+
+                return (
+                  <TextField
+                    sx={styledTextField }
+                    name="weedingType"
+                    {...params}
+                    inputProps={inputProps}
+                    required
+                   
+                    label="Tipo de limpeza"
+                  />
+              )}}
+              isOptionEqualToValue={(option, value) =>
+                value === undefined || value === "" || option === value
+              }
+            />
+            </div>
+
+
             <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
               <TextField
                 sx={styledTextField}

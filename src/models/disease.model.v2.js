@@ -12,7 +12,7 @@ const diseasesSchema = mongoose.Schema(
     },
     rounds: [
       {
-        name: { type: String, trim: true },
+        diseaseName: { type: String, trim: true },
         higherSeverity: Number,
         highSeverity: Number,
         averageSeverity: Number,

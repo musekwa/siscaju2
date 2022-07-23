@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding } from '../../libraries/monitoring';
+import { checkWeeding, checkHarvest, checkPruning } from '../../libraries/monitoring';
 
 const ITEM_HEIGHT = 35;
 
@@ -125,7 +125,41 @@ const FarmlandCard = ({ farmland, }) => {
                             (round)=>(
                                 <Box key={round.sowingYear}>
                                     <Alert severity={round.status}>
-                                        Unidade de {round.sowingYear}: {round.message}.
+                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                    </Alert>
+                                    <Divider />
+                                </Box>
+                            ))
+                    }
+
+                </Fragment>
+
+                <Divider />
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Poda'}</Typography>
+                <Fragment>
+
+                    {
+                        checkPruning(report, farmland)?.map(
+                            (round)=>(
+                                <Box key={round.sowingYear}>
+                                    <Alert severity={round.status}>
+                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                    </Alert>
+                                    <Divider />
+                                </Box>
+                            ))
+                    }
+
+                </Fragment>
+                <Divider />
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Colheita'}</Typography>
+                <Fragment>
+                    {
+                        checkHarvest(report, farmland)?.map(
+                            (round)=>(
+                                <Box key={round.sowingYear}>
+                                    <Alert severity={round.status}>
+                                        Unidade de produção ({round.sowingYear}): {round.message}
                                     </Alert>
                                     <Divider />
                                 </Box>

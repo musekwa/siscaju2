@@ -12,6 +12,7 @@ const weedingsSchema = mongoose.Schema(
     },
     rounds: [
       {
+        weedingType: { type: String, trim: true },
         totallyCleanedTrees: Number,
         partiallyCleanedTrees: Number,
         weededAt: Date,

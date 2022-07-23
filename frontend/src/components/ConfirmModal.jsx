@@ -163,7 +163,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                 }}
                 >
                     <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-                       Limpeza
+                       {reportData.weedingType}
                     </Typography>
                 </Box>
                   <Box  sx={{ p: "20px 15px 5px 15px",  }}>
