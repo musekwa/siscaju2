@@ -134,7 +134,7 @@ const FarmlandCard = ({ farmland, }) => {
 
                 </Fragment>
 
-                <Divider />
+         
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Poda'}</Typography>
                 <Fragment>
 
@@ -152,7 +152,7 @@ const FarmlandCard = ({ farmland, }) => {
 
                 </Fragment>
 
-                <Divider />
+        
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Doença'}</Typography>
                 <Fragment>
                     {
@@ -170,7 +170,7 @@ const FarmlandCard = ({ farmland, }) => {
 
                 </Fragment>
 
-                <Divider />
+               
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Colheita'}</Typography>
                 <Fragment>
                     {

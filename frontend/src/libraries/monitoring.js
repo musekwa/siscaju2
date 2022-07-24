@@ -232,6 +232,7 @@ export const checkPruning = (report, farmland) => {
   const normalizedReport = [];
 
   if (report && report.length === 0) {
+
     for (let i = 0; i < farmland?.divisions.length; i++) {
       let pruningReport = {
         sowingYear: farmland.divisions[i].sowingYear,
@@ -258,285 +259,555 @@ export const checkPruning = (report, farmland) => {
       trees: foundDivision.trees,
     };
 
-    if (report[i]?.pruning?.rounds && report[i]?.pruning?.rounds?.length > 0) {
-      let formationPruning = lastMonitoringRound(
-        report[i]?.pruning?.rounds.filter(
-          (round) => round.pruningType === "Poda de formação"
-        ),
-        "pruning"
-      );
-      let sanitationPruning = lastMonitoringRound(
-        report[i]?.pruning?.rounds.filter(
-          (round) => round.pruningType === "Poda de sanitação"
-        ),
-        "pruning"
-      );
+    // if (!report[i]?.pruning?.rounds) {
 
-      let renewalPruning = lastMonitoringRound(
-        report[i]?.pruning?.rounds.filter(
-          (round) => round.pruningType === "Poda de rejuvenescimento"
-        ),
-        "pruning"
-      );
+    //     pruningReport.status = "info";
+    //     pruningReport.message = `Neste ano, a poda ainda não foi monitorada.`;
 
-      let maintenancePruning = lastMonitoringRound(
-        report[i]?.pruning?.rounds.filter(
-          (round) => round.pruningType === "Poda de manutenção"
-        ),
-        "pruning"
-      );
+    //     normalizedReport.push(pruningReport);
 
-      if (sanitationPruning) {
-        // check for any formation pruning within the last 2 year
-        // check for any sanitation pruning within the last 2 year
-
-        pruningReport.pruningType = sanitationPruning.pruningType;
-        pruningReport.prunedAt = new Date(sanitationPruning.prunedAt);
-        pruningReport.totallyPrunedTrees = calculatePercentage(
-          sanitationPruning.totallyPrunedTrees,
-          pruningReport.trees
-        );
-        pruningReport.partiallyPrunedTrees = calculatePercentage(
-          sanitationPruning.partiallyPrunedTrees,
-          pruningReport.trees
-        );
-        pruningReport.status =
-          new Date().getFullYear() -
-            new Date(sanitationPruning.prunedAt).getFullYear() ===
-          0
-            ? "success"
-            : new Date().getFullYear() -
-                new Date(sanitationPruning.prunedAt).getFullYear() ===
-              1
-            ? "info"
-            : new Date().getFullYear() -
-                new Date(sanitationPruning.prunedAt).getFullYear() ===
-              2
-            ? "warning"
-            : "error";
-
-        pruningReport.message =
-          new Date().getFullYear() -
-            new Date(sanitationPruning.prunedAt).getFullYear() ===
-          0
-            ? `${
-                sanitationPruning.pruningType
-              } feita há menos de um ano (${normalizeDate(
-                new Date(sanitationPruning.prunedAt)
-              )}): ${
-                pruningReport.totallyPrunedTrees
-              }% de cajueiros totalmente podados 
-                    e ${
-                      pruningReport.partiallyPrunedTrees
-                    }% de cajueiros parcialmente podados.`
-            : new Date().getFullYear() -
-                new Date(sanitationPruning.prunedAt).getFullYear() ===
-              1
-            ? `É recomendado fazer uma ${sanitationPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-                new Date(sanitationPruning.prunedAt)
-              )}.`
-            : new Date().getFullYear() -
-                new Date(sanitationPruning.prunedAt).getFullYear() ===
-              2
-            ? `É recomendado fazer ${sanitationPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-                new Date(sanitationPruning.prunedAt)
-              )}.`
-            : `Não foi feita nenhuma ${sanitationPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-                new Date(sanitationPruning.prunedAt)
-              )}.`;
-
-        normalizedReport.push(pruningReport);
-      } else if (formationPruning) {
-        pruningReport.pruningType = formationPruning.pruningType;
-        pruningReport.prunedAt = new Date(formationPruning.prunedAt);
-
-        pruningReport.totallyPrunedTrees = calculatePercentage(
-          formationPruning.totallyPrunedTrees,
-          pruningReport.trees
-        );
-        pruningReport.partiallyPrunedTrees = calculatePercentage(
-          formationPruning.partiallyPrunedTrees,
-          pruningReport.trees
+    // }
+    // else 
+    if (
+        report[i]?.pruning?.rounds &&
+        report[i]?.pruning?.rounds?.length > 0
+      ) {
+        let formationPruning = lastMonitoringRound(
+          report[i]?.pruning?.rounds.filter(
+            (round) => round.pruningType === "Poda de formação"
+          ),
+          "pruning"
         );
 
-        pruningReport.status =
-          new Date().getFullYear() -
-            new Date(formationPruning.prunedAt).getFullYear() ===
-          0
-            ? "success"
-            : new Date().getFullYear() -
-                new Date(formationPruning.prunedAt).getFullYear() ===
-              1
-            ? "info"
-            : new Date().getFullYear() -
-                new Date(formationPruning.prunedAt).getFullYear() ===
-              2
-            ? "warning"
-            : "error";
+        formationPruning = {
+            ...formationPruning,
+            pruningType: "Poda de formação",
+        }
 
-        pruningReport.message =
-          new Date().getFullYear() -
-            new Date(formationPruning.prunedAt).getFullYear() ===
-          0
-            ? `${
-                formationPruning.pruningType
-              } feita há menos de um ano (${normalizeDate(
-                new Date(formationPruning.prunedAt)
-              )}): ${
-                pruningReport.totallyPrunedTrees
-              }% de cajueiros totalmente podados 
-                    e ${
-                      pruningReport.partiallyPrunedTrees
-                    }% de cajueiros parcialmente podados.`
-            : new Date().getFullYear() -
-                new Date(formationPruning.prunedAt).getFullYear() ===
-              1
-            ? `É recomendado fazer uma ${formationPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-                new Date(formationPruning.prunedAt)
-              )}.`
-            : new Date().getFullYear() -
-                new Date(formationPruning.prunedAt).getFullYear() ===
-              2
-            ? `É recomendado fazer uma ${formationPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-                new Date(formationPruning.prunedAt)
-              )}.`
-            : `Não foi feita nenhuma ${formationPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-                new Date(formationPruning.prunedAt)
-              )}.`;
-
-        normalizedReport.push(pruningReport);
-      } else if (renewalPruning) {
-        pruningReport.pruningType = renewalPruning.pruningType;
-        pruningReport.prunedAt = new Date(renewalPruning.prunedAt);
-
-        pruningReport.totallyPrunedTrees = calculatePercentage(
-          renewalPruning.totallyPrunedTrees,
-          pruningReport.trees
-        );
-        pruningReport.partiallyPrunedTrees = calculatePercentage(
-          renewalPruning.partiallyPrunedTrees,
-          pruningReport.trees
+        let sanitationPruning = lastMonitoringRound(
+          report[i]?.pruning?.rounds.filter(
+            (round) => round.pruningType === "Poda de sanitação"
+          ),
+          "pruning"
         );
 
-        pruningReport.status =
-          new Date().getFullYear() -
-            new Date(renewalPruning.prunedAt).getFullYear() ===
-          0
-            ? "success"
-            : new Date().getFullYear() -
-                new Date(renewalPruning.prunedAt).getFullYear() ===
-              1
-            ? "info"
-            : new Date().getFullYear() -
-                new Date(renewalPruning.prunedAt).getFullYear() ===
-              2
-            ? "warning"
-            : "error";
+        sanitationPruning = {
+            ...sanitationPruning,
+            pruningType: "Poda de sanitação",
+        }
+    
 
-        pruningReport.message =
-          new Date().getFullYear() -
-            new Date(renewalPruning.prunedAt).getFullYear() ===
-          0
-            ? `${
-                renewalPruning.pruningType
-              } feita há menos de um ano (${normalizeDate(
-                new Date(renewalPruning.prunedAt)
-              )}): ${
-                pruningReport.totallyPrunedTrees
-              }% de cajueiros totalmente podados 
-                    e ${
-                      pruningReport.partiallyPrunedTrees
-                    }% de cajueiros parcialmente podados.`
-            : new Date().getFullYear() -
-                new Date(renewalPruning.prunedAt).getFullYear() ===
-              1
-            ? `É recomendado fazer uma ${renewalPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-                new Date(renewalPruning.prunedAt)
-              )}.`
-            : new Date().getFullYear() -
-                new Date(renewalPruning.prunedAt).getFullYear() ===
-              2
-            ? `É necessário fazer uma ${renewalPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-                new Date(renewalPruning.prunedAt)
-              )}.`
-            : `Não foi feita nenhuma ${renewalPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-                new Date(renewalPruning.prunedAt)
-              )}.`;
-
-        normalizedReport.push(pruningReport);
-      } else if (maintenancePruning) {
-        pruningReport.pruningType = maintenancePruning.pruningType;
-        pruningReport.prunedAt = new Date(maintenancePruning.prunedAt);
-
-        pruningReport.totallyPrunedTrees = calculatePercentage(
-          maintenancePruning.totallyPrunedTrees,
-          pruningReport.trees
-        );
-        pruningReport.partiallyPrunedTrees = calculatePercentage(
-          maintenancePruning.partiallyPrunedTrees,
-          pruningReport.trees
+        let renewalPruning = lastMonitoringRound(
+          report[i]?.pruning?.rounds.filter(
+            (round) => round.pruningType === "Poda de rejuvenescimento"
+          ),
+          "pruning"
         );
 
-        pruningReport.status =
-          new Date().getFullYear() -
-            new Date(maintenancePruning.prunedAt).getFullYear() ===
-          0
-            ? "success"
-            : new Date().getFullYear() -
-                new Date(maintenancePruning.prunedAt).getFullYear() ===
-              1
-            ? "info"
-            : new Date().getFullYear() -
-                new Date(maintenancePruning.prunedAt).getFullYear() ===
-              2
-            ? "warning"
-            : "error";
+        renewalPruning = {
+            ...renewalPruning,
+            pruningType: "Poda de rejuvenescimento",
+        }
 
-        pruningReport.message =
-          new Date().getFullYear() -
-            new Date(maintenancePruning.prunedAt).getFullYear() ===
-          0
-            ? `${
-                maintenancePruning.pruningType
-              } feita há menos de um ano (${normalizeDate(
-                new Date(maintenancePruning.prunedAt)
-              )}): ${
-                pruningReport.totallyPrunedTrees
-              }% de cajueiros totalmente podados 
-                    e ${
-                      pruningReport.partiallyPrunedTrees
-                    }% de cajueiros parcialmente podados.`
-            : new Date().getFullYear() -
-                new Date(maintenancePruning.prunedAt).getFullYear() ===
-              1
-            ? `É recomendado fazer uma ${maintenancePruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-                new Date(maintenancePruning.prunedAt)
-              )}.`
-            : new Date().getFullYear() -
-                new Date(maintenancePruning.prunedAt).getFullYear() ===
-              2
-            ? `É necessário fazer uma ${maintenancePruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-                new Date(maintenancePruning.prunedAt)
-              )}.`
-            : `Não foi feita nenhuma ${maintenancePruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-                new Date(maintenancePruning.prunedAt)
-              )}.`;
+        let maintenancePruning = lastMonitoringRound(
+          report[i]?.pruning?.rounds.filter(
+            (round) => round.pruningType === "Poda de manutenção"
+          ),
+          "pruning"
+        );
 
-        normalizedReport.push(pruningReport);
-      } else {
+        maintenancePruning = {
+            ...maintenancePruning,
+            pruningType: "Poda de manutenção",
+        }
+
+
+        const allPrunings = [ formationPruning, sanitationPruning, renewalPruning, maintenancePruning ];
+
+        
+        for (let i = 0; i < allPrunings.length; i++ ){
+            if (allPrunings[i] && allPrunings[i]?.prunedAt) {
+                // console.log('pruning: ', allPrunings[i])
+                const report = {
+                    ...pruningReport,
+
+                }
+                report.pruningType = allPrunings[i].pruningType;
+                report.prunedAt = new Date(allPrunings[i].prunedAt);
+                report.totallyPrunedTreePercentage = calculatePercentage(
+                  allPrunings[i].totallyPrunedTrees,
+                  report.trees
+                );
+                report.partiallyPrunedTreePercentage = calculatePercentage(
+                  allPrunings[i].partiallyPrunedTrees,
+                  report.trees
+                );
+
+                report.prunedTrees = calculateTotal(allPrunings[i].partiallyPrunedTrees, allPrunings[i].totallyPrunedTrees);
+                report.prunedTreePercentage = calculatePercentage(report.prunedTrees, report.trees);
+
+                report.status =
+                  (new Date().getFullYear() -
+                    new Date(allPrunings[i].prunedAt).getFullYear() ===
+                    0 ||
+                    new Date().getFullYear() -
+                      new Date(allPrunings[i].prunedAt).getFullYear() ===
+                      1) &&
+                  report.prunedTreePercentage <= 30 // pruning was done very few trees
+                    ? "error"
+                    : (new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        0 ||
+                        (new Date().getFullYear() -
+                          new Date(allPrunings[i].prunedAt).getFullYear() ===
+                          1 &&
+                          new Date().getMonth() >
+                            new Date(allPrunings[i].prunedAt).getMonth())) &&
+                      report.prunedTreePercentage < 60 //  pruning was done on some trees
+                    ? "warning"
+                    : (new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        0 ||
+                        (new Date().getFullYear() -
+                          new Date(allPrunings[i].prunedAt).getFullYear() ===
+                          1 &&
+                          new Date().getMonth() >
+                            new Date(allPrunings[i].prunedAt).getMonth())) &&
+                      report.prunedTreePercentage >= 60 // pruning was done on most of trees
+                    ? "success"
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        1 &&
+                      new Date().getMonth() <=
+                        new Date(allPrunings[i].prunedAt).getMonth() // recommended pruning next year
+                    ? "info"
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        1 &&
+                      new Date().getMonth() >
+                        new Date(allPrunings[i].prunedAt).getMonth() // recommended pruning within some months
+                    ? "info"
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                      2 // recommended pruning this year.
+                    ? "warning"
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() >=
+                      2
+                    ? "error"
+                    : "error";
+
+
+
+                report.message =
+                  (new Date().getFullYear() -
+                    new Date(allPrunings[i].prunedAt).getFullYear() ===
+                    0 ||
+                    new Date().getFullYear() -
+                      new Date(allPrunings[i].prunedAt).getFullYear() ===
+                      1) &&
+                  report.prunedTreePercentage <= 30 // pruning was done very few trees
+                    ? `${allPrunings[i].pruningType} feita APENAS em ${
+                        report.prunedTreePercentage
+                      }% de cajueiros aos (${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}): ${
+                        report.totallyPrunedTreePercentage
+                      }% de cajueiros totalmente podados 
+                            e ${
+                              report.partiallyPrunedTreePercentage
+                            }% de cajueiros parcialmente podados.`
+                    : (new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        0 ||
+                        (new Date().getFullYear() -
+                          new Date(allPrunings[i].prunedAt).getFullYear() ===
+                          1 &&
+                          new Date().getMonth() >
+                            new Date(allPrunings[i].prunedAt).getMonth())) &&
+                      report.prunedTreePercentage < 60 //  pruning was done on some trees
+                    ? `${allPrunings[i].pruningType} feita em ${
+                        report.prunedTreePercentage
+                      }% de cajueiros aos (${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}): ${
+                        report.totallyPrunedTreePercentage
+                      }% de cajueiros totalmente podados 
+                            e ${
+                              report.partiallyPrunedTreePercentage
+                            }% de cajueiros parcialmente podados.`
+                    : (new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        0 ||
+                        (new Date().getFullYear() -
+                          new Date(allPrunings[i].prunedAt).getFullYear() ===
+                          1 &&
+                          new Date().getMonth() >
+                            new Date(allPrunings[i].prunedAt).getMonth())) &&
+                      report.prunedTreePercentage >= 60 // pruning was done on most of trees
+                    ? `${allPrunings[i].pruningType} feita em ${
+                        report.prunedTreePercentage
+                      }% de cajueiros aos (${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}): ${
+                        report.totallyPrunedTreePercentage
+                      }% de cajueiros totalmente podados 
+                            e ${
+                              report.partiallyPrunedTreePercentage
+                            }% de cajueiros parcialmente podados.`
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        1 &&
+                      new Date().getMonth() <=
+                        new Date(allPrunings[i].prunedAt).getMonth() // recommended pruning next year
+                    ? `É recomendado fazer uma ${allPrunings[
+                        i
+                      ].pruningType.toLowerCase()} no próximo ano, porque a última ocorreu em ${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}.`
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                        1 &&
+                      new Date().getMonth() >
+                        new Date(allPrunings[i].prunedAt).getMonth() // recommended pruning within some months
+                    ? `É recomendado fazer uma ${allPrunings[
+                        i
+                      ].pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}.`
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() ===
+                      2 // recommended pruning this year.
+                    ? `Recomenda-se uma ${allPrunings[
+                        i
+                      ].pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}.`
+                    : new Date().getFullYear() -
+                        new Date(allPrunings[i].prunedAt).getFullYear() >=
+                      2
+                    ? `Recomenda-se uma ${allPrunings[
+                        i
+                      ].pruningType.toLowerCase()}, porque a última ocorreu há mais de 2 anos (${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}).`
+                    : `Recomenda-se uma ${allPrunings[
+                        i
+                      ].pruningType.toLowerCase()}, porque a última ocorreu há mais de 2 anos (${normalizeDate(
+                        new Date(allPrunings[i].prunedAt)
+                      )}).`;
+
+
+
+                //     report.message =
+                //   new Date().getFullYear() -
+                //     new Date(allPrunings[i].prunedAt).getFullYear() ===
+                //   0
+                //     ? `${
+                //         allPrunings[i].pruningType
+                //       } feita há menos de um ano (${normalizeDate(
+                //         new Date(allPrunings[i].prunedAt)
+                //       )}): ${
+                //         report.totallyPrunedTreePercentage
+                //       }% de cajueiros totalmente podados 
+                //             e ${
+                //               report.partiallyPrunedTreePercentage
+                //             }% de cajueiros parcialmente podados.`
+                //     : new Date().getFullYear() -
+                //         new Date(allPrunings[i].prunedAt).getFullYear() ===
+                //       1
+                //     ? `É recomendado fazer uma ${allPrunings[
+                //         i
+                //       ].pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
+                //         new Date(allPrunings[i].prunedAt)
+                //       )}.`
+                //     : new Date().getFullYear() -
+                //         new Date(allPrunings[i].prunedAt).getFullYear() ===
+                //       2
+                //     ? `É recomendado fazer ${allPrunings[
+                //         i
+                //       ].pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
+                //         new Date(allPrunings[i].prunedAt)
+                //       )}.`
+                //     : `Não foi feita nenhuma ${allPrunings[
+                //         i
+                //       ].pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
+                //         new Date(allPrunings[i].prunedAt)
+                //       )}.`;
+
+                normalizedReport.push(report);
+
+            }
+            else {
+
+
+                pruningReport.status = "info";
+                pruningReport.message = `Nenhuma monitoria da ${allPrunings[i].pruningType.toLowerCase()} feita até agora.`;
+
+                // console.log("allprunings: ", pruningReport);
+
+                normalizedReport.push(pruningReport);
+            }
+        }
+
+        // if (sanitationPruning) {
+        //   // check for any formation pruning within the last 2 year
+        //   // check for any sanitation pruning within the last 2 year
+
+        //   pruningReport.pruningType = sanitationPruning.pruningType;
+        //   pruningReport.prunedAt = new Date(sanitationPruning.prunedAt);
+        //   pruningReport.totallyPrunedTrees = calculatePercentage(
+        //     sanitationPruning.totallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
+        //     sanitationPruning.partiallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+        //   pruningReport.status =
+        //     new Date().getFullYear() -
+        //       new Date(sanitationPruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? "success"
+        //       : new Date().getFullYear() -
+        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? "info"
+        //       : new Date().getFullYear() -
+        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? "warning"
+        //       : "error";
+
+        //   pruningReport.message =
+        //     new Date().getFullYear() -
+        //       new Date(sanitationPruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? `${
+        //           sanitationPruning.pruningType
+        //         } feita há menos de um ano (${normalizeDate(
+        //           new Date(sanitationPruning.prunedAt)
+        //         )}): ${
+        //           pruningReport.totallyPrunedTrees
+        //         }% de cajueiros totalmente podados 
+        //             e ${
+        //               pruningReport.partiallyPrunedTrees
+        //             }% de cajueiros parcialmente podados.`
+        //       : new Date().getFullYear() -
+        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? `É recomendado fazer uma ${sanitationPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
+        //           new Date(sanitationPruning.prunedAt)
+        //         )}.`
+        //       : new Date().getFullYear() -
+        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? `É recomendado fazer ${sanitationPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
+        //           new Date(sanitationPruning.prunedAt)
+        //         )}.`
+        //       : `Não foi feita nenhuma ${sanitationPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
+        //           new Date(sanitationPruning.prunedAt)
+        //         )}.`;
+
+        //   normalizedReport.push(pruningReport);
+        // } 
+
+        // // else 
+        // if (formationPruning) {
+        //   pruningReport.pruningType = formationPruning.pruningType;
+        //   pruningReport.prunedAt = new Date(formationPruning.prunedAt);
+
+        //   pruningReport.totallyPrunedTrees = calculatePercentage(
+        //     formationPruning.totallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
+        //     formationPruning.partiallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+
+        //   pruningReport.status =
+        //     new Date().getFullYear() -
+        //       new Date(formationPruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? "success"
+        //       : new Date().getFullYear() -
+        //           new Date(formationPruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? "info"
+        //       : new Date().getFullYear() -
+        //           new Date(formationPruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? "warning"
+        //       : "error";
+
+        //   pruningReport.message =
+        //     new Date().getFullYear() -
+        //       new Date(formationPruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? `${
+        //           formationPruning.pruningType
+        //         } feita há menos de um ano (${normalizeDate(
+        //           new Date(formationPruning.prunedAt)
+        //         )}): ${
+        //           pruningReport.totallyPrunedTrees
+        //         }% de cajueiros totalmente podados 
+        //             e ${
+        //               pruningReport.partiallyPrunedTrees
+        //             }% de cajueiros parcialmente podados.`
+        //       : new Date().getFullYear() -
+        //           new Date(formationPruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? `É recomendado fazer uma ${formationPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
+        //           new Date(formationPruning.prunedAt)
+        //         )}.`
+        //       : new Date().getFullYear() -
+        //           new Date(formationPruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? `É recomendado fazer uma ${formationPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
+        //           new Date(formationPruning.prunedAt)
+        //         )}.`
+        //       : `Não foi feita nenhuma ${formationPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
+        //           new Date(formationPruning.prunedAt)
+        //         )}.`;
+
+        //   normalizedReport.push(pruningReport);
+        // } 
+
+        // // else 
+        // if (renewalPruning) {
+        //   pruningReport.pruningType = renewalPruning.pruningType;
+        //   pruningReport.prunedAt = new Date(renewalPruning.prunedAt);
+
+        //   pruningReport.totallyPrunedTrees = calculatePercentage(
+        //     renewalPruning.totallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
+        //     renewalPruning.partiallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+
+        //   pruningReport.status =
+        //     new Date().getFullYear() -
+        //       new Date(renewalPruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? "success"
+        //       : new Date().getFullYear() -
+        //           new Date(renewalPruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? "info"
+        //       : new Date().getFullYear() -
+        //           new Date(renewalPruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? "warning"
+        //       : "error";
+
+        //   pruningReport.message =
+        //     new Date().getFullYear() -
+        //       new Date(renewalPruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? `${
+        //           renewalPruning.pruningType
+        //         } feita há menos de um ano (${normalizeDate(
+        //           new Date(renewalPruning.prunedAt)
+        //         )}): ${
+        //           pruningReport.totallyPrunedTrees
+        //         }% de cajueiros totalmente podados 
+        //             e ${
+        //               pruningReport.partiallyPrunedTrees
+        //             }% de cajueiros parcialmente podados.`
+        //       : new Date().getFullYear() -
+        //           new Date(renewalPruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? `É recomendado fazer uma ${renewalPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
+        //           new Date(renewalPruning.prunedAt)
+        //         )}.`
+        //       : new Date().getFullYear() -
+        //           new Date(renewalPruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? `É necessário fazer uma ${renewalPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
+        //           new Date(renewalPruning.prunedAt)
+        //         )}.`
+        //       : `Não foi feita nenhuma ${renewalPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
+        //           new Date(renewalPruning.prunedAt)
+        //         )}.`;
+
+        //   normalizedReport.push(pruningReport);
+        // } 
+
+        // // else 
+        // if (maintenancePruning) {
+        //   pruningReport.pruningType = maintenancePruning.pruningType;
+        //   pruningReport.prunedAt = new Date(maintenancePruning.prunedAt);
+
+        //   pruningReport.totallyPrunedTrees = calculatePercentage(
+        //     maintenancePruning.totallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
+        //     maintenancePruning.partiallyPrunedTrees,
+        //     pruningReport.trees
+        //   );
+
+        //   pruningReport.status =
+        //     new Date().getFullYear() -
+        //       new Date(maintenancePruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? "success"
+        //       : new Date().getFullYear() -
+        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? "info"
+        //       : new Date().getFullYear() -
+        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? "warning"
+        //       : "error";
+
+        //   pruningReport.message =
+        //     new Date().getFullYear() -
+        //       new Date(maintenancePruning.prunedAt).getFullYear() ===
+        //     0
+        //       ? `${
+        //           maintenancePruning.pruningType
+        //         } feita há menos de um ano (${normalizeDate(
+        //           new Date(maintenancePruning.prunedAt)
+        //         )}): ${
+        //           pruningReport.totallyPrunedTrees
+        //         }% de cajueiros totalmente podados 
+        //             e ${
+        //               pruningReport.partiallyPrunedTrees
+        //             }% de cajueiros parcialmente podados.`
+        //       : new Date().getFullYear() -
+        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
+        //         1
+        //       ? `É recomendado fazer uma ${maintenancePruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
+        //           new Date(maintenancePruning.prunedAt)
+        //         )}.`
+        //       : new Date().getFullYear() -
+        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
+        //         2
+        //       ? `É necessário fazer uma ${maintenancePruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
+        //           new Date(maintenancePruning.prunedAt)
+        //         )}.`
+        //       : `Não foi feita nenhuma ${maintenancePruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
+        //           new Date(maintenancePruning.prunedAt)
+        //         )}.`;
+
+        //   normalizedReport.push(pruningReport);
+
+        // } 
+
+    } 
+    else {
         pruningReport.status = "info";
-        pruningReport.message = `Neste ano, a poda ainda não foi monitorada.`;
+        pruningReport.message = `A poda ainda não foi monitorada.`;
 
         normalizedReport.push(pruningReport);
       }
-    } else {
-      pruningReport.status = "info";
-      pruningReport.message = `Neste ano, a poda ainda não foi monitorada.`;
-
-      normalizedReport.push(pruningReport);
-    }
   }
-  // console.log("report ", normalizedReport);
+//   console.log("report ", normalizedReport);
   return normalizedReport;
 };
 
@@ -572,292 +843,306 @@ export const checkDisease = (report, farmland) => {
       trees: foundDivision.trees,
     };
 
-    if (report[i]?.disease?.rounds && report[i]?.disease?.rounds?.length > 0) {
-      let oidio = lastMonitoringRound(
-        report[i]?.disease?.rounds.filter(
-          (round) => round.diseaseName === "Oídio"
-        ),
-        "disease"
-      );
+    if (!report[i]?.disease?.rounds){
 
-      let antracnose = lastMonitoringRound(
-        report[i]?.disease?.rounds.filter(
-          (round) => round.diseaseName === "Antracnose"
-        ),
-        "disease"
-      );
+        diseaseReport.status = "info";
+        diseaseReport.message = `Neste ano, as doenças ainda não foram monitoradas.`;
 
-      if (oidio && antracnose) {
+        normalizedReport.push(diseaseReport);
 
-        let oidioReport = {
-            ...diseaseReport,   
-        };
+    }
+    else if (
+        report[i]?.disease?.rounds &&
+        report[i]?.disease?.rounds?.length > 0
+      ) {
+        let oidio = lastMonitoringRound(
+          report[i]?.disease?.rounds.filter(
+            (round) => round.diseaseName === "Oídio"
+          ),
+          "disease"
+        );
 
-        let antracnoseReport = {
+        let antracnose = lastMonitoringRound(
+          report[i]?.disease?.rounds.filter(
+            (round) => round.diseaseName === "Antracnose"
+          ),
+          "disease"
+        );
+
+        if (oidio && antracnose) {
+          let oidioReport = {
             ...diseaseReport,
-        };
+          };
 
+          let antracnoseReport = {
+            ...diseaseReport,
+          };
 
-        oidioReport.diseaseName = oidio.diseaseName;
-        antracnoseReport.diseaseName = antracnose.diseaseName;
+          oidioReport.diseaseName = oidio.diseaseName;
+          antracnoseReport.diseaseName = antracnose.diseaseName;
 
-        oidioReport.detectedAt = new Date(oidio.detectedAt);
-        antracnoseReport.detectedAt = new Date(antracnose.detectedAt);
+          oidioReport.detectedAt = new Date(oidio.detectedAt);
+          antracnoseReport.detectedAt = new Date(antracnose.detectedAt);
 
-        oidioReport.higherSeverity = calculatePercentage(
-          oidio.higherSeverity,
-          diseaseReport.trees
-        );
-        antracnoseReport.higherSeverity = calculatePercentage(
-          antracnose.higherSeverity,
-          diseaseReport.trees
-        );
+          oidioReport.higherSeverity = calculatePercentage(
+            oidio.higherSeverity,
+            diseaseReport.trees
+          );
+          antracnoseReport.higherSeverity = calculatePercentage(
+            antracnose.higherSeverity,
+            diseaseReport.trees
+          );
 
-        oidioReport.highSeverity = calculatePercentage(
-          oidio.highSeverity,
-          diseaseReport.trees
-        );
-        antracnoseReport.highSeverity = calculatePercentage(
-          antracnose.highSeverity,
-          diseaseReport.trees
-        );
+          oidioReport.highSeverity = calculatePercentage(
+            oidio.highSeverity,
+            diseaseReport.trees
+          );
+          antracnoseReport.highSeverity = calculatePercentage(
+            antracnose.highSeverity,
+            diseaseReport.trees
+          );
 
-        oidioReport.averageSeverity = calculatePercentage(
-          oidio.averageSeverity,
-          diseaseReport.trees
-        );
-        antracnoseReport.averageSeverity = calculatePercentage(
-          antracnose.averageSeverity,
-          diseaseReport.trees
-        );
+          oidioReport.averageSeverity = calculatePercentage(
+            oidio.averageSeverity,
+            diseaseReport.trees
+          );
+          antracnoseReport.averageSeverity = calculatePercentage(
+            antracnose.averageSeverity,
+            diseaseReport.trees
+          );
 
-        oidioReport.lowSeverity = calculatePercentage(
-          oidio.lowSeverity,
-          diseaseReport.trees
-        );
-        antracnoseReport.lowSeverity = calculatePercentage(
-          antracnose.lowSeverity,
-          diseaseReport.trees
-        );
+          oidioReport.lowSeverity = calculatePercentage(
+            oidio.lowSeverity,
+            diseaseReport.trees
+          );
+          antracnoseReport.lowSeverity = calculatePercentage(
+            antracnose.lowSeverity,
+            diseaseReport.trees
+          );
 
-        oidioReport.affectedTrees =
-          oidio.lowSeverity +
-          oidio.averageSeverity +
-          oidio.highSeverity +
-          oidio.higherSeverity;
+          oidioReport.affectedTrees =
+            oidio.lowSeverity +
+            oidio.averageSeverity +
+            oidio.highSeverity +
+            oidio.higherSeverity;
 
-        antracnoseReport.affectedTrees =
-          antracnose.lowSeverity +
-          antracnose.averageSeverity +
-          antracnose.highSeverity +
-          antracnose.higherSeverity;
+          antracnoseReport.affectedTrees =
+            antracnose.lowSeverity +
+            antracnose.averageSeverity +
+            antracnose.highSeverity +
+            antracnose.higherSeverity;
 
-        const oidioPercentage = calculatePercentage(oidioReport.affectedTrees, diseaseReport.trees);
-        const antracnosePercentage = calculatePercentage(antracnoseReport.affectedTrees, diseaseReport.trees);
-        
-        if (oidioPercentage === 0 && (antracnosePercentage > 0 && antracnosePercentage <= 30) ) {
-          oidioReport.status = "success";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
-            new Date(oidio.detectedAt)
-          )}.`;
+          const oidioPercentage = calculatePercentage(
+            oidioReport.affectedTrees,
+            diseaseReport.trees
+          );
+          const antracnosePercentage = calculatePercentage(
+            antracnoseReport.affectedTrees,
+            diseaseReport.trees
+          );
 
-          normalizedReport.push(oidioReport);
+          if (
+            oidioPercentage === 0 &&
+            antracnosePercentage > 0 &&
+            antracnosePercentage <= 30
+          ) {
+            oidioReport.status = "success";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(oidio.detectedAt)
+            )}.`;
 
-          antracnoseReport.status = "warning";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
+            normalizedReport.push(oidioReport);
+
+            antracnoseReport.status = "warning";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
                 detectada em ${antracnosePercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )}.`;
 
-          normalizedReport.push(antracnoseReport);
+            normalizedReport.push(antracnoseReport);
+          } else if (oidioPercentage === 0 && antracnosePercentage > 30) {
+            oidioReport.status = "success";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(oidio.detectedAt)
+            )}.`;
 
-        } 
-        else if (oidioPercentage === 0 && (antracnosePercentage > 30)) {
-          oidioReport.status = "success";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
-            new Date(oidio.detectedAt)
-          )}.`;
+            normalizedReport.push(oidioReport);
 
-          normalizedReport.push(oidioReport);
-
-          antracnoseReport.status = "error";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
+            antracnoseReport.status = "error";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
                 detectada em ${antracnosePercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )}.`;
 
-          normalizedReport.push(antracnoseReport);
-        }
-        else if (
-          oidioPercentage > 0 &&
-          oidioPercentage <= 30 &&
-          antracnosePercentage === 0
-        ) {
-          antracnoseReport.status = "success";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
-            new Date(antracnose.detectedAt)
-          )}.`;
+            normalizedReport.push(antracnoseReport);
+          } else if (
+            oidioPercentage > 0 &&
+            oidioPercentage <= 30 &&
+            antracnosePercentage === 0
+          ) {
+            antracnoseReport.status = "success";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(antracnose.detectedAt)
+            )}.`;
 
-          normalizedReport.push(antracnoseReport);
+            normalizedReport.push(antracnoseReport);
 
-          oidioReport.status = "warning";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
+            oidioReport.status = "warning";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
                 detectada em ${oidioPercentage}%
                 dos cajueiros aos ${normalizeDate(
                   new Date(oidio.detectedAt)
                 )}.`;
 
-          normalizedReport.push(oidioReport);
-        } else if (oidioPercentage > 30 && antracnosePercentage === 0) {
-          antracnoseReport.status = "success";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
-            new Date(antracnose.detectedAt)
-          )}.`;
+            normalizedReport.push(oidioReport);
+          } else if (oidioPercentage > 30 && antracnosePercentage === 0) {
+            antracnoseReport.status = "success";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(antracnose.detectedAt)
+            )}.`;
 
-          normalizedReport.push(antracnoseReport);
+            normalizedReport.push(antracnoseReport);
 
-          oidioReport.status = "error";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
+            oidioReport.status = "error";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
                 detectada em ${oidioPercentage}%
                 dos cajueiros aos ${normalizeDate(
                   new Date(oidio.detectedAt)
                 )}.`;
 
-          normalizedReport.push(oidioReport);
-        }
-         else if (oidioPercentage === 0 && antracnosePercentage === 0) {
-          antracnoseReport.status = "success";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
-            new Date(antracnose.detectedAt)
-          )}.`;
+            normalizedReport.push(oidioReport);
+          } else if (oidioPercentage === 0 && antracnosePercentage === 0) {
+            antracnoseReport.status = "success";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(antracnose.detectedAt)
+            )}.`;
 
-          normalizedReport.push(antracnoseReport);
+            normalizedReport.push(antracnoseReport);
 
-          oidioReport.status = "success";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
-            new Date(oidio.detectedAt)
-          )}.`;
+            oidioReport.status = "success";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(oidio.detectedAt)
+            )}.`;
 
-          normalizedReport.push(oidioReport);
-        } else if (
-          oidioPercentage > 0 &&
-          oidioPercentage <= 30 &&
-          antracnosePercentage > 0 &&
-          antracnosePercentage <= 30
-        ) {
-          oidioReport.status = "warning";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
+            normalizedReport.push(oidioReport);
+          } else if (
+            oidioPercentage > 0 &&
+            oidioPercentage <= 30 &&
+            antracnosePercentage > 0 &&
+            antracnosePercentage <= 30
+          ) {
+            oidioReport.status = "warning";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
                 detectada em ${oidioPercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(oidio.detectedAt)
                 )}.`;
 
-          normalizedReport.push(oidioReport);
+            normalizedReport.push(oidioReport);
 
-          antracnoseReport.status = "warning";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
+            antracnoseReport.status = "warning";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
                 detectada em ${antracnosePercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )}.`;
 
-          normalizedReport.push(antracnoseReport);
-        } else if (oidioPercentage > 30 && antracnosePercentage > 30) {
-          oidioReport.status = "error";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
+            normalizedReport.push(antracnoseReport);
+          } else if (oidioPercentage > 30 && antracnosePercentage > 30) {
+            oidioReport.status = "error";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
                 detectada em ${oidioPercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(oidio.detectedAt)
                 )}.`;
 
-          normalizedReport.push(oidioReport);
+            normalizedReport.push(oidioReport);
 
-          antracnoseReport.status = "error";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
+            antracnoseReport.status = "error";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
                 detectada em ${antracnosePercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )}.`;
 
-          normalizedReport.push(antracnoseReport);
-        } else if (oidioPercentage < 30 && antracnosePercentage > 30) {
-          oidioReport.status = "warning";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
+            normalizedReport.push(antracnoseReport);
+          } else if (oidioPercentage < 30 && antracnosePercentage > 30) {
+            oidioReport.status = "warning";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
                 detectada em ${oidioPercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(oidio.detectedAt)
                 )}.`;
 
-          normalizedReport.push(oidioReport);
+            normalizedReport.push(oidioReport);
 
-          antracnoseReport.status = "error";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
+            antracnoseReport.status = "error";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
                 detectada em ${antracnosePercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )}.`;
 
-          normalizedReport.push(antracnoseReport);
-        } else if (oidioPercentage > 30 && antracnosePercentage < 30) {
-          oidioReport.status = "error";
-          oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
+            normalizedReport.push(antracnoseReport);
+          } else if (oidioPercentage > 30 && antracnosePercentage < 30) {
+            oidioReport.status = "error";
+            oidioReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi 
                 detectada em ${oidioPercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(oidio.detectedAt)
                 )}.`;
 
-          normalizedReport.push(oidioReport);
+            normalizedReport.push(oidioReport);
 
-          antracnoseReport.status = "warning";
-          antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
+            antracnoseReport.status = "warning";
+            antracnoseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi 
                 detectada em ${antracnosePercentage}% 
                 dos cajueiros aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )}.`;
 
-          normalizedReport.push(antracnoseReport);
-        }
+            normalizedReport.push(antracnoseReport);
+          }
+        } else if (oidio && !antracnose) {
+          //   diseaseReport.status = "info";
+          //   diseaseReport.message = `A doença antracnose nunca foi monitorada desde o dia do registo.`;
 
-    } 
-    else if(oidio && !antracnose) {
+          //   normalizedReport.push(diseaseReport);
 
-    //   diseaseReport.status = "info";
-    //   diseaseReport.message = `A doença antracnose nunca foi monitorada desde o dia do registo.`;
+          diseaseReport.diseaseName = oidio.diseaseName;
+          diseaseReport.detectedAt = new Date(oidio.detectedAt);
+          diseaseReport.higherSeverity = calculatePercentage(
+            oidio.higherSeverity,
+            diseaseReport.trees
+          );
+          diseaseReport.highSeverity = calculatePercentage(
+            oidio.highSeverity,
+            diseaseReport.trees
+          );
 
-    //   normalizedReport.push(diseaseReport);
+          diseaseReport.averageSeverity = calculatePercentage(
+            oidio.averageSeverity,
+            diseaseReport.trees
+          );
+          diseaseReport.lowSeverity = calculatePercentage(
+            oidio.lowSeverity,
+            diseaseReport.trees
+          );
 
-        diseaseReport.diseaseName = oidio.diseaseName;
-        diseaseReport.detectedAt = new Date(oidio.detectedAt);
-        diseaseReport.higherSeverity = calculatePercentage(
-          oidio.higherSeverity,
-          diseaseReport.trees
-        );
-        diseaseReport.highSeverity = calculatePercentage(
-          oidio.highSeverity,
-          diseaseReport.trees
-        );
+          diseaseReport.affectedTrees =
+            oidio.lowSeverity +
+            oidio.averageSeverity +
+            oidio.highSeverity +
+            oidio.higherSeverity;
 
-        diseaseReport.averageSeverity = calculatePercentage(
-          oidio.averageSeverity,
-          diseaseReport.trees
-        );
-        diseaseReport.lowSeverity = calculatePercentage(
-          oidio.lowSeverity,
-          diseaseReport.trees
-        );
+          const diseasePertcentage = calculatePercentage(
+            diseaseReport.affectedTrees,
+            diseaseReport.trees
+          );
 
-        diseaseReport.affectedTrees =
-          oidio.lowSeverity +
-          oidio.averageSeverity +
-          oidio.highSeverity +
-          oidio.higherSeverity;
-        
-        const diseasePertcentage = calculatePercentage(diseaseReport.affectedTrees, diseaseReport.trees );
-
-        if (diseasePertcentage === 0){
-
+          if (diseasePertcentage === 0) {
             diseaseReport.status = "success";
             diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
               new Date(oidio.detectedAt)
@@ -865,170 +1150,150 @@ export const checkDisease = (report, farmland) => {
 
             normalizedReport.push(diseaseReport);
 
-        // }
-        // else if (diseasePertcentage < 10) {
+            // }
+            // else if (diseasePertcentage < 10) {
 
-        //   diseaseReport.status = "warning";
-        //   diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em cajueiros aos (${normalizeDate(
-        //     new Date(oidio.detectedAt)
-        //   )}): severidade muito alta (${
-        //     diseaseReport.higherSeverity
-        //   }%); severidade alta (${
-        //     diseaseReport.highSeverity
-        //   }%); severidade média (${
-        //     diseaseReport.averageSeverity
-        //   }%) e severidade baixa (${diseaseReport.lowSeverity}%).`;
+            //   diseaseReport.status = "warning";
+            //   diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em cajueiros aos (${normalizeDate(
+            //     new Date(oidio.detectedAt)
+            //   )}): severidade muito alta (${
+            //     diseaseReport.higherSeverity
+            //   }%); severidade alta (${
+            //     diseaseReport.highSeverity
+            //   }%); severidade média (${
+            //     diseaseReport.averageSeverity
+            //   }%) e severidade baixa (${diseaseReport.lowSeverity}%).`;
 
-        //   normalizedReport.push(diseaseReport);
+            //   normalizedReport.push(diseaseReport);
+          } else if (diseasePertcentage <= 30) {
+            diseaseReport.status = "warning";
+            diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em alguns cajueiros aos (${normalizeDate(
+              new Date(oidio.detectedAt)
+            )}): severidade muito alta (${
+              diseaseReport.higherSeverity
+            }%); severidade alta (${
+              diseaseReport.highSeverity
+            }%); severidade média (${
+              diseaseReport.averageSeverity
+            }%) e severidade baixa (${
+              diseaseReport.lowSeverity
+            }%). É recomendada uma pulverização.`;
 
-        } else if (diseasePertcentage <= 30) {
-            
-          diseaseReport.status = "warning";
-          diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em alguns cajueiros aos (${normalizeDate(
-            new Date(oidio.detectedAt)
-          )}): severidade muito alta (${
-            diseaseReport.higherSeverity
-          }%); severidade alta (${
-            diseaseReport.highSeverity
-          }%); severidade média (${
-            diseaseReport.averageSeverity
-          }%) e severidade baixa (${
-            diseaseReport.lowSeverity
-          }%). É recomendada uma pulverização.`;
+            normalizedReport.push(diseaseReport);
+          } else if (diseasePertcentage > 30) {
+            diseaseReport.status = "error";
+            diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em muitos cajueiros aos (${normalizeDate(
+              new Date(oidio.detectedAt)
+            )}): severidade muito alta (${
+              diseaseReport.higherSeverity
+            }%); severidade alta (${
+              diseaseReport.highSeverity
+            }%); severidade média (${
+              diseaseReport.averageSeverity
+            }%) e severidade baixa (${
+              diseaseReport.lowSeverity
+            }%). É recomendada urgentemente uma pulverização.`;
 
-          normalizedReport.push(diseaseReport);
+            normalizedReport.push(diseaseReport);
+          }
+        } else if (antracnose && !oidio) {
+          //   diseaseReport.status = "info";
+          //   diseaseReport.message = `A doença oídio nunca foi monitorada desde o dia do registo.`;
 
-        } 
-        else if (diseasePertcentage > 30) {
+          //   normalizedReport.push(diseaseReport);
 
-          diseaseReport.status = "error";
-          diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em muitos cajueiros aos (${normalizeDate(
-            new Date(oidio.detectedAt)
-          )}): severidade muito alta (${
-            diseaseReport.higherSeverity
-          }%); severidade alta (${
-            diseaseReport.highSeverity
-          }%); severidade média (${
-            diseaseReport.averageSeverity
-          }%) e severidade baixa (${
-            diseaseReport.lowSeverity
-          }%). É recomendada urgentemente uma pulverização.`;
-
-          normalizedReport.push(diseaseReport);
-        }
-
-        
-
-    } 
-    else if (antracnose && !oidio) {
-
-    //   diseaseReport.status = "info";
-    //   diseaseReport.message = `A doença oídio nunca foi monitorada desde o dia do registo.`;
-
-    //   normalizedReport.push(diseaseReport);
-
-        diseaseReport.diseaseName = antracnose.diseaseName;
-        diseaseReport.detectedAt = new Date(antracnose.detectedAt);
-        diseaseReport.higherSeverity = calculatePercentage(
+          diseaseReport.diseaseName = antracnose.diseaseName;
+          diseaseReport.detectedAt = new Date(antracnose.detectedAt);
+          diseaseReport.higherSeverity = calculatePercentage(
             antracnose.higherSeverity,
             diseaseReport.trees
-        );
-        diseaseReport.highSeverity = calculatePercentage(
+          );
+          diseaseReport.highSeverity = calculatePercentage(
             antracnose.highSeverity,
             diseaseReport.trees
-        );
+          );
 
-        diseaseReport.averageSeverity = calculatePercentage(
+          diseaseReport.averageSeverity = calculatePercentage(
             antracnose.averageSeverity,
             diseaseReport.trees
-        );
-        diseaseReport.lowSeverity = calculatePercentage(
+          );
+          diseaseReport.lowSeverity = calculatePercentage(
             antracnose.lowSeverity,
             diseaseReport.trees
-        );
+          );
 
-        diseaseReport.affectedTrees =
+          diseaseReport.affectedTrees =
             antracnose.lowSeverity +
             antracnose.averageSeverity +
             antracnose.highSeverity +
             antracnose.higherSeverity;
-            
-        const diseasePertcentage = calculatePercentage(diseaseReport.affectedTrees, diseaseReport.trees);
 
-        if (diseasePertcentage === 0){
+          const diseasePertcentage = calculatePercentage(
+            diseaseReport.affectedTrees,
+            diseaseReport.trees
+          );
 
+          if (diseasePertcentage === 0) {
             diseaseReport.status = "success";
             diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} não foi detectada aos ${normalizeDate(
               new Date(antracnose.detectedAt)
             )}.`;
 
             normalizedReport.push(diseaseReport);
-            
-        // }
-        // else if (diseasePertcentage < 10) {
 
-        //   diseaseReport.status = "warning";
-        //   diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em cajueiros aos (${normalizeDate(
-        //     new Date(antracnose.detectedAt)
-        //   )}): severidade muito alta (${
-        //     diseaseReport.higherSeverity
-        //   }%); severidade alta (${
-        //     diseaseReport.highSeverity
-        //   }%); severidade média (${
-        //     diseaseReport.averageSeverity
-        //   }%) e severidade baixa (${diseaseReport.lowSeverity}%).`;
+            // }
+            // else if (diseasePertcentage < 10) {
 
-        //   normalizedReport.push(diseaseReport);
+            //   diseaseReport.status = "warning";
+            //   diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em cajueiros aos (${normalizeDate(
+            //     new Date(antracnose.detectedAt)
+            //   )}): severidade muito alta (${
+            //     diseaseReport.higherSeverity
+            //   }%); severidade alta (${
+            //     diseaseReport.highSeverity
+            //   }%); severidade média (${
+            //     diseaseReport.averageSeverity
+            //   }%) e severidade baixa (${diseaseReport.lowSeverity}%).`;
 
-        } 
-        else if (diseasePertcentage) {
+            //   normalizedReport.push(diseaseReport);
+          } else if (diseasePertcentage) {
+            diseaseReport.status = "warning";
+            diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em alguns cajueiros aos (${normalizeDate(
+              new Date(antracnose.detectedAt)
+            )}): severidade muito alta (${
+              diseaseReport.higherSeverity
+            }%); severidade alta (${
+              diseaseReport.highSeverity
+            }%); severidade média (${
+              diseaseReport.averageSeverity
+            }%) e severidade baixa (${
+              diseaseReport.lowSeverity
+            }%). É recomendada uma pulverização.`;
 
-          diseaseReport.status = "warning";
-          diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em alguns cajueiros aos (${normalizeDate(
-            new Date(antracnose.detectedAt)
-          )}): severidade muito alta (${
-            diseaseReport.higherSeverity
-          }%); severidade alta (${
-            diseaseReport.highSeverity
-          }%); severidade média (${
-            diseaseReport.averageSeverity
-          }%) e severidade baixa (${
-            diseaseReport.lowSeverity
-          }%). É recomendada uma pulverização.`;
+            normalizedReport.push(diseaseReport);
+          } else if (diseasePertcentage > 30) {
+            diseaseReport.status = "error";
+            diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em muitos cajueiros aos (${normalizeDate(
+              new Date(antracnose.detectedAt)
+            )}): severidade muito alta (${
+              diseaseReport.higherSeverity
+            }%); severidade alta (${
+              diseaseReport.highSeverity
+            }%); severidade média (${
+              diseaseReport.averageSeverity
+            }%) e severidade baixa (${
+              diseaseReport.lowSeverity
+            }%). É recomendada urgentemente uma pulverização.`;
 
-          normalizedReport.push(diseaseReport);
-
-        } 
-        else if (diseasePertcentage > 30) {
-
-          diseaseReport.status = "error";
-          diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em muitos cajueiros aos (${normalizeDate(
-            new Date(antracnose.detectedAt)
-          )}): severidade muito alta (${
-            diseaseReport.higherSeverity
-          }%); severidade alta (${
-            diseaseReport.highSeverity
-          }%); severidade média (${
-            diseaseReport.averageSeverity
-          }%) e severidade baixa (${
-            diseaseReport.lowSeverity
-          }%). É recomendada urgentemente uma pulverização.`;
+            normalizedReport.push(diseaseReport);
+          }
+        } else {
+          diseaseReport.status = "info";
+          diseaseReport.message = `Neste ano, as doenças ainda não foram monitoradas.`;
 
           normalizedReport.push(diseaseReport);
         }
-
-        
-
-
-    }
-    else {
-      diseaseReport.status = "info";
-      diseaseReport.message = `Neste ano, as doenças ainda não foram monitoradas.`;
-
-      normalizedReport.push(diseaseReport);
-
-    }
-  }
+      }
 }
 //  console.log("doenca: ", normalizedReport);
   // console.log("report ", normalizedReport);
