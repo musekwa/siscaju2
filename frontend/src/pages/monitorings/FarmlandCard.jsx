@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding, checkHarvest, checkPruning } from '../../libraries/monitoring';
+import { checkWeeding, checkHarvest, checkPruning, checkDisease } from '../../libraries/monitoring';
 
 const ITEM_HEIGHT = 35;
 
@@ -114,7 +114,7 @@ const FarmlandCard = ({ farmland, }) => {
             >
             <AccordionSummary expandIcon={<ExpandMore sx={{ color: "red" }}  />} aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: "" }}>
                 <Typography variant="body1" sx={{ textAlign: "left", color: "red" }}>
-                    Acção recomendada
+                    Actividades em {new Date().getFullYear()}
                 </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -122,8 +122,8 @@ const FarmlandCard = ({ farmland, }) => {
                 <Fragment>
                     {
                         checkWeeding(report, farmland)?.map(
-                            (round)=>(
-                                <Box key={round.sowingYear}>
+                            (round, index)=>(
+                                <Box key={index}>
                                     <Alert severity={round.status}>
                                         Unidade de produção ({round.sowingYear}): {round.message}
                                     </Alert>
@@ -140,8 +140,8 @@ const FarmlandCard = ({ farmland, }) => {
 
                     {
                         checkPruning(report, farmland)?.map(
-                            (round)=>(
-                                <Box key={round.sowingYear}>
+                            (round, index)=>(
+                                <Box key={index}>
                                     <Alert severity={round.status}>
                                         Unidade de produção ({round.sowingYear}): {round.message}
                                     </Alert>
@@ -151,13 +151,32 @@ const FarmlandCard = ({ farmland, }) => {
                     }
 
                 </Fragment>
+
+                <Divider />
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Doença'}</Typography>
+                <Fragment>
+                    {
+                        checkDisease(report, farmland)?.map(
+                            (round, index)=>(
+                                <Box key={index}>
+                                {/* <Box key={round.sowingYear.toString()+round.diseaseName}> */}
+                                    <Alert severity={round.status}>
+                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                    </Alert>
+                                    <Divider />
+                                </Box>
+                            ))
+                    }
+
+                </Fragment>
+
                 <Divider />
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Colheita'}</Typography>
                 <Fragment>
                     {
                         checkHarvest(report, farmland)?.map(
-                            (round)=>(
-                                <Box key={round.sowingYear}>
+                            (round, index)=>(
+                                <Box key={index}>
                                     <Alert severity={round.status}>
                                         Unidade de produção ({round.sowingYear}): {round.message}
                                     </Alert>

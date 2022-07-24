@@ -297,6 +297,7 @@ const addDiseaseReport2 = async (data) => {
       return await foundMonitoring.save();
     } else {
       foundDiseaseReport.rounds = new Array(...foundDiseaseReport.rounds, {
+        diseaseName,
         higherSeverity,
         highSeverity,
         averageSeverity,
