@@ -143,7 +143,7 @@ export const checkWeeding = (report, farmland) => {
         if (cleanedTreePercentage === 0) {
 
           weedingReport.status = "error";
-          weedingReport.message = `Recomenda-se uma limpeza dos cajueiros este mês.`;
+          weedingReport.message = `Recomenda-se uma limpeza dos cajueiros neste mês.`;
 
           normalizedReport.push(weedingReport);
         
@@ -199,7 +199,7 @@ export const checkWeeding = (report, farmland) => {
 
             weedingReport.status = "error";
             weedingReport.message = `Recomenda-se urgentemente uma limpeza neste ano. 
-                A última ${weedingReport.weedingType} ocorreu aos ${normalizeDate(weedingReport.weededAt)}.`;
+                A última ${weedingReport.weedingType} ocorreu aos ${normalizeDate(weedingReport.weededAt)} e abrangiu ${cleanedTreePercentage}% dos cajueiros.`;
 
             normalizedReport.push(weedingReport);
 
@@ -207,7 +207,7 @@ export const checkWeeding = (report, farmland) => {
         else {
             weedingReport.status = "warning";
             weedingReport.message = `Recomenda-se também uma limpeza nos meses seguintes: Janeiro, Abril, Julho e Outubro. 
-                A última ${weedingReport.weedingType} ocorreu aos ${months[weedingReport.weededAt.getMonth()]}.`;
+                A última ${weedingReport.weedingType} ocorreu aos ${normalizeDate(weedingReport.weededAt)} e abrangiu ${cleanedTreePercentage}% dos cajueiros.`;
 
             normalizedReport.push(weedingReport);           
         }
@@ -324,10 +324,10 @@ export const checkPruning = (report, farmland) => {
 
         const allPrunings = [ formationPruning, sanitationPruning, renewalPruning, maintenancePruning ];
 
-        
         for (let i = 0; i < allPrunings.length; i++ ){
+
             if (allPrunings[i] && allPrunings[i]?.prunedAt) {
-                // console.log('pruning: ', allPrunings[i])
+
                 const report = {
                     ...pruningReport,
 
@@ -497,307 +497,21 @@ export const checkPruning = (report, farmland) => {
                         new Date(allPrunings[i].prunedAt)
                       )}).`;
 
-
-
-                //     report.message =
-                //   new Date().getFullYear() -
-                //     new Date(allPrunings[i].prunedAt).getFullYear() ===
-                //   0
-                //     ? `${
-                //         allPrunings[i].pruningType
-                //       } feita há menos de um ano (${normalizeDate(
-                //         new Date(allPrunings[i].prunedAt)
-                //       )}): ${
-                //         report.totallyPrunedTreePercentage
-                //       }% de cajueiros totalmente podados 
-                //             e ${
-                //               report.partiallyPrunedTreePercentage
-                //             }% de cajueiros parcialmente podados.`
-                //     : new Date().getFullYear() -
-                //         new Date(allPrunings[i].prunedAt).getFullYear() ===
-                //       1
-                //     ? `É recomendado fazer uma ${allPrunings[
-                //         i
-                //       ].pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-                //         new Date(allPrunings[i].prunedAt)
-                //       )}.`
-                //     : new Date().getFullYear() -
-                //         new Date(allPrunings[i].prunedAt).getFullYear() ===
-                //       2
-                //     ? `É recomendado fazer ${allPrunings[
-                //         i
-                //       ].pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-                //         new Date(allPrunings[i].prunedAt)
-                //       )}.`
-                //     : `Não foi feita nenhuma ${allPrunings[
-                //         i
-                //       ].pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-                //         new Date(allPrunings[i].prunedAt)
-                //       )}.`;
-
                 normalizedReport.push(report);
 
             }
-            else {
+            // else {
 
 
-                pruningReport.status = "info";
-                pruningReport.message = `Nenhuma monitoria da ${allPrunings[i].pruningType.toLowerCase()} feita até agora.`;
+            //     pruningReport.status = "info";
+            //     pruningReport.message = `Nenhuma-- monitoria da ${allPrunings[i].pruningType.toLowerCase()} feita até agora.`;
 
-                // console.log("allprunings: ", pruningReport);
+            //     // console.log("allprunings: ", pruningReport);
 
-                normalizedReport.push(pruningReport);
-            }
+            //     normalizedReport.push(pruningReport);
+            // }
         }
 
-        // if (sanitationPruning) {
-        //   // check for any formation pruning within the last 2 year
-        //   // check for any sanitation pruning within the last 2 year
-
-        //   pruningReport.pruningType = sanitationPruning.pruningType;
-        //   pruningReport.prunedAt = new Date(sanitationPruning.prunedAt);
-        //   pruningReport.totallyPrunedTrees = calculatePercentage(
-        //     sanitationPruning.totallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
-        //     sanitationPruning.partiallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-        //   pruningReport.status =
-        //     new Date().getFullYear() -
-        //       new Date(sanitationPruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? "success"
-        //       : new Date().getFullYear() -
-        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? "info"
-        //       : new Date().getFullYear() -
-        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? "warning"
-        //       : "error";
-
-        //   pruningReport.message =
-        //     new Date().getFullYear() -
-        //       new Date(sanitationPruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? `${
-        //           sanitationPruning.pruningType
-        //         } feita há menos de um ano (${normalizeDate(
-        //           new Date(sanitationPruning.prunedAt)
-        //         )}): ${
-        //           pruningReport.totallyPrunedTrees
-        //         }% de cajueiros totalmente podados 
-        //             e ${
-        //               pruningReport.partiallyPrunedTrees
-        //             }% de cajueiros parcialmente podados.`
-        //       : new Date().getFullYear() -
-        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? `É recomendado fazer uma ${sanitationPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-        //           new Date(sanitationPruning.prunedAt)
-        //         )}.`
-        //       : new Date().getFullYear() -
-        //           new Date(sanitationPruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? `É recomendado fazer ${sanitationPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-        //           new Date(sanitationPruning.prunedAt)
-        //         )}.`
-        //       : `Não foi feita nenhuma ${sanitationPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-        //           new Date(sanitationPruning.prunedAt)
-        //         )}.`;
-
-        //   normalizedReport.push(pruningReport);
-        // } 
-
-        // // else 
-        // if (formationPruning) {
-        //   pruningReport.pruningType = formationPruning.pruningType;
-        //   pruningReport.prunedAt = new Date(formationPruning.prunedAt);
-
-        //   pruningReport.totallyPrunedTrees = calculatePercentage(
-        //     formationPruning.totallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
-        //     formationPruning.partiallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-
-        //   pruningReport.status =
-        //     new Date().getFullYear() -
-        //       new Date(formationPruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? "success"
-        //       : new Date().getFullYear() -
-        //           new Date(formationPruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? "info"
-        //       : new Date().getFullYear() -
-        //           new Date(formationPruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? "warning"
-        //       : "error";
-
-        //   pruningReport.message =
-        //     new Date().getFullYear() -
-        //       new Date(formationPruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? `${
-        //           formationPruning.pruningType
-        //         } feita há menos de um ano (${normalizeDate(
-        //           new Date(formationPruning.prunedAt)
-        //         )}): ${
-        //           pruningReport.totallyPrunedTrees
-        //         }% de cajueiros totalmente podados 
-        //             e ${
-        //               pruningReport.partiallyPrunedTrees
-        //             }% de cajueiros parcialmente podados.`
-        //       : new Date().getFullYear() -
-        //           new Date(formationPruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? `É recomendado fazer uma ${formationPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-        //           new Date(formationPruning.prunedAt)
-        //         )}.`
-        //       : new Date().getFullYear() -
-        //           new Date(formationPruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? `É recomendado fazer uma ${formationPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-        //           new Date(formationPruning.prunedAt)
-        //         )}.`
-        //       : `Não foi feita nenhuma ${formationPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-        //           new Date(formationPruning.prunedAt)
-        //         )}.`;
-
-        //   normalizedReport.push(pruningReport);
-        // } 
-
-        // // else 
-        // if (renewalPruning) {
-        //   pruningReport.pruningType = renewalPruning.pruningType;
-        //   pruningReport.prunedAt = new Date(renewalPruning.prunedAt);
-
-        //   pruningReport.totallyPrunedTrees = calculatePercentage(
-        //     renewalPruning.totallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
-        //     renewalPruning.partiallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-
-        //   pruningReport.status =
-        //     new Date().getFullYear() -
-        //       new Date(renewalPruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? "success"
-        //       : new Date().getFullYear() -
-        //           new Date(renewalPruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? "info"
-        //       : new Date().getFullYear() -
-        //           new Date(renewalPruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? "warning"
-        //       : "error";
-
-        //   pruningReport.message =
-        //     new Date().getFullYear() -
-        //       new Date(renewalPruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? `${
-        //           renewalPruning.pruningType
-        //         } feita há menos de um ano (${normalizeDate(
-        //           new Date(renewalPruning.prunedAt)
-        //         )}): ${
-        //           pruningReport.totallyPrunedTrees
-        //         }% de cajueiros totalmente podados 
-        //             e ${
-        //               pruningReport.partiallyPrunedTrees
-        //             }% de cajueiros parcialmente podados.`
-        //       : new Date().getFullYear() -
-        //           new Date(renewalPruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? `É recomendado fazer uma ${renewalPruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-        //           new Date(renewalPruning.prunedAt)
-        //         )}.`
-        //       : new Date().getFullYear() -
-        //           new Date(renewalPruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? `É necessário fazer uma ${renewalPruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-        //           new Date(renewalPruning.prunedAt)
-        //         )}.`
-        //       : `Não foi feita nenhuma ${renewalPruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-        //           new Date(renewalPruning.prunedAt)
-        //         )}.`;
-
-        //   normalizedReport.push(pruningReport);
-        // } 
-
-        // // else 
-        // if (maintenancePruning) {
-        //   pruningReport.pruningType = maintenancePruning.pruningType;
-        //   pruningReport.prunedAt = new Date(maintenancePruning.prunedAt);
-
-        //   pruningReport.totallyPrunedTrees = calculatePercentage(
-        //     maintenancePruning.totallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-        //   pruningReport.partiallyPrunedTrees = calculatePercentage(
-        //     maintenancePruning.partiallyPrunedTrees,
-        //     pruningReport.trees
-        //   );
-
-        //   pruningReport.status =
-        //     new Date().getFullYear() -
-        //       new Date(maintenancePruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? "success"
-        //       : new Date().getFullYear() -
-        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? "info"
-        //       : new Date().getFullYear() -
-        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? "warning"
-        //       : "error";
-
-        //   pruningReport.message =
-        //     new Date().getFullYear() -
-        //       new Date(maintenancePruning.prunedAt).getFullYear() ===
-        //     0
-        //       ? `${
-        //           maintenancePruning.pruningType
-        //         } feita há menos de um ano (${normalizeDate(
-        //           new Date(maintenancePruning.prunedAt)
-        //         )}): ${
-        //           pruningReport.totallyPrunedTrees
-        //         }% de cajueiros totalmente podados 
-        //             e ${
-        //               pruningReport.partiallyPrunedTrees
-        //             }% de cajueiros parcialmente podados.`
-        //       : new Date().getFullYear() -
-        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
-        //         1
-        //       ? `É recomendado fazer uma ${maintenancePruning.pruningType.toLowerCase()} nos próximos meses, porque a última ocorreu em ${normalizeDate(
-        //           new Date(maintenancePruning.prunedAt)
-        //         )}.`
-        //       : new Date().getFullYear() -
-        //           new Date(maintenancePruning.prunedAt).getFullYear() ===
-        //         2
-        //       ? `É necessário fazer uma ${maintenancePruning.pruningType.toLowerCase()}, porque a última ocorreu em ${normalizeDate(
-        //           new Date(maintenancePruning.prunedAt)
-        //         )}.`
-        //       : `Não foi feita nenhuma ${maintenancePruning.pruningType.toLowerCase()} há mais de 2 anos, porque a última ocorreu em ${normalizeDate(
-        //           new Date(maintenancePruning.prunedAt)
-        //         )}.`;
-
-        //   normalizedReport.push(pruningReport);
-
-        // } 
 
     } 
     else {
@@ -818,13 +532,13 @@ export const checkDisease = (report, farmland) => {
 
   if (report && report.length === 0) {
     for (let i = 0; i < farmland?.divisions.length; i++) {
-      let pruningReport = {
+      let diseaseReport = {
         sowingYear: farmland.divisions[i].sowingYear,
         status: "info",
         message: `Neste ano, as doenças ainda não foram monitoradas.`,
       };
 
-      normalizedReport.push(pruningReport);
+      normalizedReport.push(diseaseReport);
     }
 
     return normalizedReport;
@@ -1299,6 +1013,504 @@ export const checkDisease = (report, farmland) => {
   // console.log("report ", normalizedReport);
   return normalizedReport;
 };
+
+
+
+
+
+//  --------------------------- Start plague report -------------------------------
+
+export const checkPlague = (report, farmland) => {
+  const normalizedReport = [];
+
+  if (report && report.length === 0) {
+    for (let i = 0; i < farmland?.divisions.length; i++) {
+      let plagueReport = {
+        sowingYear: farmland.divisions[i].sowingYear,
+        status: "info",
+        message: `Neste ano, as pragas ainda não foram monitoradas.`,
+      };
+
+      normalizedReport.push(plagueReport);
+    }
+
+    return normalizedReport;
+  }
+
+  // const divisions = [];
+
+  for (let i = 0; i < report?.length; i++) {
+    let foundDivision = farmland?.divisions.find(
+      (division) => division._id === report[i].division
+    );
+    let sowingYear = foundDivision.sowingYear;
+
+    let plagueReport = {
+      sowingYear,
+      trees: foundDivision.trees,
+    };
+
+    if (!report[i]?.plague?.rounds){
+
+        plagueReport.status = "info";
+        plagueReport.message = `Neste ano, as pragas ainda não foram monitoradas.`;
+
+        normalizedReport.push(plagueReport);
+
+    }
+    else if (
+        report[i]?.plague?.rounds &&
+        report[i]?.plague?.rounds?.length > 0
+      ) {
+        let cochonilha = lastMonitoringRound(
+          report[i]?.plague?.rounds.filter(
+            (round) => round.plagueName === "Cochonilha"
+          ),
+          "plague"
+        );
+
+        let helopeltis = lastMonitoringRound(
+          report[i]?.plague?.rounds.filter(
+            (round) => round.plagueName === "Helopeltis ssp"
+          ),
+          "plague"
+        );
+
+        if (cochonilha && helopeltis) {
+          let cochonilhaReport = {
+            ...plagueReport,
+          };
+
+          let helopeltisReport = {
+            ...plagueReport,
+          };
+
+          cochonilhaReport.plagueName = cochonilha.plagueName;
+          helopeltisReport.plagueName = helopeltis.plagueName;
+
+          cochonilhaReport.detectedAt = new Date(cochonilha.detectedAt);
+          helopeltisReport.detectedAt = new Date(helopeltis.detectedAt);
+
+          cochonilhaReport.higherAttack = calculatePercentage(
+            cochonilha.higherAttack,
+            plagueReport.trees
+          );
+          helopeltisReport.higherAttack = calculatePercentage(
+            helopeltis.higherAttack,
+            plagueReport.trees
+          );
+
+          cochonilhaReport.highAttack = calculatePercentage(
+            cochonilha.highAttack,
+            plagueReport.trees
+          );
+          helopeltisReport.highAttack = calculatePercentage(
+            helopeltis.highAttack,
+            plagueReport.trees
+          );
+
+          cochonilhaReport.averageAttack = calculatePercentage(
+            cochonilha.averageAttack,
+            plagueReport.trees
+          );
+          helopeltisReport.averageAttack = calculatePercentage(
+            helopeltis.averageAttack,
+            plagueReport.trees
+          );
+
+          cochonilhaReport.lowAttack = calculatePercentage(
+            cochonilha.lowAttack,
+            plagueReport.trees
+          );
+          helopeltisReport.lowAttack = calculatePercentage(
+            helopeltis.lowAttack,
+            plagueReport.trees
+          );
+
+          cochonilhaReport.affectedTrees =
+            cochonilha.lowAttack +
+            cochonilha.averageAttack +
+            cochonilha.highAttack +
+            cochonilha.higherAttack;
+
+          helopeltisReport.affectedTrees =
+            helopeltis.lowAttack +
+            helopeltis.averageAttack +
+            helopeltis.highAttack +
+            helopeltis.higherAttack;
+
+          const cochonilhaPercentage = calculatePercentage(
+            cochonilhaReport.affectedTrees,
+            plagueReport.trees
+          );
+          const helopeltisPercentage = calculatePercentage(
+            helopeltisReport.affectedTrees,
+            plagueReport.trees
+          );
+
+          if (
+            cochonilhaPercentage === 0 &&
+            helopeltisPercentage > 0 &&
+            helopeltisPercentage <= 30
+          ) {
+            cochonilhaPercentage.status = "success";
+            cochonilhaPercentage.message = `A praga ${cochonilha.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(cochonilha.detectedAt)
+            )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+
+            helopeltisReport.status = "warning";
+            helopeltisReport.message = `A prga ${helopeltis.plagueName.toLowerCase()} foi 
+                detectada em ${helopeltisPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(helopeltis.detectedAt)
+                )}.`;
+
+            normalizedReport.push(helopeltisReport);
+          } else if (cochonilhaPercentage === 0 && helopeltisPercentage > 30) {
+            cochonilhaReport.status = "success";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(cochonilha.detectedAt)
+            )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+
+            helopeltisReport.status = "error";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} foi 
+                detectada em ${helopeltisPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(helopeltis.detectedAt)
+                )}.`;
+
+            normalizedReport.push(helopeltisReport);
+          } else if (
+            cochonilhaPercentage > 0 &&
+            cochonilhaPercentage <= 30 &&
+            helopeltisPercentage === 0
+          ) {
+            helopeltisReport.status = "success";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(helopeltis.detectedAt)
+            )}.`;
+
+            normalizedReport.push(helopeltisReport);
+
+            cochonilhaReport.status = "warning";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi 
+                detectada em ${cochonilhaPercentage}%
+                dos cajueiros aos ${normalizeDate(
+                  new Date(cochonilha.detectedAt)
+                )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+          } else if (cochonilhaPercentage > 30 && helopeltisPercentage === 0) {
+            helopeltisReport.status = "success";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(helopeltis.detectedAt)
+            )}.`;
+
+            normalizedReport.push(helopeltisReport);
+
+            cochonilhaReport.status = "error";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi 
+                detectada em ${cochonilhaPercentage}%
+                dos cajueiros aos ${normalizeDate(
+                  new Date(cochonilha.detectedAt)
+                )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+          } else if (cochonilhaPercentage === 0 && helopeltisPercentage === 0) {
+            helopeltisReport.status = "success";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(helopeltis.detectedAt)
+            )}.`;
+
+            normalizedReport.push(helopeltisReport);
+
+            cochonilhaReport.status = "success";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(cochonilha.detectedAt)
+            )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+          } else if (
+            cochonilhaPercentage > 0 &&
+            cochonilhaPercentage <= 30 &&
+            helopeltisPercentage > 0 &&
+            helopeltisPercentage <= 30
+          ) {
+            cochonilhaReport.status = "warning";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi 
+                detectada em ${cochonilhaPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(cochonilha.detectedAt)
+                )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+
+            helopeltisReport.status = "warning";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} foi 
+                detectada em ${helopeltisPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(helopeltis.detectedAt)
+                )}.`;
+
+            normalizedReport.push(helopeltisReport);
+          } else if (cochonilhaPercentage > 30 && helopeltisPercentage > 30) {
+            cochonilhaReport.status = "error";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi 
+                detectada em ${cochonilhaPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(cochonilha.detectedAt)
+                )}.`;
+//  continue from here
+            normalizedReport.push(cochonilhaReport);
+
+            helopeltisReport.status = "error";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} foi 
+                detectada em ${helopeltisPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(helopeltis.detectedAt)
+                )}.`;
+
+            normalizedReport.push(helopeltisReport);
+          } else if (cochonilhaPercentage < 30 && helopeltisPercentage > 30) {
+            cochonilhaReport.status = "warning";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi 
+                detectada em ${cochonilhaPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(cochonilha.detectedAt)
+                )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+
+            helopeltisReport.status = "error";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} foi 
+                detectada em ${helopeltisPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(helopeltis.detectedAt)
+                )}.`;
+
+            normalizedReport.push(helopeltisReport);
+          } else if (cochonilhaPercentage > 30 && helopeltisPercentage < 30) {
+            cochonilhaReport.status = "error";
+            cochonilhaReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi 
+                detectada em ${cochonilhaPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(cochonilha.detectedAt)
+                )}.`;
+
+            normalizedReport.push(cochonilhaReport);
+
+            helopeltisReport.status = "warning";
+            helopeltisReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} foi 
+                detectada em ${helopeltisPercentage}% 
+                dos cajueiros aos ${normalizeDate(
+                  new Date(helopeltis.detectedAt)
+                )}.`;
+
+            normalizedReport.push(helopeltisReport);
+          }
+        } else if (cochonilha && !helopeltis) {
+          //   diseaseReport.status = "info";
+          //   diseaseReport.message = `A doença antracnose nunca foi monitorada desde o dia do registo.`;
+
+          //   normalizedReport.push(diseaseReport);
+
+          plagueReport.plagueName = cochonilha.plagueName;
+          plagueReport.detectedAt = new Date(cochonilha.detectedAt);
+          plagueReport.higherAttack = calculatePercentage(
+            cochonilha.higherAttack,
+            plagueReport.trees
+          );
+          plagueReport.highAttack = calculatePercentage(
+            cochonilha.highAttack,
+            plagueReport.trees
+          );
+
+          plagueReport.averageAttack = calculatePercentage(
+            cochonilha.averageAttack,
+            plagueReport.trees
+          );
+          plagueReport.lowAttack = calculatePercentage(
+            cochonilha.lowAttack,
+            plagueReport.trees
+          );
+
+          plagueReport.affectedTrees =
+            cochonilha.lowAttack +
+            cochonilha.averageAttack +
+            cochonilha.highAttack +
+            cochonilha.higherAttack;
+
+          const plaguePertcentage = calculatePercentage(
+            plagueReport.affectedTrees,
+            plagueReport.trees
+          );
+
+          if (plaguePertcentage === 0) {
+            plagueReport.status = "success";
+            plagueReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(cochonilha.detectedAt)
+            )}.`;
+
+            normalizedReport.push(plagueReport);
+
+            // }
+            // else if (diseasePertcentage < 10) {
+
+            //   diseaseReport.status = "warning";
+            //   diseaseReport.message = `A doença ${oidio.diseaseName.toLowerCase()} foi detectada em cajueiros aos (${normalizeDate(
+            //     new Date(oidio.detectedAt)
+            //   )}): severidade muito alta (${
+            //     diseaseReport.higherSeverity
+            //   }%); severidade alta (${
+            //     diseaseReport.highSeverity
+            //   }%); severidade média (${
+            //     diseaseReport.averageSeverity
+            //   }%) e severidade baixa (${diseaseReport.lowSeverity}%).`;
+
+            //   normalizedReport.push(diseaseReport);
+          } else if (plaguePertcentage <= 30) {
+            plagueReport.status = "warning";
+            plagueReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi detectada em alguns cajueiros aos (${normalizeDate(
+              new Date(cochonilha.detectedAt)
+            )}): grau de ataque muito alto (${
+              plagueReport.higherAttack
+            }%); grau de ataque alto (${
+              plagueReport.highAttack
+            }%); graud de ataque médio (${
+              plagueReport.averageAttack
+            }%) e grau de ataque baixo (${
+              plagueReport.lowAttack
+            }%). É recomendada uma pulverização.`;
+
+            normalizedReport.push(plagueReport);
+          } else if (plaguePertcentage > 30) {
+            plagueReport.status = "error";
+            plagueReport.message = `A praga ${cochonilha.plagueName.toLowerCase()} foi detectada em muitos cajueiros aos (${normalizeDate(
+              new Date(cochonilha.detectedAt)
+            )}): grau de ataque muito alto (${
+              plagueReport.higherAttack
+            }%); grau de ataque alto (${
+              plagueReport.highAttack
+            }%); grau de ataque médio (${
+              plagueReport.averageAttack
+            }%) e grau de atque baixo (${
+              plagueReport.lowAttack
+            }%). É recomendada urgentemente uma pulverização.`;
+
+            normalizedReport.push(plagueReport);
+          }
+        } else if (helopeltis && !cochonilha) {
+          //   diseaseReport.status = "info";
+          //   diseaseReport.message = `A doença oídio nunca foi monitorada desde o dia do registo.`;
+
+          //   normalizedReport.push(diseaseReport);
+
+          plagueReport.plagueName = helopeltis.plagueName;
+          plagueReport.detectedAt = new Date(helopeltis.detectedAt);
+          plagueReport.higherAttack = calculatePercentage(
+            helopeltis.higherAttack,
+            plagueReport.trees
+          );
+          plagueReport.highAttack = calculatePercentage(
+            helopeltis.highAttack,
+            plagueReport.trees
+          );
+
+          plagueReport.averageAttack = calculatePercentage(
+            helopeltis.averageAttack,
+            plagueReport.trees
+          );
+          plagueReport.lowAttack = calculatePercentage(
+            helopeltis.lowAttack,
+            plagueReport.trees
+          );
+
+          plagueReport.affectedTrees =
+            helopeltis.lowAttack +
+            helopeltis.averageAttack +
+            helopeltis.highAttack +
+            helopeltis.higherAttack;
+
+          const plaguePertcentage = calculatePercentage(
+            plagueReport.affectedTrees,
+            plagueReport.trees
+          );
+
+          if (plaguePertcentage === 0) {
+            plagueReport.status = "success";
+            plagueReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} não foi detectada aos ${normalizeDate(
+              new Date(helopeltis.detectedAt)
+            )}.`;
+
+            normalizedReport.push(plagueReport);
+
+            // }
+            // else if (diseasePertcentage < 10) {
+
+            //   diseaseReport.status = "warning";
+            //   diseaseReport.message = `A doença ${antracnose.diseaseName.toLowerCase()} foi detectada em cajueiros aos (${normalizeDate(
+            //     new Date(antracnose.detectedAt)
+            //   )}): severidade muito alta (${
+            //     diseaseReport.higherSeverity
+            //   }%); severidade alta (${
+            //     diseaseReport.highSeverity
+            //   }%); severidade média (${
+            //     diseaseReport.averageSeverity
+            //   }%) e severidade baixa (${diseaseReport.lowSeverity}%).`;
+
+            //   normalizedReport.push(diseaseReport);
+          } else if (plaguePertcentage) {
+            plagueReport.status = "warning";
+            plagueReport.message = `A doença ${helopeltis.plagueName.toLowerCase()} foi detectada em alguns cajueiros aos (${normalizeDate(
+              new Date(helopeltis.detectedAt)
+            )}): grau de ataque muito alto (${
+              plagueReport.higherAttack
+            }%); grau de ataque alto (${
+              plagueReport.highAttack
+            }%); grau de ataque médio (${
+              plagueReport.averageAttack
+            }%) e grau de ataque baixo (${
+              plagueReport.lowAttack
+            }%). É recomendada uma pulverização.`;
+
+            normalizedReport.push(plagueReport);
+
+          } else if (plaguePertcentage > 30) {
+            plagueReport.status = "error";
+            plagueReport.message = `A praga ${helopeltis.plagueName.toLowerCase()} foi detectada em muitos cajueiros aos (${normalizeDate(
+              new Date(helopeltis.detectedAt)
+            )}): grau de ataque muito alto (${
+              plagueReport.higherAttack
+            }%); grau de ataque alto (${
+              plagueReport.highAttack
+            }%); grau de ataque médio (${
+              plagueReport.averageAttack
+            }%) e grau de ataque baixo (${
+              plagueReport.lowAttack
+            }%). É recomendada urgentemente uma pulverização.`;
+
+            normalizedReport.push(plagueReport);
+          }
+        } else {
+          plagueReport.status = "info";
+          plagueReport.message = `Neste ano, as pragas ainda não foram monitoradas.`;
+
+          normalizedReport.push(plagueReport);
+        }
+      }
+}
+//  console.log("doenca: ", normalizedReport);
+//   console.log("report--plague ", normalizedReport);
+  return normalizedReport;
+};
+
+
+
+
 
 //  --------------------------- Start harvest report -------------------------------
 

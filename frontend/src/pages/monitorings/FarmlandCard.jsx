@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding, checkHarvest, checkPruning, checkDisease } from '../../libraries/monitoring';
+import { checkWeeding, checkHarvest, checkPruning, checkDisease, checkPlague } from '../../libraries/monitoring';
 
 const ITEM_HEIGHT = 35;
 
@@ -27,7 +27,6 @@ const FarmlandCard = ({ farmland, }) => {
   
     const { data, isError, isSuccess, error, isLoading, 
             } = useGetMonitoringReportsByFarmlandIdQuery(farmland._id );
-
 
 
     useEffect(()=>{
@@ -171,6 +170,24 @@ const FarmlandCard = ({ farmland, }) => {
                 </Fragment>
 
                
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Praga'}</Typography>
+                <Fragment>
+                    {
+                        checkPlague(report, farmland)?.map(
+                            (round, index)=>(
+                                <Box key={index}>
+                                {/* <Box key={round.sowingYear.toString()+round.diseaseName}> */}
+                                    <Alert severity={round.status}>
+                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                    </Alert>
+                                    <Divider />
+                                </Box>
+                            ))
+                    }
+
+                </Fragment>
+
+
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Colheita'}</Typography>
                 <Fragment>
                     {
