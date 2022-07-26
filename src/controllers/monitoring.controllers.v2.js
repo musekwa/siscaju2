@@ -448,8 +448,13 @@ const addInsecticideReport2 = async (data) => {
     return foundMonitoringReport;
   }
 
-  const { insecticideName, treatedTrees, applicationNumber, dose, appliedAt } =
-    data;
+  const { 
+    insecticideName, 
+    treatedTrees, 
+    applicationNumber, 
+    dose, 
+    appliedAt 
+  } = data;
 
   const newInsecticideReport = Insecticide2({
     rounds: new Array({
@@ -475,6 +480,7 @@ const addInsecticideReport2 = async (data) => {
     const newMonitoringReport = {
       insecticide: newInsecticideReport,
       division: newInsecticideReport.division,
+      farmland: ObjectId(data?.farmland),
       user,
     };
 

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding, checkHarvest, checkPruning, checkDisease, checkPlague } from '../../libraries/monitoring';
+import { checkWeeding, checkHarvest, checkPruning, checkDisease, checkPlague, checkInsecticide } from '../../libraries/monitoring';
 
 const ITEM_HEIGHT = 35;
 
@@ -177,6 +177,22 @@ const FarmlandCard = ({ farmland, }) => {
                             (round, index)=>(
                                 <Box key={index}>
                                 {/* <Box key={round.sowingYear.toString()+round.diseaseName}> */}
+                                    <Alert severity={round.status}>
+                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                    </Alert>
+                                    <Divider />
+                                </Box>
+                            ))
+                    }
+
+                </Fragment>
+
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Insecticida'}</Typography>
+                <Fragment>
+                    {
+                        checkInsecticide(report, farmland)?.map(
+                            (round, index)=>(
+                                <Box key={index}>
                                     <Alert severity={round.status}>
                                         Unidade de produção ({round.sowingYear}): {round.message}
                                     </Alert>

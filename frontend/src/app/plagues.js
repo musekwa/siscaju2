@@ -1,3 +1,5 @@
 
 
-export const plagues = ["Helopeltis ssp", "Cochonilha"];
+export const plagues = [
+    "Helopeltis ssp", 
+    "Cochonilha"];
