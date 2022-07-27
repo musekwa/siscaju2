@@ -1,3 +1,7 @@
 
 
-export const diseases = [ "Oídio", "Antracnose"];
+export const diseases = [ 
+    "Oídio", 
+    "Antracnose", 
+    // "Queima"
+];

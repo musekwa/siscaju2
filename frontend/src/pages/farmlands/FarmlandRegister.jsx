@@ -367,7 +367,7 @@ const FarmlandRegister = () => {
                     />
                   )}
                   isOptionEqualToValue={(option, value) =>
-                    value === undefined || value === "" || option === value
+                    option.value === value.value
                   }
                 />
               </Box>

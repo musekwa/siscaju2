@@ -25,8 +25,11 @@ import {
     applicationNumbers, 
     fungicideDoses, 
     northernRegion, 
-    southernRegion 
+    southernRegion, 
+    fungicideByDisease
 } from "../../app/fungicides"
+import { diseases } from "../../app/diseases";
+import { centerAndSouthProvinces, northProvinces, provinces } from "../../app/provinces"
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -42,6 +45,7 @@ const styledTextField = {
 function InsecticideForm({ user }) {
   
   const [reportData, setReportData] = useState({
+    diseaseName: '',
     fungicideName: '',
     treatedTrees: '',
     applicationNumber: '',
@@ -51,8 +55,13 @@ function InsecticideForm({ user }) {
 
   const [openModal, setOpenModal] = useState(false);
   const [inputFungicideName, setInputFungicideName] = useState('');
+  const [inputDiseaseName, setInputDiseaseName] = useState('');
+
+
   const [inputDose, setInputDose] = useState('');
   const [inputApplicationNumber, setInputApplicationNumber] = useState('');
+  const [customizedApplicationNumbers, setCustomizedApplicationNumbers] = useState([]);
+
  
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -62,24 +71,59 @@ function InsecticideForm({ user }) {
 
   const { division, flag, farmland } = location?.state;
 
+  let newApplicationNumbers = [];
 
-//   if ((new Date().getFullYear - division?.sowingYear) <= 3) {
-//     newPruningTypes = pruningTypes?.filter(type=>!type.includes('rejuvenescimento'));
-//   }
-//   else {
-//     newPruningTypes = pruningTypes?.filter(type=>!type.includes('formação'));
-//   }
+
+  useEffect(() => {
+    if ((reportData.diseaseName && reportData.fungicideName) || reportData.diseaseName ){
+      setReportData((prevState)=>({
+        ...prevState,
+        fungicideName: ""
+      }))
+    }
+  }, [reportData.diseaseName]);
+
+  // useEffect(()=>{
+
+  // }, [reportData, location])
+
 
   useEffect(()=>{
 
-  }, [reportData, location])
+    if (northProvinces.indexOf(farmland?.province) >= 0 && reportData?.diseaseName === 'Oídio'){
+      setCustomizedApplicationNumbers([ "primeira", "segunda", "terceira", ])
+    }
+    else if (centerAndSouthProvinces.indexOf(farmland?.province) >= 0 && reportData?.diseaseName === 'Oídio'){
+      setCustomizedApplicationNumbers([ "primeira", "segunda", "intercalar", "terceira", ])
+    }
+    else if (reportData?.diseaseName === 'Antracnose' && reportData.fungicideName ===  "Coprox Super"){
+      setCustomizedApplicationNumbers([ "primeira", "segunda", "terceira", "quarta", "quinta", ])
+    }
+    else if (reportData?.diseaseName === 'Antracnose'){
+      setCustomizedApplicationNumbers([ "primeira", "segunda", "terceira", ])
+    }
+    else{
+      setCustomizedApplicationNumbers([ "primeira", "segunda", "terceira", "quarta", "quinta", ])
+    }
+    
+  }, [ reportData?.diseaseName, reportData?.fungicideName])
 
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // const remainder = division?.trees - 
-    //     (Number(reportData?.higherAttack) + Number(reportData?.highAttack) + Number(reportData?.averageAttack) + Number(reportData?.lowAttack) );
+    if (!(diseases.indexOf(reportData?.diseaseName) >= 0))  {
+      toast.error("Seleccionar o tipo de doença.", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
 
     if (!(fungicides.indexOf(reportData?.fungicideName) >= 0))  {
       toast.error("Seleccionar a fungicida aplicada", {
@@ -200,12 +244,71 @@ function InsecticideForm({ user }) {
               blurOnSelect
               disablePortal
               id="combo-box-demo-2"
-              value={reportData?.fungicideName || ''}
-              options={fungicides}
-              getOptionLabel={(option)=>option ? option : 'Seleccionar a fungicida aplicada'}
-              onChange={(event, newFungicideName) => {
+              value={reportData?.diseaseName}
+              options={diseases || ['']}
+              // getOptionLabel={(option)=>option ? option : 'Seleccionar o tipo de praga'}
+              onChange={(event, newDiseaseName) => {
                 setReportData(prevState=>({
-                    ...reportData,
+                    ...prevState,
+                    diseaseName: newDiseaseName,
+                }));
+              }}
+              inputValue={inputDiseaseName}
+              onInputChange={(event, newInputDiseaseName) => {
+                setInputDiseaseName(newInputDiseaseName);
+              }}
+              renderInput={(params) => {
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = "off";
+
+                return (
+                  <TextField
+                    sx={styledTextField }
+                    name="diseaseName"
+                    {...params}
+                    inputProps={inputProps}
+                    required
+                    label="Tipo de doença"
+                  />
+              )}}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+            />
+        </div>
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+
+            <Autocomplete
+              fullWidth
+              required
+              size="medium"
+              blurOnSelect
+              disablePortal
+              id="combo-box-demo-2"
+              value={reportData?.fungicideName}
+              options={
+                reportData?.diseaseName
+                  ? fungicideByDisease[reportData?.diseaseName]
+                  : ["Primeiro, seleccionar o tipo de doença!"]
+              }
+              // getOptionLabel={(option)=>option ? option : 'Seleccionar a fungicida aplicada'}
+              onChange={(event, newFungicideName) => {
+                if (!Array.isArray(fungicideByDisease[reportData?.diseaseName])) {
+                    toast.error("Primeiro, selecciona o tipo de doença!", {
+                      autoClose: 5000,
+                      position: toast.POSITION.TOP_RIGHT,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    })
+                  return ;
+                }
+
+                setReportData(prevState=>({
+                    ...prevState,
                     fungicideName: newFungicideName,
                 }));
               }}
@@ -228,73 +331,8 @@ function InsecticideForm({ user }) {
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
+                option.value === value.value
               }
-            />
-        </div>
-
-        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-
-            <Autocomplete
-              fullWidth
-              required
-              size="medium"
-              blurOnSelect
-              disablePortal
-              id="combo-box-demo-2"
-              value={reportData?.applicationNumber || ''}
-              options={applicationNumbers}
-              getOptionLabel={(option)=>option ? option : 'Seleccionar o número de aplicação'}
-              onChange={(event, newApplicationNumber) => {
-                setReportData(prevState=>({
-                    ...reportData,
-                    applicationNumber: newApplicationNumber,
-                }));
-              }}
-              inputValue={inputApplicationNumber}
-              onInputChange={(event, newInputApplicationNumber) => {
-                setInputApplicationNumber(newInputApplicationNumber);
-              }}
-              renderInput={(params) => {
-                const inputProps = params.inputProps;
-                inputProps.autoComplete = "off";
-
-                return (
-                  <TextField
-                    sx={styledTextField }
-                    name="applicationNumber"
-                    {...params}
-                    inputProps={inputProps}
-                    required
-                    label="Número de aplicação"
-                  />
-              )}}
-              isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
-              }
-            />
-
-            </div>
-
-
-        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-            <TextField
-            sx={styledTextField}
-            fullWidth
-            required
-            label="Cajueiros tratados"
-            id="fullWidth treatedTrees"
-            name="treatedTrees"
-            type="number"
-            value={reportData?.treatedTrees || ''}
-            placeholder="Cajueiros tratados"
-            size="medium"
-            onChange={(event) => {
-                setReportData((prevState) => ({
-                ...prevState,
-                treatedTrees: event.target.value,
-                }));
-            }}
             />
         </div>
 
@@ -335,11 +373,80 @@ function InsecticideForm({ user }) {
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
+                option.value === value.value
               }
             />
 
             </div>
+
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+
+            <Autocomplete
+              fullWidth
+              required
+              size="medium"
+              blurOnSelect
+              disablePortal
+              id="combo-box-demo-2"
+              value={reportData?.applicationNumber}
+              options={
+                // applicationNumbers
+                customizedApplicationNumbers
+              }
+              getOptionLabel={(option)=>option ? option : 'Seleccionar o número de aplicação'}
+              onChange={(event, newApplicationNumber) => {
+                setReportData(prevState=>({
+                    ...reportData,
+                    applicationNumber: newApplicationNumber,
+                }));
+              }}
+              inputValue={inputApplicationNumber}
+              onInputChange={(event, newInputApplicationNumber) => {
+                setInputApplicationNumber(newInputApplicationNumber);
+              }}
+              renderInput={(params) => {
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = "off";
+
+                return (
+                  <TextField
+                    sx={styledTextField }
+                    name="applicationNumber"
+                    {...params}
+                    inputProps={inputProps}
+                    required
+                    label="Número de aplicação"
+                  />
+              )}}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+            />
+
+            </div>
+
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+            <TextField
+            sx={styledTextField}
+            fullWidth
+            required
+            label="Cajueiros tratados"
+            id="fullWidth treatedTrees"
+            name="treatedTrees"
+            type="number"
+            value={reportData?.treatedTrees || ''}
+            placeholder="Cajueiros tratados"
+            size="medium"
+            onChange={(event) => {
+                setReportData((prevState) => ({
+                ...prevState,
+                treatedTrees: event.target.value,
+                }));
+            }}
+            />
+        </div>
 
 
           <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>

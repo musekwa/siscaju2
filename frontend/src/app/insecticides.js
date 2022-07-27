@@ -4,8 +4,13 @@ export const insecticides = [
     "Lambda Cyhalothrin", 
     "Beta-ciflutrina", 
     "Acetamiprid",
-    "outro",
+    "Outra",
 ];
+
+export const insecticideByPlague = {
+  "Helopeltis ssp": ["Lambda Cyhalothrin", "Beta-ciflutrina", "Outra"],
+  Cochonilha: ["Acetamiprid", "Outra"],
+};
 
 export const applicationNumbers = [
     "primeira", 
@@ -18,5 +23,12 @@ export const insecticideDoses = [
     "50 g/L",
     "125 g/L",
     "222 g/L",
-    "outro"
+    "Outra"
 ]
+
+export const doseByInsecticide = {
+    "Lambda Cyhalothrin": [] ,
+    "Beta-ciflutrina": [], 
+    "Acetamiprid": [],
+    "Outra": [],
+}

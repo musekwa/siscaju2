@@ -120,7 +120,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
             transform: "translate(-50%, -50%)",
             width: "350px",
             borderRadius: "20px",
-            height: "40vh",
+            height: "45vh",
             bgcolor: "background.paper",
             boxShadow: 24,
             // p: 2,
@@ -339,6 +339,10 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                 </Box>
                   <Box sx={{ p: "5px 15px 5px 15px",  }}>
                       <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
+                          <Typography sx={{ width: "80%", textAlign: "left"}}>Praga:</Typography>
+                          <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.plagueName || 0}</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ p: "3px 0px 0px 0px",  }}>
                           <Typography sx={{ width: "80%", textAlign: "left"}}>Cajueiros tratados:</Typography>
                           <Typography sx={{ width: "50%", textAlign: "center"}}>{reportData?.treatedTrees || 0}</Typography>
                       </Stack>
@@ -447,10 +451,6 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                   </Box>
                   )
           }
-
-
-
-
                 </Box>
                
             </Box>
@@ -458,7 +458,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
             <Box
               sx={{
                 position: "relative",
-                bottom: 2,
+                bottom: 1,
                 left: 0,
                 // height: "20%",
               }}

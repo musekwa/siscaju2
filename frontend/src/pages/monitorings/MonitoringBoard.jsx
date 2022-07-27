@@ -299,9 +299,11 @@ const transferedPackage = {
         {/* Última monitoria: 02/01/2021 por Evariste */}
       </Typography>
         <Grid container direction="column" justifyContent="center" alignItems="center" >
+
         <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
+
+          {/* --------------------Weeding--------------------------------- */}
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              {/* <Link to='/weeding-add'> */}
               <Box 
                   component="button" 
                   sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
@@ -324,8 +326,9 @@ const transferedPackage = {
                 />
                 <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.weeding ? normalizeDate(report?.weeding?.updatedAt) : `Ainda não monitorada`}</Typography>
               </Box>
-             {/* </Link> */}
           </Paper>
+
+          {/* ------------------------Pruning-------------------------------------- */}
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
                {/* <Link to='/pruning-add'> */}
                <Box 
@@ -351,39 +354,12 @@ const transferedPackage = {
               />
               <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.pruning ? normalizeDate(report?.pruning?.updatedAt) : `Ainda não monitorada`}</Typography>
               </Box>
-              {/* </Link> */}
           </Paper>
         </Stack>
 
         <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
-          <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              {/* <Link to='/diseases-add'> */}
-            <Box 
-                component="button" 
-                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
-                onClick={()=>{
-                  setQuestion(prevState=>({
-                      ...prevState,
-                      question: monitoringQuestions?.disease,
-                      flag: 'disease'
-                    }))
-                  setOpenModal(true)
-                }}
-            >
-              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Doenças</Typography>
-              <CardMedia
-                component="img"
-                width= "150px"
-                height="105px"
-                image={disease}
-                alt="disease"
-                />
-              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.disease ? normalizeDate(report?.disease?.updatedAt) : `Ainda não monitorada`}</Typography>
-            </Box>
-             {/* </Link> */}
-          </Paper>
+        {/* ------------------------------------- Plague -------------------- */}
           <Paper sx={{ width: "152px", height: "150px", backgroundColor: "#826DA3" }}>
-            {/* <Link to='/plagues-add'> */}
             <Box 
                 component="button" 
                 sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
@@ -406,11 +382,9 @@ const transferedPackage = {
                 />
                 <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.plague ? normalizeDate(report?.plague?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
-            {/* </Link> */}
           </Paper>
-        </Stack>
 
-        <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
+          {/* -----------------------------Insecticide -------------------------------- */}
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
             {/* <Link to='/insecticide-add'> */}
             <Box 
@@ -436,8 +410,39 @@ const transferedPackage = {
                 />
                 <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.insecticide ? normalizeDate(report?.insecticide?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
-          {/* </Link> */}
           </Paper>
+        </Stack>
+
+
+        <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
+
+          {/* --------------------------------Disease-------------------------- */}
+          <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
+            <Box 
+                component="button" 
+                sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
+                onClick={()=>{
+                  setQuestion(prevState=>({
+                      ...prevState,
+                      question: monitoringQuestions?.disease,
+                      flag: 'disease'
+                    }))
+                  setOpenModal(true)
+                }}
+            >
+              <Typography sx={{ color: "#eee",  fontWeight: 800, }}>Doenças</Typography>
+              <CardMedia
+                component="img"
+                width= "150px"
+                height="105px"
+                image={disease}
+                alt="disease"
+                />
+              <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.disease ? normalizeDate(report?.disease?.updatedAt) : `Ainda não monitorada`}</Typography>
+            </Box>
+          </Paper>
+
+          {/* ------------------------------Fungicide---------------------- */}
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
               {/* <Link to='/fungicide-add'> */}
             <Box 
@@ -463,12 +468,14 @@ const transferedPackage = {
               />
               <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.fungicide ? normalizeDate(report?.fungicide?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
-            {/* </Link> */}
-          </Paper>
+          </Paper>         
         </Stack>
+       
+
         <Stack direction="row" spacing={3} sx={{ margin: "15px 5px 10px 5px"}}>
+
+           {/*----------------- Harvest ---------------------------*/}
           <Paper sx={{ width: "150px", height: "150px", backgroundColor: "#826DA3" }}>
-              {/* <Link to='/crop-add'> */}
             <Box 
                 component="button" 
                 sx={{ backgroundColor: "#826DA3", border: '1px dashed grey', width: "100%"}}
@@ -492,8 +499,8 @@ const transferedPackage = {
                 />
               <Typography sx={{ color: "#eee",  fontSize: "12px" }}>{report?.harvest ? normalizeDate(report?.harvest?.updatedAt) : `Ainda não monitorada`}</Typography>
             </Box>
-            {/* </Link> */}
           </Paper>
+          {/* ----------------Empty box----------------------- */}
           <Box sx={{ display: "block", width: "150px", height: "150px" }}>
           </Box>
         </Stack>

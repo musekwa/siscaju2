@@ -116,8 +116,6 @@ const [
       });
     } else if (isError){
 
-      console.log('error: ', error?.error ? error.error : error); 
-
       toast.error(
         error && error?.status === 401 
         ? "A sua sessão expirou! Volte a fazer o login novamente!" 
@@ -133,7 +131,7 @@ const [
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,
       });
-      // navigate("/farmers/success");
+      
       setOpen(true)
       setFarmerData({
         fullname: '',
@@ -152,7 +150,7 @@ const [
         phone: '',
       })
     }
-    // reset();
+    
   }, [user, farmer, isError, isSuccess, error, navigate, reset]);
 
 
@@ -396,7 +394,7 @@ const [
                 />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value }
+                option.value === value.value }
             />
           </div>
 
@@ -475,7 +473,7 @@ const [
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value }
+                option.value === value.value }
             />
           </div>
 
@@ -532,7 +530,7 @@ const [
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value }
+                option.value === value.value }
             />
           </div>
         </Stack>
@@ -592,7 +590,7 @@ const [
                 />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value }
+                option.value === value.value }
             />
           </div>
           <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>
@@ -672,7 +670,7 @@ const [
                 />
               )}}
               isOptionEqualToValue={(option, value) =>
-              value === undefined || value === "" || option === value }
+              option.value === value.value }
             />
           </div>
           <div style={{ width: "49%", padding: "10px 5px 10px 5px" }}>

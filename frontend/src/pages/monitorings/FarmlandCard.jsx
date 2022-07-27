@@ -1,12 +1,12 @@
 
-import { ExpandMore, MoreVert, NotificationsNoneSharp, Preview, QueryStats } from '@mui/icons-material'
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Badge, Box, Divider, Grid, IconButton, List, ListItem, ListItemIcon, Menu, MenuItem, Stack, Typography } from '@mui/material'
+import { ExpandMore, MoreVert, NotificationsNoneSharp, Preview, QueryStats, RoundaboutRightOutlined } from '@mui/icons-material'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Badge, Box, Divider, Grid, IconButton, List, ListItem, ListItemIcon, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React, { Fragment, useState } from 'react'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding, checkHarvest, checkPruning, checkDisease, checkPlague, checkInsecticide } from '../../libraries/monitoring';
+import { checkWeeding, checkHarvest, checkPruning, checkDisease, checkPlague, checkInsecticide, checkFungicide } from '../../libraries/monitoring';
 
 const ITEM_HEIGHT = 35;
 
@@ -170,6 +170,23 @@ const FarmlandCard = ({ farmland, }) => {
                 </Fragment>
 
                
+                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Fungicida'}</Typography>
+                <Fragment>
+                    {
+   
+                        checkFungicide(report, farmland)?.map(
+                            (round, index)=>(
+                                <Box key={index}>
+                                 <Alert severity={round.status}>
+                                    Unidade de produção ({round.sowingYear}): {round.message}
+                                </Alert>
+                                <Divider />
+                            </Box>
+                    )) 
+                    
+                    }
+                    
+                </Fragment>
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Praga'}</Typography>
                 <Fragment>
                     {
@@ -183,25 +200,60 @@ const FarmlandCard = ({ farmland, }) => {
                                     <Divider />
                                 </Box>
                             ))
-                    }
+                        }
 
                 </Fragment>
 
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Insecticida'}</Typography>
                 <Fragment>
                     {
+   
                         checkInsecticide(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
-                                    <Alert severity={round.status}>
-                                        Unidade de produção ({round.sowingYear}): {round.message}
-                                    </Alert>
-                                    <Divider />
-                                </Box>
-                            ))
+                                 <Alert severity={round.status}>
+                                    Unidade de produção ({round.sowingYear}): {round.message}
+                                </Alert>
+                                <Divider />
+                            </Box>
+                    )) 
+                    
                     }
-
+                    
                 </Fragment>
+
+                     {/* <TableContainer component={Box}>
+                         <Typography variant="body2" sx={{ color: "gray "}}>
+                             {round.insecticideName} ({round.plagueName})
+                         </Typography>
+                    <Table  */}
+                    
+                {/* //     // sx={{ minWidth: 650 }}
+                //      size="small" aria-label="a dense table">
+                //         <TableHead>
+                //         <TableRow>
+                //             <TableCell>Aplicação </TableCell>
+                //             <TableCell align="center">Cajueiros</TableCell>
+                //             <TableCell align="center">Data</TableCell>
+                //         </TableRow>
+                //         </TableHead>
+                //         <TableBody>
+                //             <TableRow */}
+                {/* //             key={round.applicationNumber}
+                //             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                //             >
+                //             <TableCell component="th" scope="row">
+                //                 {round.applicationNumber}
+                //             </TableCell>
+                //             <TableCell align="center">{round.affectedTreePercentage}%</TableCell>
+                //             <TableCell align="center">{round.appliedAt}</TableCell>
+                //             </TableRow>
+                //             </TableBody>
+                //     </Table>
+                // </TableContainer> */}
+                {/* // ))} */}
+                    
+
 
 
                 <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Colheita'}</Typography>

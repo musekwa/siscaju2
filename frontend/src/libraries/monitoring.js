@@ -1,5 +1,7 @@
 
 import { months } from "../app/months";
+import { applicationNumber } from "../app/insecticides"
+import { northProvinces } from "../app/provinces";
 
 // get the last registered weeding report for this division
 const lastMonitoringRound = (rounds, flag) => {
@@ -31,7 +33,6 @@ const lastMonitoringRound = (rounds, flag) => {
 };
 
 const calculatePercentage = (number, total) => {
-  // console.log (total);
   return ((Number(number) * 100) / Number(total)).toFixed(1);
 };
 
@@ -47,6 +48,152 @@ const normalizeDate = (date) => {
     "-" +
     new Date(date).getFullYear()
   );
+};
+
+const applications = (application) =>{
+
+  switch(application){
+    case 'primeira':
+      return 0;
+    case 'segunda':
+      return 1;
+    case 'terceira':
+      return 2;
+    case 'intercalar':
+      return 3;
+    default:
+      return ;
+  }
+}
+
+const getNextRound = (applicationNumber, name, appliedAt, isNorth) =>{
+  
+    if ((name === "Oídio" && isNorth) || name === "Antracnose" || name === "Queima") {
+
+      let days = new Date(appliedAt).getDate() + 21;
+
+      if (applicationNumber === "primeira") {
+        return {
+          nextApplication: "segunda",
+          nextDate: new Date(new Date(appliedAt).setDate(days)),
+          round: 1,
+        };
+      } 
+      else if (applicationNumber === "segunda") {
+        return {
+          nextApplication: "terceira",
+          nextDate: new Date(new Date(appliedAt).setDate(days)),
+          round: 2,
+        };
+      } 
+      else if (applicationNumber === "terceira") {
+        return {
+          nextApplication: "Nenhum",
+          nextDate: null,
+          round: 3,
+        };
+      }
+
+    } 
+    else if (name === "Oídio" && !isNorth) {
+       
+      let days = new Date(appliedAt).getDate() + 21;
+
+      if (applicationNumber === "primeira") {
+        return {
+          nextApplication: "segunda",
+          nextDate: new Date(new Date(appliedAt).setDate(days)),
+          round: 1,
+        };
+      } else if (applicationNumber === "segunda") {
+        return {
+          nextApplication: "terceira",
+          nextDate: new Date(new Date(appliedAt).setDate(days)),
+          round: 2,
+        };
+      } else if (applicationNumber === "terceira") {
+        return {
+          nextApplication: "quarta",
+          nextDate: new Date(new Date(appliedAt).setDate(days)),
+          round: 3,
+        };
+      }
+      else if (applicationNumber === "quarta"){
+        return {
+          nextApplication: "Nenhum",
+          nextDate: null,
+          round: 4
+        }
+      }
+
+    }
+    //  else if (name === "Acetamiprid") {
+
+    //   let days = new Date(appliedAt).getDate() + 21;
+
+    //   if (applicationNumber === "primeira") {
+    //     return {
+    //       nextApplication: "segunda",
+    //       nextDate: new Date(new Date(appliedAt).setDate(days)),
+    //       round: 1,
+    //     };
+    //   } else if (applicationNumber === "segunda") {
+    //     return {
+    //       nextApplication: "terceira",
+    //       nextDate: new Date(new Date(appliedAt).setDate(days)),
+    //       round: 2,
+    //     };
+    //   } else if (applicationNumber === "terceira") {
+    //     return {
+    //       nextApplication: "Nenhuma",
+    //       nextDate: null,
+    //       round: 3,
+    //     };
+    //   }
+    // }
+}
+
+
+const getNextApplicationRound = (applicationNumber, name, appliedAt) => {
+  if (name === "Lambda Cyhalothrin" || name === "Beta-ciflutrina") {
+    let days = new Date(appliedAt).getDate() + 42;
+
+    if (applicationNumber === "primeira") {
+      return {
+        nextApplication: "segunda",
+        nextDate: new Date(new Date(appliedAt).setDate(days)),
+        round: 1,
+      };
+    } else if (applicationNumber === "segunda") {
+      return {
+        nextApplication: "Nenhuma",
+        nextDate: null,
+        round: 2,
+      };
+    }
+  } else if (name === "Acetamiprid") {
+    let days = new Date(appliedAt).getDate() + 21;
+
+    if (applicationNumber === "primeira") {
+      return {
+        nextApplication: "segunda",
+        nextDate: new Date(new Date(appliedAt).setDate(days)),
+        round: 1,
+      };
+    } else if (applicationNumber === "segunda") {
+      return {
+        nextApplication: "terceira",
+        nextDate: new Date(new Date(appliedAt).setDate(days)),
+        round: 2,
+      };
+    } else if (applicationNumber === "terceira") {
+      return {
+        nextApplication: "Nenhuma",
+        nextDate: null,
+        round: 3,
+      };
+    }
+  }
 };
 
 // ------------------------------- start Weeding Report ------------------------
@@ -536,7 +683,6 @@ export const checkPruning = (report, farmland) => {
         normalizedReport.push(pruningReport);
       }
   }
-//   console.log("report ", normalizedReport);
   return normalizedReport;
 };
 
@@ -599,6 +745,12 @@ export const checkDisease = (report, farmland) => {
           "disease"
         );
 
+        let queima = lastMonitoringRound(
+          report[i]?.disease?.rounds.filter(
+            (round) => round.diseaseName === "Queima"
+          ),
+          "disease"
+        );
 
 
         if (oidio && antracnose) {
@@ -609,9 +761,6 @@ export const checkDisease = (report, farmland) => {
           let antracnoseReport = {
             ...diseaseReport,
           };
-
-        //   console.log("oidio: ", oidio);
-        //   console.log('antracnose: ', antracnose);
 
           oidioReport.diseaseName = oidio.diseaseName;
           antracnoseReport.diseaseName = antracnose.diseaseName;
@@ -981,7 +1130,7 @@ export const checkDisease = (report, farmland) => {
             normalizedReport.push(diseaseReport);
           } else if (diseasePercentage > 30) {
             diseaseReport.status = "error";
-            diseaseReport.message = `Recomendada-se uma pulverização contra a ${antracnose.diseaseName.toLowerCase()}.
+            diseaseReport.message = `Recomenda-se uma pulverização contra a ${antracnose.diseaseName.toLowerCase()}.
                 A última monitoria que ocorreu aos ${normalizeDate(
                   new Date(antracnose.detectedAt)
                 )} detectou o seguinte: severidade muito alta (${
@@ -1123,16 +1272,16 @@ export const checkPlague = (report, farmland) => {
           );
 
           cochonilhaReport.affectedTrees =
-            cochonilha.lowAttack +
-            cochonilha.averageAttack +
-            cochonilha.highAttack +
-            cochonilha.higherAttack;
+            Number(cochonilha.lowAttack) +
+            Number(cochonilha.averageAttack) +
+            Number(cochonilha.highAttack) +
+            Number(cochonilha.higherAttack);
 
           helopeltisReport.affectedTrees =
-            helopeltis.lowAttack +
-            helopeltis.averageAttack +
-            helopeltis.highAttack +
-            helopeltis.higherAttack;
+            Number(helopeltis.lowAttack) +
+            Number(helopeltis.averageAttack) +
+            Number(helopeltis.highAttack) +
+            Number(helopeltis.higherAttack);
 
           const cochonilhaPercentage = calculatePercentage(
             cochonilhaReport.affectedTrees,
@@ -1156,7 +1305,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(cochonilhaReport);
 
             helopeltisReport.status = "warning";
-            helopeltisReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            helopeltisReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou ${helopeltisPercentage}% 
@@ -1173,7 +1322,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(cochonilhaReport);
 
             helopeltisReport.status = "error";
-            helopeltisReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            helopeltisReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou ${helopeltisPercentage}% dos cajueiros infectados.`;
@@ -1193,7 +1342,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(helopeltisReport);
 
             cochonilhaReport.status = "warning";
-            cochonilhaReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            cochonilhaReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou ${cochonilhaPercentage}% dos cajueiros infectados.`;
@@ -1209,7 +1358,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(helopeltisReport);
 
             cochonilhaReport.status = "error";
-            cochonilhaReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            cochonilhaReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou ${cochonilhaPercentage}% dos cajueiros infectados`;
@@ -1239,7 +1388,7 @@ export const checkPlague = (report, farmland) => {
             helopeltisPercentage <= 30
           ) {
             cochonilhaReport.status = "warning";
-            cochonilhaReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            cochonilhaReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou ${cochonilhaPercentage}% dos cajueiros infectados.`;
@@ -1247,7 +1396,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(cochonilhaReport);
 
             helopeltisReport.status = "warning";
-            helopeltisReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            helopeltisReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou ${helopeltisPercentage}% dos cajueiros infectados.`;
@@ -1257,7 +1406,7 @@ export const checkPlague = (report, farmland) => {
           } 
           else if (cochonilhaPercentage > 30 && helopeltisPercentage > 30) {
             cochonilhaReport.status = "error";
-            cochonilhaReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            cochonilhaReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou ${cochonilhaPercentage}% dos cajueiros infectados.`;
@@ -1266,7 +1415,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(cochonilhaReport);
 
             helopeltisReport.status = "error";
-            helopeltisReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            helopeltisReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou ${helopeltisPercentage}% dos cajueiros infectados.`;
@@ -1276,7 +1425,7 @@ export const checkPlague = (report, farmland) => {
           } 
           else if (cochonilhaPercentage < 30 && helopeltisPercentage > 30) {
             cochonilhaReport.status = "warning";
-            cochonilhaReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            cochonilhaReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou ${cochonilhaPercentage}% dos cajueiros infectados.`;
@@ -1284,7 +1433,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(cochonilhaReport);
 
             helopeltisReport.status = "error";
-            helopeltisReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            helopeltisReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou ${helopeltisPercentage}% dos cajueiros infectados.`;
@@ -1294,7 +1443,7 @@ export const checkPlague = (report, farmland) => {
           } 
           else if (cochonilhaPercentage > 30 && helopeltisPercentage < 30) {
             cochonilhaReport.status = "error";
-            cochonilhaReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            cochonilhaReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                   A última monitoria que ocorreu aos ${normalizeDate(
                     new Date(cochonilha.detectedAt)
                   )} detectdou ${cochonilhaPercentage}% dos cajueiros infectados.`;
@@ -1302,7 +1451,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(cochonilhaReport);
 
             helopeltisReport.status = "warning";
-            helopeltisReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            helopeltisReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou ${helopeltisPercentage}% dos cajueiros infectados.`;
@@ -1334,10 +1483,10 @@ export const checkPlague = (report, farmland) => {
           );
 
           plagueReport.affectedTrees =
-            cochonilha.lowAttack +
-            cochonilha.averageAttack +
-            cochonilha.highAttack +
-            cochonilha.higherAttack;
+            Number(cochonilha.lowAttack) +
+            Number(cochonilha.averageAttack) +
+            Number(cochonilha.highAttack) +
+            Number(cochonilha.higherAttack);
 
           const plaguePertcentage = calculatePercentage(
             plagueReport.affectedTrees,
@@ -1354,7 +1503,7 @@ export const checkPlague = (report, farmland) => {
 
           } else if (plaguePertcentage <= 30) {
             plagueReport.status = "warning";
-            plagueReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            plagueReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou o seguinte: grau de ataque muito alto (${
@@ -1370,7 +1519,7 @@ export const checkPlague = (report, farmland) => {
             normalizedReport.push(plagueReport);
           } else if (plaguePertcentage > 30) {
             plagueReport.status = "error";
-            plagueReport.message = `Recomendada-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
+            plagueReport.message = `Recomenda-se uma pulverização contra a ${cochonilha.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(cochonilha.detectedAt)
                  )} detectou o seguinte: grau de ataque muito alto (${
@@ -1410,10 +1559,10 @@ export const checkPlague = (report, farmland) => {
           );
 
           plagueReport.affectedTrees =
-            helopeltis.lowAttack +
-            helopeltis.averageAttack +
-            helopeltis.highAttack +
-            helopeltis.higherAttack;
+            Number(helopeltis.lowAttack) +
+            Number(helopeltis.averageAttack) +
+            Number(helopeltis.highAttack) +
+            Number(helopeltis.higherAttack);
 
           const plaguePertcentage = calculatePercentage(
             plagueReport.affectedTrees,
@@ -1430,7 +1579,7 @@ export const checkPlague = (report, farmland) => {
 
           } else if (plaguePertcentage) {
             plagueReport.status = "warning";
-            plagueReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            plagueReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                   A última monitoria que ocorreu aos ${normalizeDate(
                     new Date(helopeltis.detectedAt)
                   )} detectou o seguinte: grau de ataque muito alto (${
@@ -1448,7 +1597,7 @@ export const checkPlague = (report, farmland) => {
           } 
           else if (plaguePertcentage > 30) {
             plagueReport.status = "error";
-            plagueReport.message = `Recomendada-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
+            plagueReport.message = `Recomenda-se uma pulverização contra a ${helopeltis.plagueName.toLowerCase()}. 
                  A última monitoria que ocorreu aos ${normalizeDate(
                    new Date(helopeltis.detectedAt)
                  )} detectou o seguinte: grau de ataque muito alto (${
@@ -1486,6 +1635,7 @@ export const checkInsecticide = (report, farmland)=>{
 
 
     let sprayingMonths = [ 7, 8, 9];  // july, august and september
+    let sprayingRounds = [1, 2, 3, 4] // primeira, segunda, terceira, intercalar
 
     const normalizedReport = [];
 
@@ -1521,7 +1671,7 @@ export const checkInsecticide = (report, farmland)=>{
     let sowingYear = foundDivision.sowingYear;
 
     // 
-    let diseaseReport = {
+    let plagueReport = {
       sowingYear,
       trees: foundDivision.trees,
     };
@@ -1531,7 +1681,7 @@ export const checkInsecticide = (report, farmland)=>{
         trees: foundDivision.trees,
     };
 
-    if (!report[i]?.disease?.rounds && !report[i]?.insecticide?.rounds) {
+    if (!report[i]?.plague?.rounds && !report[i]?.insecticide?.rounds) {
         insecticideReport.status =
             sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
               ? "warning"
@@ -1540,86 +1690,88 @@ export const checkInsecticide = (report, farmland)=>{
           sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
             ? `Recomenda-se a aplicação rotineira da 
                 insecticida nos meses de julho, agosto e setembro.`
-            : `Neste ano, a ocorrência das doenças e a aplicação da insecticida ainda não foram monitoradas.`;
-        insecticideReport.oidioReport = {};
-        insecticideReport.antracnoseReport = {}
+            : `Neste ano, a ocorrência das pragas e a aplicação da insecticida ainda não foram monitoradas.`;
+        insecticideReport.cochonilhaReport = {};
+        insecticideReport.helopeltisReport = {}
 
         normalizedReport.push(insecticideReport);
 
     } 
     else if (
-      report[i]?.disease?.rounds &&
-      report[i]?.disease?.rounds?.length > 0 &&
+      report[i]?.plague?.rounds &&
+      report[i]?.plague?.rounds?.length > 0 &&
       !report[i]?.insecticide?.rounds
     )
     {
         // check if the last disease reports have any relevant information
-        let lastDiseaseReports = checkDisease(report, farmland);
+        let lastPlagueReports = checkPlague(report, farmland);
 
         
-        let oidioReport = lastDiseaseReports.find(report=>report.diseaseName === "Oídio");
-        let antracnoseReport = lastDiseaseReports.find((report) => report.diseaseName === "Antracnose");
+        let cochonilhaReport = lastPlagueReports.find(report=>report.plagueName === "Cochonilha");
+        let helopeltisReport = lastPlagueReports.find(
+          (report) => report.plagueName === "Helopeltis ssp"
+        );
 
-        insecticideReport.oidioReport = oidioReport;
-        insecticideReport.antracnoseReport = antracnoseReport;
+        insecticideReport.cochonilhaReport = cochonilhaReport;
+        insecticideReport.helopeltisReport = helopeltisReport;
 
-        if (!oidioReport && !antracnoseReport) {
+        if (!cochonilhaReport && !helopeltisReport) {
 
             insecticideReport.status = "info"
-            insecticideReport.message = `Neste ano, as doenças (oídio e antracnose) ainda não foram monitoradas. 
+            insecticideReport.message = `Neste ano, as pragas (cochonilha e helopeltis ssp) ainda não foram monitoradas. 
             Mas, recomenda-se a aplicação rotineira de insecticida nos meses de 
             julho, agosto e setembro.`;
 
             normalizedReport.push(insecticideReport);
             
         }
-        else if (oidioReport && oidioReport.affectedTrees === 0 && !antracnoseReport){
+        else if (cochonilhaReport && cochonilhaReport.affectedTrees === 0 && !helopeltisReport){
 
             insecticideReport.status = "info"
-            insecticideReport.message = `Nenhum cajueiro doente de oídio segundo a última monitoria ocorrida aos 
-            ${normalizeDate(new Date(oidioReport.detectedAt))}. Recomenda-se a monitoria da antracnose e a aplicação rotineira de insecticida nos meses de 
+            insecticideReport.message = `Nenhum cajueiro infectado pela cochonilha segundo a última monitoria ocorrida aos 
+            ${normalizeDate(new Date(cochonilhaReport.detectedAt))}. Recomenda-se a monitoria da 'helopeltis ssp' e a aplicação rotineira de insecticida nos meses de 
             julho, agosto e setembro.`;
 
             normalizedReport.push(insecticideReport);
 
         }
-        else if (oidioReport && oidioReport.affectedTrees > 0 && !antracnoseReport) {
+        else if (cochonilhaReport && cochonilhaReport.affectedTrees > 0 && !helopeltisReport) {
             
             insecticideReport.status = "warning"
             insecticideReport.message = `${calculatePercentage(
-              oidioReport.affectedTrees,
-              oidioReport.trees
-            )}% dos cajueiros doentes de oídio segundo a última monitoria ocorrida aos 
+              cochonilhaReport.affectedTrees,
+              cochonilhaReport.trees
+            )}% dos cajueiros infectados pela cochonilha segundo a última monitoria ocorrida aos 
             ${normalizeDate(
-              new Date(oidioReport.detectedAt)
-            )}. Recomenda-se (1) a pulverização contra a oídio, (2) a monitoria da antracnose e (3) a aplicação rotineira de insecticida nos meses de 
+              new Date(cochonilhaReport.detectedAt)
+            )}. Recomenda-se (1) a pulverização contra a cochonilha, (2) a monitoria da helopeltis ssp e (3) a aplicação rotineira de insecticida nos meses de 
             julho, agosto e setembro.`;
 
             normalizedReport.push(insecticideReport);
 
         }
-        else if (!oidioReport && antracnoseReport && antracnoseReport.affectedTrees === 0) {
+        else if (!cochonilhaReport && helopeltisReport && helopeltisReport.affectedTrees === 0) {
 
             insecticideReport.status = "info";
-            insecticideReport.message = `Nenhum cajueiro doente de antracnose segundo a última monitoria ocorrida aos 
+            insecticideReport.message = `Nenhum cajueiro infectado pela 'helopeltis ssp' segundo a última monitoria ocorrida aos 
             ${normalizeDate(
-              new Date(antracnoseReport.detectedAt)
-            )}. Recomenda-se a monitoria da oídio e a aplicação rotineira de insecticida nos meses de 
+              new Date(helopeltisReport.detectedAt)
+            )}. Recomenda-se a monitoria da cochonilha e a aplicação rotineira de insecticida nos meses de 
             julho, agosto e setembro.`;
 
             normalizedReport.push(insecticideReport);
 
         }
-        else if (!oidioReport && antracnoseReport && antracnoseReport.affectedTrees > 0) {
+        else if (!cochonilhaReport && helopeltisReport && helopeltisReport.affectedTrees > 0) {
 
             insecticideReport.status = "warning"
             insecticideReport.message = `${calculatePercentage(
-              antracnoseReport.affectedTrees,
-              antracnoseReport.trees
-            )}% dos cajueiros doentes de antracnose segundo a última monitoria ocorrida aos 
+              helopeltisReport.affectedTrees,
+              helopeltisReport.trees
+            )}% dos cajueiros infectados pela 'helopeltis ss' segundo a última monitoria ocorrida aos 
             ${normalizeDate(
-              new Date(oidioReport.detectedAt)
-            )}. Recomenda-se (1) a pulverização contra a oídio, (2) a monitoria da antracnose e (3) a aplicação rotineira de insecticida nos meses de 
+              new Date(helopeltisReport.detectedAt)
+            )}. Recomenda-se (1) a pulverização contra a 'helopeltis ssp', (2) a monitoria de cochonilha e (3) a aplicação rotineira de insecticida nos meses de 
             julho, agosto e setembro.`;
 
             normalizedReport.push(insecticideReport);
@@ -1628,18 +1780,18 @@ export const checkInsecticide = (report, farmland)=>{
             
             insecticideReport.status = "error";
             insecticideReport.message = `${calculatePercentage(
-              antracnoseReport.affectedTrees,
-              antracnoseReport.trees
-            )}% dos cajueiros doentes de antracnose segundo a última monitoria ocorrida aos 
+              helopeltisReport.affectedTrees,
+              helopeltisReport.trees
+            )}% dos cajueiros infectados pela 'helopeltis ssp' segundo a última monitoria ocorrida aos 
             ${normalizeDate(
-              new Date(oidioReport.detectedAt)
+              new Date(helopeltisReport.detectedAt)
             )} e ${calculatePercentage(
-              oidioReport.affectedTrees,
-              oidioReport.trees
-            )}% dos cajueiros doentes de oídio segundo a última monitoria ocorrida aos 
+              cochonilhaReport.affectedTrees,
+              cochonilhaReport.trees
+            )}% dos cajueiros infectados pela cochonilha segundo a última monitoria ocorrida aos 
             ${normalizeDate(
-              new Date(oidioReport.detectedAt)
-            )}. Recomenda-se a pulverização contra a antracnose e a oídio.`;
+              new Date(cochonilhaReport.detectedAt)
+            )}. Recomenda-se a pulverização contra a 'helopeltis ssp' e a cochonilha.`;
 
 
             normalizedReport.push(insecticideReport);
@@ -1648,11 +1800,11 @@ export const checkInsecticide = (report, farmland)=>{
     }
     else if (
         // true
-        !report[i]?.disease?.rounds && 
+        !report[i]?.plague?.rounds && 
         report[i]?.insecticide?.rounds && 
         report[i]?.insecticide?.rounds.length > 0
-    ) { // considering there is no disease report yet, but there insecticide report already
-
+    ) { // considering there is no plague report yet, but there insecticide report already
+     
         let lambda = lastMonitoringRound(
           report[i]?.insecticide?.rounds.filter(
             (round) => round.insecticideName === "Lambda Cyhalothrin"
@@ -1674,188 +1826,720 @@ export const checkInsecticide = (report, farmland)=>{
           "insecticide"
         );
 
-        let outroInsecticide = lastMonitoringRound(
+        let outraInsecticide = lastMonitoringRound(
           report[i]?.insecticide?.rounds.filter(
-            (round) => round.insecticideName === "outro"
-            ),
-            "insecticide"
-            );
+            (round) => round.insecticideName === "Outra"
+          ),
+          "insecticide"
+        );
         
-        let lastInsecticideReports = [ lambda, beta, acetamiprid, outroInsecticide ];
+        let lastInsecticideReports = [ lambda, beta, acetamiprid, outraInsecticide ];
         let foundReports = lastInsecticideReports.filter(lastReport => lastReport);
+        
+        let normalizedFoundReports = foundReports.map(report=>{
+          let newReport = {
+            ...report,
+          }
+          newReport.sowingYear = sowingYear;
+          newReport.trees = foundDivision.trees;
+          newReport.treatedTreePercentage = calculatePercentage(
+            newReport.treatedTrees,
+            foundDivision.trees
+          );
+          newReport.appliedAt = report.appliedAt
 
+          const nextRound = getNextApplicationRound(newReport.applicationNumber, newReport.insecticideName, newReport.appliedAt);
         
 
-       
-            
+            if (nextRound.nextApplication === 'Nenhuma' && newReport.treatedTreePercentage <= 60) {
+              newReport.status = "error";
+              newReport.message = `Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.insecticideName}
+              contra ${newReport.plagueName} em APENAS 
+              ${newReport.treatedTreePercentage}% dos cajueiros. Recomenda-se pulverizar os restantes.`;
+            }
+            else if (nextRound.nextApplication === 'Nenhuma' && newReport.treatedTreePercentage > 60) {
+              newReport.status = "success";
+              newReport.message = `Ótimo! Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.insecticideName} em APENAS 
+              ${newReport.treatedTreePercentage}% dos cajueiros.`;              
+            }
+            else if (sprayingMonths.indexOf(new Date().getMonth()+ 1) >= 0){
+              newReport.status = "warning";
+              newReport.message = `Recomenda-se a ${nextRound.nextApplication} aplicação de ${newReport.insecticideName} 
+                contra ${newReport.plagueName} aos ${normalizeDate(nextRound.nextDate)}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`
+            }
+            else if (new Date() - new Date(newReport.appliedAt) >=0 ) {
+              newReport.status = "info";
+              newReport.message = `Recomenda-se a ${
+                nextRound.nextApplication
+              } aplicação de ${newReport.insecticideName} 
+                contra ${newReport.plagueName} aos ${normalizeDate(
+                nextRound.nextDate
+              )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+                newReport.treatedTreePercentage
+              }% dos cajueiros.`;
+            }
+            else if (new Date() - new Date(newReport.appliedAt) < 0) {
+              newReport.status = "error";
+              newReport.message = `Perigo! A ${
+                nextRound.nextApplication
+              } aplicação de ${newReport.insecticideName} 
+                contra ${newReport.plagueName} aos ${normalizeDate(
+                nextRound.nextDate
+              )} não ocorreu na data recomendada. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+                newReport.treatedTreePercentage
+              }% dos cajueiros.`;
+            }
+            else {
+              newReport.status = "info";
+              newReport.message = 
+              `Recomenda-se uma ${nextRound.nextApplication} aplicação da insecticida '${
+                newReport.insecticideName
+              }' contra a praga '${newReport?.plagueName}' aos ${normalizeDate(
+                nextRound?.nextDate)}. A última aplicação que ocorreu aos ${normalizeDate(
+                new Date(newReport.appliedAt)
+              )} abrangeu ${newReport.affectedTreePercentage}% dos cajueiros.`;
+
+            }
+
+          normalizedReport.push(newReport);
+          
+          return report;
+
+        })            
+      }
+      else {
+
+        // check if the last disease reports have any relevant information
+        let lastPlagueReports = checkPlague(report, farmland);
+
+        let lambda = lastMonitoringRound(
+          report[i]?.insecticide?.rounds.filter(
+            (round) => round.insecticideName === "Lambda Cyhalothrin"
+          ),
+          "insecticide"
+        );
+
+        // get the last report on helopeltis plague
+        let helopeltis = lastPlagueReports.find(
+          (report) => report.plagueName === "Helopeltis ssp"
+        );
+
+        // get the last report on cochonilha plague
+        let cochonilha = lastPlagueReports.find(
+          (report) => report.plagueName === "Cochonilha"
+        );
+
+        let beta = lastMonitoringRound(
+          report[i]?.insecticide?.rounds.filter(
+            (round) => round.insecticideName === "Beta-ciflutrina"
+          ),
+          "insecticide"
+        );
+
+        let acetamiprid = lastMonitoringRound(
+          report[i]?.insecticide?.rounds.filter(
+            (round) => round.insecticideName === "Acetamiprid"
+          ),
+          "insecticide"
+        );
+
+        let outraInsecticide = lastMonitoringRound(
+          report[i]?.insecticide?.rounds.filter(
+            (round) => round.insecticideName === "Outra"
+          ),
+          "insecticide"
+        );
+
+        let lastInsecticideReports = [
+          lambda,
+          beta,
+          acetamiprid,
+          outraInsecticide,
+        ];
+        let foundReports = lastInsecticideReports.filter(
+          (lastReport) => lastReport
+        );
+
+        // loop through all the existing insecticide reports.
+        let normalizedFoundReports = foundReports.map((report) => {
+          let newReport = {
+            ...report,
+          };
+
+          newReport.sowingYear = sowingYear;
+          newReport.trees = foundDivision.trees;
+          newReport.treatedTreePercentage = calculatePercentage(
+            newReport.treatedTrees,
+            foundDivision.trees
+          );
+
+          newReport.appliedAt = report.appliedAt;
+
+          const nextRound = getNextApplicationRound(
+            newReport.applicationNumber,
+            newReport.insecticideName,
+            newReport.appliedAt
+          );
+
+          if (
+            nextRound.nextApplication === "Nenhuma" &&
+            helopeltis?.affectedTrees > 0 &&
+            helopeltis?.affectedTrees <= newReport.treatedTrees &&
+            (newReport.insecticideName === "Beta-ciflutrina" ||
+              newReport.insecticideName === "Lambda Cyhalothrin")
+          ) {
+
+            newReport.status = "success";
+            newReport.message = `Ótimo! Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.insecticideName} 
+              contra a ${newReport.plagueName}.`;
+
+          } else if (
+            nextRound.nextApplication === "Nenhuma" &&
+            cochonilha?.affectedTrees > 0 &&
+            cochonilha?.affectedTrees <= newReport.treatedTrees &&
+            (newReport.insecticideName === "Acetamiprid")
+          ) {
+
+            newReport.status = "success";
+            newReport.message = `Ótimo! Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.insecticideName} 
+              contra a ${newReport.plagueName}.`;
+
+          } 
+          else if (
+            nextRound.nextApplication === "Nenhuma" &&
+            sprayingMonths.indexOf(new Date().getMonth()+1) >= 0
+          ) {
+            newReport.status = "info";
+            newReport.message = `Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.insecticideName}
+              contra ${newReport.plagueName} em 
+              ${newReport.treatedTreePercentage}% dos cajueiros.`;
+          } 
+          else if (
+            nextRound.nextApplication !== "Nenhuma" &&
+            sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+          ) {
+            newReport.status = "warning";
+            newReport.message = `Recomenda-se a ${
+              nextRound.nextApplication
+            } aplicação de ${newReport.insecticideName} 
+                contra ${newReport.plagueName} aos ${normalizeDate(
+              nextRound.nextDate
+            )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+              newReport.treatedTreePercentage
+            }% dos cajueiros.`;
+
+          } 
+          else if (new Date() - new Date(newReport.appliedAt) >= 0) {
+            newReport.status = "info";
+            newReport.message = `Recomenda-se a ${
+              nextRound.nextApplication
+            } aplicação de ${newReport.insecticideName} 
+                contra ${newReport.plagueName} aos ${normalizeDate(
+              nextRound.nextDate
+            )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+              newReport.treatedTreePercentage
+            }% dos cajueiros.`;
+          } 
+          else if (new Date() - new Date(newReport.appliedAt) < 0) {
+            newReport.status = "error";
+            newReport.message = `Perigo! A ${
+              nextRound.nextApplication
+            } aplicação de ${newReport.insecticideName} 
+                contra ${newReport.plagueName} aos ${normalizeDate(
+              nextRound.nextDate
+            )} não ocorreu na data recomendada. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+              newReport.treatedTreePercentage
+            }% dos cajueiros.`;
+          } else {
+            newReport.status = "info";
+            newReport.message = `Recomenda-se uma ${
+              nextRound.nextApplication
+            } aplicação da insecticida '${
+              newReport.insecticideName
+            }' contra a praga '${newReport?.plagueName}' aos ${normalizeDate(
+              nextRound?.nextDate
+            )}. A última aplicação que ocorreu aos ${normalizeDate(
+              new Date(newReport.appliedAt)
+            )} abrangeu ${newReport.affectedTreePercentage}% dos cajueiros.`;
+          }
+
+          normalizedReport.push(newReport);
+
+          return report;
+        });
+      }
     }
-        
+      return normalizedReport;
     
     }
+
+
+
+
+
+// ---------------------------- Start fungicide report --------------------------
+
+
+export const checkFungicide = (report, farmland)=>{
+
+
+    let sprayingMonths = [ 7, 8, 9];  // july, august and september
+    let sprayingRounds = [1, 2, 3, 4] // primeira, segunda, terceira, intercalar
+
+    const normalizedReport = [];
+
+    if (report && report.length === 0) {
+        for (let i = 0; i < farmland?.divisions.length; i++) {
+        let fungicideReport = {
+          sowingYear: farmland.divisions[i].sowingYear,
+          status:
+            sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+              ? "warning"
+              : "info",
+          message:
+            sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+              ? `Recomenda-se a aplicação rotineira da 
+                fungicida nos meses de julho, agosto e setembro.`
+              : `Neste ano, a aplicação da fungicida ainda não foi monitorada.`,
+        };
+
+        normalizedReport.push(fungicideReport);
+        }
+
         return normalizedReport;
+    }
+
+    for (let i = 0; i < report?.length; i++) {
+
+    // find the report-related farmland division.
+    let foundDivision = farmland?.divisions.find(
+      (division) => division._id === report[i].division
+    );
+
+    // find the sowing year of this farmland division
+    let sowingYear = foundDivision.sowingYear;
+
+    // 
+    let diseaseReport = {
+      sowingYear,
+      trees: foundDivision.trees,
+    };
+
+    let fungicideReport = {
+        sowingYear,
+        trees: foundDivision.trees,
+    };
+
+    if (!report[i]?.disease?.rounds && !report[i]?.disease?.rounds) {
+        fungicideReport.status =
+            sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+              ? "warning"
+              : "info";
+        fungicideReport.message =
+          sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+            ? `Recomenda-se a aplicação rotineira da 
+                fungicida nos meses de julho, agosto e setembro.`
+            : `Neste ano, a ocorrência das doenças e a aplicação da fungicida ainda não foram monitoradas.`;
+        fungicideReport.oidioReport = {};
+        fungicideReport.antracnoseReport = {}
+        fungicideReport.queimaReport = {}
+
+        normalizedReport.push(fungicideReport);
+
+    } 
+    else if (
+      report[i]?.disease?.rounds &&
+      report[i]?.disease?.rounds?.length > 0 &&
+      !report[i]?.fungicide?.rounds
+    )
+    {
+        // check if the last disease reports have any relevant information
+        let lastDiseaseReports = checkDisease(report, farmland);
+
+        
+        let oidioReport = lastDiseaseReports.find(
+          (report) => report.diseaseName === "Oídio"
+        );
+        let antracnoseReport = lastDiseaseReports.find(
+          (report) => report.diseaseName === "Antracnose"
+        );
+        let queimaReport = lastDiseaseReports.find(
+          (report) => report.diseaseName === "Queima"
+        );
+
+        fungicideReport.oidioReport = oidioReport;
+        fungicideReport.antracnoseReport = antracnoseReport;
+        fungicideReport.queimaReport = queimaReport;
+
+        if (!oidioReport && !antracnoseReport) {
+
+            fungicideReport.status = "info"
+            fungicideReport.message = `Neste ano, as doenças (oídio, antracnose e queima) ainda não foram monitoradas. 
+            Mas, recomenda-se a aplicação rotineira de fungicida nos meses de 
+            julho, agosto e setembro.`;
+
+            normalizedReport.push(fungicideReport);
+            
+        }
+        else if (oidioReport && oidioReport.affectedTrees === 0 && !antracnoseReport && !queimaReport){
+
+            fungicideReport.status = "info"
+            fungicideReport.message = `Nenhum cajueiro infectado pela oídio segundo a última monitoria ocorrida aos 
+            ${normalizeDate(
+              new Date(oidioReport.detectedAt)
+            )}. Recomenda-se (1) a monitoria de 'antracnose' e 'queima' e (2) a aplicação rotineira de insecticida nos meses de 
+            julho, agosto e setembro.`;
+
+            normalizedReport.push(fungicideReport);
+
+        }
+        else if (oidioReport && oidioReport.affectedTrees > 0 && !antracnoseReport && !queimaReport) {
+            
+            fungicideReport.status = "warning"
+            fungicideReport.message = `${calculatePercentage(
+              oidioReport.affectedTrees,
+              oidioReport.trees
+            )}% dos cajueiros infectados pela oídio segundo a última monitoria ocorrida aos 
+            ${normalizeDate(
+              new Date(oidioReport.detectedAt)
+            )}. Recomenda-se (1) a pulverização contra a oídio, (2) a monitoria da helopeltis ssp e (3) a aplicação rotineira de insecticida nos meses de 
+            julho, agosto e setembro.`;
+
+            normalizedReport.push(fungicideReport);
+
+        }
+        else if (!oidioReport && !queimaReport && antracnoseReport && antracnoseReport.affectedTrees === 0) {
+
+            fungicideReport.status = "info";
+            fungicideReport.message = `Nenhum cajueiro infectado pela antracnose segundo a última monitoria ocorrida aos 
+            ${normalizeDate(
+              new Date(antracnoseReport.detectedAt)
+            )}. Recomenda-se a monitoria da cochonilha e a aplicação rotineira de insecticida nos meses de 
+            julho, agosto e setembro.`;
+
+            normalizedReport.push(fungicideReport);
+
+        }
+        else if (!oidioReport && !queimaReport && antracnoseReport && antracnoseReport.affectedTrees > 0) {
+
+            fungicideReport.status = "warning"
+            fungicideReport.message = `${calculatePercentage(
+              antracnoseReport.affectedTrees,
+              antracnoseReport.trees
+            )}% dos cajueiros infectados pela antracnose segundo a última monitoria ocorrida aos 
+            ${normalizeDate(
+              new Date(antracnoseReport.detectedAt)
+            )}. Recomenda-se (1) a pulverização contra a antracnose, (2) a monitoria de 'oídio' e 'queima' e (3) a aplicação rotineira de insecticida nos meses de 
+            julho, agosto e setembro.`;
+
+            normalizedReport.push(fungicideReport);
+        }
+        else if (!queimaReport) {
+            
+            fungicideReport.status = "error";
+            fungicideReport.message = `${calculatePercentage(
+              antracnoseReport.affectedTrees,
+              antracnoseReport.trees
+            )}% dos cajueiros infectados pela antracnose segundo a última monitoria ocorrida aos 
+            ${normalizeDate(
+              new Date(antracnoseReport.detectedAt)
+            )} e ${calculatePercentage(
+              oidioReport.affectedTrees,
+              oidioReport.trees
+            )}% dos cajueiros infectados pela oídio segundo a última monitoria ocorrida aos 
+            ${normalizeDate(
+              new Date(oidioReport.detectedAt)
+            )}. Recomenda-se a pulverização contra a antracnose e a oídio.`;
+
+
+            normalizedReport.push(fungicideReport);
+        }
+
+    }
+    else if (
+        // true
+        !report[i]?.disease?.rounds && 
+        report[i]?.fungicide?.rounds && 
+        report[i]?.fungicide?.rounds.length > 0
+    ) { // considering there is no disease report yet, but there fungicide report already
+     
+        let oidioLastRound = lastMonitoringRound(
+          report[i]?.fungicide?.rounds.filter(
+            (round) => round.diseaseName === "Oídio"
+          ),
+          "fungicide"
+        );
+
+        let antracnoseLastRound = lastMonitoringRound(
+          report[i]?.fungicide?.rounds.filter(
+            (round) => round.diseaseName === "Antracnose",
+          ),
+          "fungicide"
+        );
+
+        let queimaLastRound = lastMonitoringRound(
+          report[i]?.fungicide?.rounds.filter(
+            (round) => round.diseaseName === "Queima"
+          ),
+          "fungicide"
+        );
+
+        // let outraInsecticide = lastMonitoringRound(
+        //   report[i]?.insecticide?.rounds.filter(
+        //     (round) => round.insecticideName === "Outra"
+        //   ),
+        //   "insecticide"
+        // );
+        
+        let lastFungicideReports = [ oidioLastRound, antracnoseLastRound, queimaLastRound ];
+        let foundReports = lastFungicideReports.filter(
+          (lastReport) => lastReport
+        );
+        
+        let normalizedFoundReports = foundReports.map(report=>{
+          let newReport = {
+            ...report,
+          }
+          newReport.sowingYear = sowingYear;
+          newReport.trees = foundDivision.trees;
+          newReport.treatedTreePercentage = calculatePercentage(
+            newReport.treatedTrees,
+            foundDivision.trees
+          );
+          newReport.appliedAt = report.appliedAt
+
+          // const nextRound = getNextApplicationRound(newReport.applicationNumber, newReport.fungicideName, newReport.appliedAt);
+            const nextRound = getNextRound(newReport.applicationNumber, newReport.diseaseName, newReport.appliedAt, northProvinces.indexOf(farmland.province) >= 0)
+
+            if (nextRound.nextApplication === 'Nenhuma' && newReport.treatedTreePercentage <= 60) {
+              newReport.status = "error";
+              newReport.message = `Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.fungicideName}
+              contra ${newReport.diseaseName} em APENAS 
+              ${newReport.treatedTreePercentage}% dos cajueiros. Recomenda-se pulverizar os restantes.`;
+            }
+            else if (nextRound.nextApplication === 'Nenhuma' && newReport.treatedTreePercentage > 60) {
+              newReport.status = "success";
+              newReport.message = `Ótimo! Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.fungicideName} em APENAS 
+              ${newReport.treatedTreePercentage}% dos cajueiros.`;              
+            }
+            else if (sprayingMonths.indexOf(new Date().getMonth()+ 1) >= 0){
+              newReport.status = "warning";
+              newReport.message = `Recomenda-se a ${
+                nextRound.nextApplication
+              } aplicação de ${newReport.fungicideName} 
+                contra ${newReport.diseaseName} aos ${normalizeDate(
+                nextRound.nextDate
+              )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+                newReport.treatedTreePercentage
+              }% dos cajueiros.`;
+            }
+            else if (new Date() - new Date(newReport.appliedAt) >= 0 ) {
+              newReport.status = "info";
+              newReport.message = `Recomenda-se a ${
+                nextRound.nextApplication
+              } aplicação de ${newReport.fungicideName} 
+                contra ${newReport.diseaseName} aos ${normalizeDate(
+                nextRound.nextDate
+              )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+                newReport.treatedTreePercentage
+              }% dos cajueiros.`;
+            }
+            else if (new Date() - new Date(newReport.appliedAt) < 0) {
+              newReport.status = "error";
+              newReport.message = `Perigo! A ${
+                nextRound.nextApplication
+              } aplicação de ${newReport.fungicideName} 
+                contra ${newReport.diseaseName} aos ${normalizeDate(
+                nextRound.nextDate
+              )} não ocorreu na data recomendada. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+                newReport.treatedTreePercentage
+              }% dos cajueiros.`;
+            }
+            else {
+              newReport.status = "info";
+              newReport.message = 
+              `Recomenda-se uma ${nextRound.nextApplication} aplicação da fungicida '${
+                newReport.fungicideName
+              }' contra a praga '${newReport?.diseaseName}' aos ${normalizeDate(
+                nextRound?.nextDate)}. A última aplicação que ocorreu aos ${normalizeDate(
+                new Date(newReport.appliedAt)
+              )} abrangeu ${newReport.affectedTreePercentage}% dos cajueiros.`;
+
+            }
+
+          normalizedReport.push(newReport);
+          
+          return report;
+
+        })            
+      }
+      else {
+
+        // check if the last disease reports have any relevant information
+        let lastDiseaseReports = checkDisease(report, farmland);
+
+        let oidioLastRound = lastMonitoringRound(
+          report[i]?.fungicide?.rounds.filter(
+            (round) => round.diseaseName === "Oídio"
+          ),
+          "fungicide"
+        );
+
+        let antracnoseLastRound = lastMonitoringRound(
+          report[i]?.fungicide?.rounds.filter(
+            (round) => round.diseaseName === "Antracnose"
+          ),
+          "fungicide"
+        );
+
+        let queimaLastRound = lastMonitoringRound(
+          report[i]?.fungicide?.rounds.filter(
+            (round) => round.diseaseName === "Queima"
+          ),
+          "fungicide"
+        );
+
+        // let outraInsecticide = lastMonitoringRound(
+        //   report[i]?.insecticide?.rounds.filter(
+        //     (round) => round.insecticideName === "Outra"
+        //   ),
+        //   "insecticide"
+        // );
+
+        let lastFungicideReports = [
+          oidioLastRound,
+          antracnoseLastRound,
+          queimaLastRound,
+        ];
+        let foundReports = lastFungicideReports.filter(
+          (lastReport) => lastReport
+        );        
+        
+        // loop through all the existing insecticide reports.
+        let normalizedFoundReports = foundReports.map((report) => {
+          let newReport = {
+            ...report,
+          };
+
+          newReport.sowingYear = sowingYear;
+          newReport.trees = foundDivision.trees;
+          newReport.treatedTreePercentage = calculatePercentage(
+            newReport.treatedTrees,
+            foundDivision.trees
+          );
+
+          newReport.appliedAt = report.appliedAt;
+
+          // const nextRound = getNextApplicationRound(
+          //   newReport.applicationNumber,
+          //   newReport.insecticideName,
+          //   newReport.appliedAt
+          // );
+            const nextRound = getNextRound(
+              newReport.applicationNumber,
+              newReport.diseaseName,
+              newReport.appliedAt,
+              northProvinces.indexOf(farmland.province) >= 0
+            );
+
+
+
+          if (
+            nextRound.nextApplication === "Nenhuma" &&
+            antracnoseLastRound?.affectedTrees > 0 &&
+            antracnoseLastRound?.affectedTrees <= newReport.treatedTrees
+          ) {
+
+            newReport.status = "success";
+            newReport.message = `Ótimo! Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.fungicideName} 
+              contra a ${newReport.diseaseName}.`;
+
+          } else if (
+            nextRound.nextApplication === "Nenhuma" &&
+            oidioLastRound?.affectedTrees > 0 &&
+            oidioLastRound?.affectedTrees <= newReport.treatedTrees
+          ) {
+            newReport.status = "success";
+            newReport.message = `Ótimo! Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.fungicideName} 
+              contra a ${newReport.diseaseName}.`;
+          } else if (
+            nextRound.nextApplication === "Nenhuma" &&
+            sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+          ) {
+            newReport.status = "info";
+            newReport.message = `Completou-se as recomendadas ${nextRound.round} aplicações de ${newReport.fungicideName}
+              contra ${newReport.diseaseName} em 
+              ${newReport.treatedTreePercentage}% dos cajueiros.`;
+          } else if (
+            nextRound.nextApplication !== "Nenhuma" &&
+            sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
+          ) {
+            newReport.status = "warning";
+            newReport.message = `Recomenda-se a ${
+              nextRound.nextApplication
+            } aplicação de ${newReport.fungicideName} 
+                contra ${newReport.diseaseName} aos ${normalizeDate(
+              nextRound.nextDate
+            )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+              newReport.treatedTreePercentage
+            }% dos cajueiros.`;
+          } else if (new Date() - new Date(newReport.appliedAt) >= 0) {
+            newReport.status = "info";
+            newReport.message = `Recomenda-se a ${
+              nextRound.nextApplication
+            } aplicação de ${newReport.fungicideName} 
+                contra ${newReport.diseaseName} aos ${normalizeDate(
+              nextRound.nextDate
+            )}. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+              newReport.treatedTreePercentage
+            }% dos cajueiros.`;
+          } else if (new Date() - new Date(newReport.appliedAt) < 0) {
+            newReport.status = "error";
+            newReport.message = `Perigo! A ${
+              nextRound.nextApplication
+            } aplicação de ${newReport.fungicideName} 
+                contra ${newReport.diseaseName} aos ${normalizeDate(
+              nextRound.nextDate
+            )} não ocorreu na data recomendada. A última aplicação que ocorreu aos 
+                ${normalizeDate(new Date(newReport.appliedAt))} abrangeu ${
+              newReport.treatedTreePercentage
+            }% dos cajueiros.`;
+          } else {
+            newReport.status = "info";
+            newReport.message = `Recomenda-se uma ${
+              nextRound.nextApplication
+            } aplicação da insecticida '${
+              newReport.fungicideName
+            }' contra a praga '${newReport?.diseaseName}' aos ${normalizeDate(
+              nextRound?.nextDate
+            )}. A última aplicação que ocorreu aos ${normalizeDate(
+              new Date(newReport.appliedAt)
+            )} abrangeu ${newReport.affectedTreePercentage}% dos cajueiros.`;
+          }
+
+          normalizedReport.push(newReport);
+
+          return report;
+        });
+      }
+    }
+      return normalizedReport;
     
     }
-        // if (oidio && antracnose) {
-        //   let oidioReport = {
-        //     ...diseaseReport,
-        //   };
-
-        //   let antracnoseReport = {
-        //     ...diseaseReport,
-        //   };
 
 
-    // }     
-        // //   console.log("oidio: ", oidio);
-        // //   console.log('antracnose: ', antracnose);
 
-        //   oidioReport.diseaseName = oidio.diseaseName;
-        //   antracnoseReport.diseaseName = antracnose.diseaseName;
-
-        //   oidioReport.detectedAt = new Date(oidio.detectedAt);
-        //   antracnoseReport.detectedAt = new Date(antracnose.detectedAt);
-
-        //   oidioReport.higherSeverity = calculatePercentage(
-        //     oidio.higherSeverity,
-        //     diseaseReport.trees
-        //   );
-        //   antracnoseReport.higherSeverity = calculatePercentage(
-        //     antracnose.higherSeverity,
-        //     diseaseReport.trees
-        //   );
-
-        //   oidioReport.highSeverity = calculatePercentage(
-        //     oidio.highSeverity,
-        //     diseaseReport.trees
-        //   );
-        //   antracnoseReport.highSeverity = calculatePercentage(
-        //     antracnose.highSeverity,
-        //     diseaseReport.trees
-        //   );
-
-        //   oidioReport.averageSeverity = calculatePercentage(
-        //     oidio.averageSeverity,
-        //     diseaseReport.trees
-        //   );
-        //   antracnoseReport.averageSeverity = calculatePercentage(
-        //     antracnose.averageSeverity,
-        //     diseaseReport.trees
-        //   );
-
-        //   oidioReport.lowSeverity = calculatePercentage(
-        //     oidio.lowSeverity,
-        //     diseaseReport.trees
-        //   );
-        //   antracnoseReport.lowSeverity = calculatePercentage(
-        //     antracnose.lowSeverity,
-        //     diseaseReport.trees
-        //   );
-
-        //   oidioReport.affectedTrees =
-        //     Number(oidio.lowSeverity) +
-        //     Number(oidio.averageSeverity) +
-        //     Number(oidio.highSeverity) +
-        //     Number(oidio.higherSeverity);
-
-        //   antracnoseReport.affectedTrees =
-        //     Number(antracnose.lowSeverity) +
-        //     Number(antracnose.averageSeverity) +
-        //     Number(antracnose.highSeverity) +
-        //     Number(antracnose.higherSeverity);
-
-        //   const oidioPercentage = calculatePercentage(
-        //     oidioReport.affectedTrees,
-        //     diseaseReport.trees
-        //   );
-        //   const antracnosePercentage = calculatePercentage(
-        //     antracnoseReport.affectedTrees,
-        //     diseaseReport.trees
-        //   );
-
-    //       if (
-    //         oidioPercentage === 0 &&
-    //         antracnosePercentage > 0 &&
-    //         antracnosePercentage <= 30
-    //       ) 
-    //       {
-    //         oidioReport.status = "success";
-    //         oidioReport.message = `Ótimo! Ocorreu uma monitoria da doença ${oidio.diseaseName.toLowerCase()} aos ${normalizeDate(
-    //           new Date(oidio.detectedAt)
-    //         )} e nenhum cajueiro foi encontrado doente de ${oidio.diseaseName.toLowerCase()}.`;
-
-    //         normalizedReport.push(oidioReport);
-
-    //         antracnoseReport.status = "warning";
-    //         antracnoseReport.message = `Recomenda-se uma pulverização contra a ${antracnose.diseaseName.toLowerCase()}. 
-    //             A última monitoria que ocorreu aos ${normalizeDate(new Date(antracnose.detectedAt))} 
-    //             detectou ${antracnosePercentage}% dos cajueiros doentes.`;
-
-    //         normalizedReport.push(antracnoseReport);        
-        
-    // }
-
-       //   if (oidio && antracnose) {
-      //     let oidioReport = {
-      //       ...diseaseReport,
-      //     };
-      //     let antracnoseReport = {
-      //       ...diseaseReport,
-      //     };
-      //     oidioReport.diseaseName = oidio.diseaseName;
-      //     antracnoseReport.diseaseName = antracnose.diseaseName;
-      //     oidioReport.detectedAt = new Date(oidio.detectedAt);
-      //     antracnoseReport.detectedAt = new Date(antracnose.detectedAt);
-      //     oidioReport.higherSeverity = calculatePercentage(
-      //       oidio.higherSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     antracnoseReport.higherSeverity = calculatePercentage(
-      //       antracnose.higherSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     oidioReport.highSeverity = calculatePercentage(
-      //       oidio.highSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     antracnoseReport.highSeverity = calculatePercentage(
-      //       antracnose.highSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     oidioReport.averageSeverity = calculatePercentage(
-      //       oidio.averageSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     antracnoseReport.averageSeverity = calculatePercentage(
-      //       antracnose.averageSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     oidioReport.lowSeverity = calculatePercentage(
-      //       oidio.lowSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     antracnoseReport.lowSeverity = calculatePercentage(
-      //       antracnose.lowSeverity,
-      //       diseaseReport.trees
-      //     );
-      //     oidioReport.affectedTrees =
-      //       oidio.lowSeverity +
-      //       oidio.averageSeverity +
-      //       oidio.highSeverity +
-      //       oidio.higherSeverity;
-      //     antracnoseReport.affectedTrees =
-      //       antracnose.lowSeverity +
-      //       antracnose.averageSeverity +
-      //       antracnose.highSeverity +
-      //       antracnose.higherSeverity;
-      //     const oidioPercentage = calculatePercentage(
-      //       oidioReport.affectedTrees,
-      //       diseaseReport.trees
-      //     );
-      //     const antracnosePercentage = calculatePercentage(
-      //       antracnoseReport.affectedTrees,
-      //       diseaseReport.trees
-      //     );
-      //   }
 
 
 //  --------------------------- Start harvest report -------------------------------

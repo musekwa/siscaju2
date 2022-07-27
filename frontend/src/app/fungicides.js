@@ -1,3 +1,29 @@
+export const fungicideByDisease = {
+  Oídio: [
+    "Triadimenol",
+    "Flutriafol",
+    "Fluoxastrobin + Flutriafol",
+    "Trifloxystrobin + Triadimenol",
+    "Trifloxystrobin + Tebuconazole",
+    "Azoxystrobin + Hexaconazole",
+  ],
+
+  Antracnose: [
+    "Coprox Super",
+    "Trifloxystrobin",
+    "Trifloxystrobin + Tebuconazole",
+    "Azoxystrobin + Hexaconazole",
+  ],
+};
+
+
+export const roundByDiseaseAndRegion = {
+  Oídio: ["primeira", "segunda", "terceira", "quarta"],
+  Antracnose: ["primeira", "segunda", "terceira"],
+};
+
+
+
 export const fungicides = [
     "Azoxystrobin",
     "Lambda Cyhalothrin", 
@@ -18,6 +44,7 @@ export const applicationNumbers = [
     "quinta",
     "intercalar"
 ];
+
 
 export const fungicideDoses = [
     "12.5 g/L",

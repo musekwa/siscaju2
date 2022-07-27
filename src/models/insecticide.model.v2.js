@@ -22,6 +22,7 @@ const insecticidesSchema = mongoose.Schema(
     },
     rounds: [
       {
+        plagueName: { type: String, trim: true },
         insecticideName: { type: String, trim: true },
         treatedTrees: Number,
         applicationNumber: { type: String, trim: true },

@@ -449,6 +449,7 @@ const addInsecticideReport2 = async (data) => {
   }
 
   const { 
+    plagueName,
     insecticideName, 
     treatedTrees, 
     applicationNumber, 
@@ -458,6 +459,7 @@ const addInsecticideReport2 = async (data) => {
 
   const newInsecticideReport = Insecticide2({
     rounds: new Array({
+      plagueName,
       insecticideName,
       treatedTrees,
       applicationNumber,
@@ -501,6 +503,7 @@ const addInsecticideReport2 = async (data) => {
       foundInsecticideReport.rounds = new Array(
         ...foundInsecticideReport.rounds,
         {
+          plagueName,
           insecticideName,
           treatedTrees,
           applicationNumber,
@@ -551,11 +554,18 @@ const addFungicideReport2 = async (data) => {
     return foundMonitoringReport;
   }
 
-  const { fungicideName, treatedTrees, applicationNumber, dose, appliedAt } =
-    data;
+  const { 
+    diseaseName, 
+    fungicideName, 
+    treatedTrees, 
+    applicationNumber, 
+    dose, 
+    appliedAt 
+  } = data;
 
   const newFungicideReport = Fungicide2({
     rounds: new Array({
+      diseaseName,
       fungicideName,
       treatedTrees,
       applicationNumber,
@@ -601,6 +611,7 @@ const addFungicideReport2 = async (data) => {
       return await foundMonitoring.save();
     } else {
       foundFungicideReport.rounds = new Array(...foundFungicideReport.rounds, {
+        diseaseName,
         fungicideName,
         treatedTrees,
         applicationNumber,

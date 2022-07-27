@@ -219,7 +219,7 @@ function PruningForm({ user }) {
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
+                option.value === value.value
               }
             />
             </div>

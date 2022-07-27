@@ -13,7 +13,8 @@ const fungicidesSchema = mongoose.Schema(
     },
     rounds: [
       {
-        fungicideName: { type: String, trim: true, },
+        diseaseName: { type: String, trim: true },
+        fungicideName: { type: String, trim: true },
         treatedTrees: Number,
         applicationNumber: { type: String, trim: true },
         dose: String,
@@ -23,10 +24,11 @@ const fungicidesSchema = mongoose.Schema(
           email: String,
           phone: String,
         },
-        createdAt: { 
-          type: Date, 
+        createdAt: {
+          type: Date,
           default: function () {
-            return new Date().getFullYear() } 
+            return new Date().getFullYear();
+          },
         },
       },
     ],

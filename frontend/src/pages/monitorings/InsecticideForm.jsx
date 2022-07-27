@@ -19,7 +19,8 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { DatePicker } from "@mui/x-date-pickers";
 import ConfirmModal from "../../components/ConfirmModal";
-import { insecticides, applicationNumbers, insecticideDoses } from "../../app/insecticides"
+import { insecticides, applicationNumbers, insecticideDoses, insecticideByPlague } from "../../app/insecticides"
+import { plagues } from "../../app/plagues";
 
 
 
@@ -38,6 +39,7 @@ const styledTextField = {
 function InsecticideForm({ user }) {
   
   const [reportData, setReportData] = useState({
+    plagueName: '',
     insecticideName: '',
     treatedTrees: '',
     applicationNumber: '',
@@ -47,6 +49,7 @@ function InsecticideForm({ user }) {
 
   const [openModal, setOpenModal] = useState(false);
   const [inputInsecticideName, setInputInsecticideName] = useState('');
+  const [inputPlagueName, setInputPlagueName] = useState('');
   const [inputDose, setInputDose] = useState('');
   const [inputApplicationNumber, setInputApplicationNumber] = useState('');
  
@@ -59,23 +62,35 @@ function InsecticideForm({ user }) {
   const { division, flag, farmland } = location?.state;
 
 
-//   if ((new Date().getFullYear - division?.sowingYear) <= 3) {
-//     newPruningTypes = pruningTypes?.filter(type=>!type.includes('rejuvenescimento'));
-//   }
-//   else {
-//     newPruningTypes = pruningTypes?.filter(type=>!type.includes('formação'));
-//   }
-
   useEffect(()=>{
 
   }, [reportData, location])
+
+  useEffect(() => {
+    if ((reportData.plagueName && reportData.insecticideName) || reportData.plagueName ){
+      setReportData((prevState)=>({
+        ...prevState,
+        insecticideName: ""
+      }))
+    }
+  }, [reportData.plagueName]);
 
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // const remainder = division?.trees - 
-    //     (Number(reportData?.higherAttack) + Number(reportData?.highAttack) + Number(reportData?.averageAttack) + Number(reportData?.lowAttack) );
+    if (!(plagues.indexOf(reportData?.plagueName) >= 0))  {
+      toast.error("Seleccionar o tipo de praga", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
 
     if (!(insecticides.indexOf(reportData?.insecticideName) >= 0))  {
       toast.error("Seleccionar a insecticida aplicada", {
@@ -195,12 +210,74 @@ function InsecticideForm({ user }) {
               blurOnSelect
               disablePortal
               id="combo-box-demo-2"
-              value={reportData?.insecticideName || ''}
-              options={insecticides}
-              getOptionLabel={(option)=>option ? option : 'Seleccionar a insecticida aplicada'}
-              onChange={(event, newInsecticideName) => {
+              value={reportData?.plagueName}
+              options={plagues || ['']}
+              // getOptionLabel={(option)=>option ? option : 'Seleccionar o tipo de praga'}
+              onChange={(event, newPlagueName) => {
                 setReportData(prevState=>({
-                    ...reportData,
+                    ...prevState,
+                    plagueName: newPlagueName,
+                }));
+              }}
+              inputValue={inputPlagueName}
+              onInputChange={(event, newInputPlagueName) => {
+                setInputPlagueName(newInputPlagueName);
+              }}
+              renderInput={(params) => {
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = "off";
+
+                return (
+                  <TextField
+                    sx={styledTextField }
+                    name="plagueName"
+                    {...params}
+                    inputProps={inputProps}
+                    required
+                    label="Tipo de praga"
+                  />
+              )}}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+            />
+        </div>
+
+
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+
+            <Autocomplete
+              fullWidth
+              required
+              size="medium"
+              blurOnSelect
+              disablePortal
+              id="combo-box-demo-2"
+              value={reportData?.insecticideName}
+              options={
+                reportData?.plagueName
+                  ? insecticideByPlague[reportData?.plagueName]
+                  : ["Primeiro, seleccionar o tipo de praga!"]
+                // insecticides
+              }
+              // getOptionLabel={(option)=>option ? option : 'Seleccionar a insecticida aplicada'}
+              onChange={(event, newInsecticideName) => {
+                if (!Array.isArray(insecticideByPlague[reportData?.plagueName])) {
+                    toast.error("Primeiro, selecciona o tipo de praga!", {
+                      autoClose: 5000,
+                      position: toast.POSITION.TOP_RIGHT,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    })
+                  return ;
+                }
+
+                setReportData(prevState=>({
+                    ...prevState,
                     insecticideName: newInsecticideName,
                 }));
               }}
@@ -223,75 +300,11 @@ function InsecticideForm({ user }) {
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
+                option.value === value.value
               }
             />
         </div>
 
-        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-
-            <Autocomplete
-              fullWidth
-              required
-              size="medium"
-              blurOnSelect
-              disablePortal
-              id="combo-box-demo-2"
-              value={reportData?.applicationNumber || ''}
-              options={applicationNumbers}
-              getOptionLabel={(option)=>option ? option : 'Seleccionar o número de aplicação'}
-              onChange={(event, newApplicationNumber) => {
-                setReportData(prevState=>({
-                    ...reportData,
-                    applicationNumber: newApplicationNumber,
-                }));
-              }}
-              inputValue={inputApplicationNumber}
-              onInputChange={(event, newInputApplicationNumber) => {
-                setInputApplicationNumber(newInputApplicationNumber);
-              }}
-              renderInput={(params) => {
-                const inputProps = params.inputProps;
-                inputProps.autoComplete = "off";
-
-                return (
-                  <TextField
-                    sx={styledTextField }
-                    name="applicationNumber"
-                    {...params}
-                    inputProps={inputProps}
-                    required
-                    label="Número de aplicação"
-                  />
-              )}}
-              isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
-              }
-            />
-
-            </div>
-
-
-        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-            <TextField
-            sx={styledTextField}
-            fullWidth
-            required
-            label="Cajueiros tratados"
-            id="fullWidth treatedTrees"
-            name="treatedTrees"
-            type="number"
-            value={reportData?.treatedTrees || ''}
-            placeholder="Cajueiros tratados"
-            size="medium"
-            onChange={(event) => {
-                setReportData((prevState) => ({
-                ...prevState,
-                treatedTrees: event.target.value,
-                }));
-            }}
-            />
-        </div>
 
         <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
 
@@ -330,12 +343,77 @@ function InsecticideForm({ user }) {
                   />
               )}}
               isOptionEqualToValue={(option, value) =>
-                value === undefined || value === "" || option === value
+                option.value === value.value
               }
             />
 
             </div>
 
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+
+            <Autocomplete
+              fullWidth
+              required
+              size="medium"
+              blurOnSelect
+              disablePortal
+              id="combo-box-demo-2"
+              value={reportData?.applicationNumber || ''}
+              options={applicationNumbers}
+              getOptionLabel={(option)=>option ? option : 'Seleccionar o número de aplicação'}
+              onChange={(event, newApplicationNumber) => {
+                setReportData(prevState=>({
+                    ...reportData,
+                    applicationNumber: newApplicationNumber,
+                }));
+              }}
+              inputValue={inputApplicationNumber}
+              onInputChange={(event, newInputApplicationNumber) => {
+                setInputApplicationNumber(newInputApplicationNumber);
+              }}
+              renderInput={(params) => {
+                const inputProps = params.inputProps;
+                inputProps.autoComplete = "off";
+
+                return (
+                  <TextField
+                    sx={styledTextField }
+                    name="applicationNumber"
+                    {...params}
+                    inputProps={inputProps}
+                    required
+                    label="Número de aplicação"
+                  />
+              )}}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+            />
+
+            </div>
+
+
+        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+            <TextField
+            sx={styledTextField}
+            fullWidth
+            required
+            label="Cajueiros tratados"
+            id="fullWidth treatedTrees"
+            name="treatedTrees"
+            type="number"
+            value={reportData?.treatedTrees || ''}
+            placeholder="Cajueiros tratados"
+            size="medium"
+            onChange={(event) => {
+                setReportData((prevState) => ({
+                ...prevState,
+                treatedTrees: event.target.value,
+                }));
+            }}
+            />
+        </div>
 
           <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
               <DatePicker 
