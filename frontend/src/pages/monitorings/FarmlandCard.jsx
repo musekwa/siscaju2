@@ -6,7 +6,16 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding, checkHarvest, checkPruning, checkDisease, checkPlague, checkInsecticide, checkFungicide } from '../../libraries/monitoring';
+import { checkWeeding, checkHarvest, checkPruning, 
+    // checkDisease, 
+    // checkPlague, 
+    // checkInsecticide, 
+    // checkFungicide 
+} from '../../libraries/monitoring';
+import { checkDisease } from '../../libraries/checkDisease';
+import { checkPlague } from '../../libraries/checkPlague';
+import { checkFungicide } from '../../libraries/checkFungicide';
+import { checkInsecticide } from '../../libraries/checkInsecticide';
 
 const ITEM_HEIGHT = 35;
 
@@ -117,14 +126,15 @@ const FarmlandCard = ({ farmland, }) => {
                 </Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Limpeza'}</Typography>
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1}}>{(expanded && report) && 'Limpeza'}</Typography>
                 <Fragment>
                     {
                         checkWeeding(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
+                                   <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography> 
                                     <Alert severity={round.status}>
-                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                        {round.message}
                                     </Alert>
                                     <Divider />
                                 </Box>
@@ -134,15 +144,16 @@ const FarmlandCard = ({ farmland, }) => {
                 </Fragment>
 
          
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Poda'}</Typography>
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1}}>{(expanded && report) && 'Poda'}</Typography>
                 <Fragment>
 
                     {
                         checkPruning(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
+                                     <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography> 
                                     <Alert severity={round.status}>
-                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                        {round.message}
                                     </Alert>
                                     <Divider />
                                 </Box>
@@ -152,15 +163,15 @@ const FarmlandCard = ({ farmland, }) => {
                 </Fragment>
 
         
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Doença'}</Typography>
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1}}>{(expanded && report) && 'Doença'}</Typography>
                 <Fragment>
                     {
                         checkDisease(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
-                                {/* <Box key={round.sowingYear.toString()+round.diseaseName}> */}
+                                 <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography> 
                                     <Alert severity={round.status}>
-                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                        {round.message}
                                     </Alert>
                                     <Divider />
                                 </Box>
@@ -170,15 +181,16 @@ const FarmlandCard = ({ farmland, }) => {
                 </Fragment>
 
                
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Fungicida'}</Typography>
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1}}>{(expanded && report) && 'Fungicida'}</Typography>
                 <Fragment>
                     {
    
                         checkFungicide(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
+                                <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography> 
                                  <Alert severity={round.status}>
-                                    Unidade de produção ({round.sowingYear}): {round.message}
+                                    {round.message}
                                 </Alert>
                                 <Divider />
                             </Box>
@@ -187,15 +199,15 @@ const FarmlandCard = ({ farmland, }) => {
                     }
                     
                 </Fragment>
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Praga'}</Typography>
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1}}>{(expanded && report) && 'Praga'}</Typography>
                 <Fragment>
                     {
                         checkPlague(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
-                                {/* <Box key={round.sowingYear.toString()+round.diseaseName}> */}
+                                 <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography>  
                                     <Alert severity={round.status}>
-                                        Unidade de produção ({round.sowingYear}): {round.message}
+                                       {round.message}
                                     </Alert>
                                     <Divider />
                                 </Box>
@@ -204,15 +216,16 @@ const FarmlandCard = ({ farmland, }) => {
 
                 </Fragment>
 
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Insecticida'}</Typography>
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1 }}>{(expanded && report) && 'Insecticida'}</Typography>
                 <Fragment>
                     {
    
                         checkInsecticide(report, farmland)?.map(
                             (round, index)=>(
                                 <Box key={index}>
+                                <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography> 
                                  <Alert severity={round.status}>
-                                    Unidade de produção ({round.sowingYear}): {round.message}
+                                    {round.message}
                                 </Alert>
                                 <Divider />
                             </Box>
@@ -220,6 +233,23 @@ const FarmlandCard = ({ farmland, }) => {
                     
                     }
                     
+                </Fragment>
+
+                <Typography variant='body1' sx={{ color: "gray", paddingTop: 1}}>{(expanded && report) && 'Colheita'}</Typography>
+                <Fragment>
+                    {
+                    checkHarvest(report, farmland)?.map(
+                        (round, index)=>(
+                            <Box key={index}>
+                                <Typography variant='body2' sx={{ color: "gray" }}>Unidade de produção ({round.sowingYear})</Typography> 
+                                <Alert severity={round.status}>
+                                   {round.message}
+                                </Alert>
+                                <Divider />
+                            </Box>
+                        ))
+                    }
+
                 </Fragment>
 
                      {/* <TableContainer component={Box}>
@@ -256,21 +286,6 @@ const FarmlandCard = ({ farmland, }) => {
 
 
 
-                <Typography variant='body1' sx={{ color: "gray "}}>{(expanded && report) && 'Colheita'}</Typography>
-                <Fragment>
-                    {
-                        checkHarvest(report, farmland)?.map(
-                            (round, index)=>(
-                                <Box key={index}>
-                                    <Alert severity={round.status}>
-                                        Unidade de produção ({round.sowingYear}): {round.message}
-                                    </Alert>
-                                    <Divider />
-                                </Box>
-                            ))
-                    }
-
-                </Fragment>
                 {/* <Stack sx={{ }} spacing={1}>
                     
                     <Alert  severity="error" >

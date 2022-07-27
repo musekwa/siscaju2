@@ -35,9 +35,7 @@ const insecticidesSchema = mongoose.Schema(
         },
         createdAt: {
           type: Date,
-          default: function () {
-            return new Date().getFullYear();
-          },
+          default: Date.now,
         },
       },
     ],

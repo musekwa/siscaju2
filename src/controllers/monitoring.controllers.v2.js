@@ -380,6 +380,7 @@ const addPlagueReport2 = async (data) => {
     const newMonitoringReport = {
       plague: newPlagueReport,
       division: newPlagueReport.division,
+      farmland: ObjectId(data?.farmland),
       user,
     };
 

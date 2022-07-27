@@ -366,9 +366,6 @@ const FarmlandRegister = () => {
                       sx={styledTextField}
                     />
                   )}
-                  isOptionEqualToValue={(option, value) =>
-                    option.value === value.value
-                  }
                 />
               </Box>
             </Stack>

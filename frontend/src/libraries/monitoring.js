@@ -8,25 +8,6 @@ const lastMonitoringRound = (rounds, flag) => {
   if (rounds && rounds?.length >= 1) {
     return rounds[rounds?.length - 1];
   }
-
-  // else if (flag === "pruning" && rounds && rounds?.length > 1) {
-  //   return rounds[rounds?.length - 1];
-  //   .sort(
-  //     (a, b) => new Date(b.prunedAt) - new Date(a.prunedAt)
-  //   )[0];
-  // } else if (flag === "weeding" && rounds && rounds?.length > 1) {
-  //   return rounds[rounds?.length-1];
-  //   .sort(
-  //     (a, b) => new Date(b.weededAt) - new Date(a.weededAt)
-  //   )[0];
-  // }
-  // else if (flag === "disease" && rounds && rounds?.length > 1) {
-  //   return rounds[rounds?.length - 1];
-  //   .sort(
-  //     (a, b) => new Date(b.weededAt) - new Date(a.weededAt)
-  //   )[0];
-
-  // }
   else {
     return;
   }
