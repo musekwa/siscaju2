@@ -102,14 +102,14 @@ export const checkDisease = (reports, farmland) => {
             newReport.affectedTreePercentage = calculatePercentage(newReport.affectedTrees, newReport.trees);
 
 
-            if (newReport.affectedTreePercentage === 0) {
+            if (Math.round(Number(newReport.affectedTreePercentage)) === 0) {
                 newReport.status = "success"
                 newReport.message = `Ótimo! Ocorreu uma monitoria da doença ${newReport.diseaseName.toLowerCase()} aos ${normalizeDate(
                 new Date(newReport.detectedAt)
             )} e nenhum cajueiro foi encontrado doente`;
             
             }
-            else if (newReport.affectedTreePercentage <= 30) {
+            else if (Math.round(Number(newReport.affectedTreePercentage)) <= 30) {
                 newReport.status = "warning";
                 newReport.message = `Recomenda-se uma pulverização contra a ${newReport.diseaseName.toLowerCase()}. 
                 A última monitoria que ocorreu aos ${normalizeDate(

@@ -61,6 +61,10 @@ const FarmlandCard = ({ farmland, }) => {
         navigate("/monitoring-board", { state: { farmland, }});
     };
 
+    const onSelectFarmland = (farmland) =>{
+        navigate("/monitoring-report", { state: { farmland, report }});
+    }
+
 
     if (isLoading) {
         return <Spinner />
@@ -326,7 +330,10 @@ const FarmlandCard = ({ farmland, }) => {
                       </Typography>
                   </MenuItem>
                   <Divider />
-                  <MenuItem onClick={handleCloseMoreVert}>
+                  <MenuItem onClick={()=>{
+                    onSelectFarmland(farmland)
+                    handleCloseMoreVert()
+                  }}>
                       <ListItemIcon>
                           <Preview />
                       </ListItemIcon>

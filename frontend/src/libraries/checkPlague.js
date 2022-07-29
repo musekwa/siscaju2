@@ -108,12 +108,12 @@ export const checkPlague = (reports, farmland) => {
           newReport.trees
         );
 
-        if (newReport.affectedTreePercentage === 0) {
+        if (Math.round(Number(newReport.affectedTreePercentage)) === 0) {
           newReport.status = "success";
           newReport.message = `Ótimo! Ocorreu uma monitoria da praga ${newReport.plagueName.toLowerCase()} aos ${normalizeDate(
             new Date(newReport.detectedAt)
           )} e nenhum cajueiro foi encontrado infectado`;
-        } else if (newReport.affectedTreePercentage <= 30) {
+        } else if (Math.round(Number(newReport.affectedTreePercentage)) <= 30) {
           newReport.status = "warning";
           newReport.message = `Recomenda-se uma pulverização contra a ${newReport.plagueName.toLowerCase()}. 
                 A última monitoria que ocorreu aos ${normalizeDate(

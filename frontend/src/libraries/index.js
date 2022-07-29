@@ -67,17 +67,18 @@ export const getNextRound = (applicationNumber, name, appliedAt, isNorth) => {
       };
     } else if (applicationNumber === "segunda") {
       return {
-        nextApplication: "terceira",
+        nextApplication: "intercalar",
         nextDate: new Date(new Date(appliedAt).setDate(days)),
         round: 2,
       };
     } else if (applicationNumber === "intercalar") {
       return {
-        nextApplication: "intercalar",
+        nextApplication: "terceira",
         nextDate: new Date(new Date(appliedAt).setDate(days)),
         round: 3,
       };
-    } else if (applicationNumber === "terceira") {
+    } 
+    else if (applicationNumber === "terceira") {
       return {
         nextApplication: "Nenhuma",
         nextDate: null,

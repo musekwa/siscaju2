@@ -27,7 +27,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // ------------------------------------- start services --------------------------
 
-// add pruning
+// add pruning ---------------------------------------------------------------
 const addPruningReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,
@@ -118,7 +118,7 @@ const addPruningReport2 = async (data) => {
   }
 };
 
-// add weeding
+// add weeding-----------------------------------------------------------------------
 const addWeedingReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,
@@ -210,7 +210,7 @@ const addWeedingReport2 = async (data) => {
   }
 };
 
-// add disease
+// add disease--------------------------------------------------------------------
 const addDiseaseReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,
@@ -315,7 +315,7 @@ const addDiseaseReport2 = async (data) => {
     }
 };
 
-// add plague
+// add plague------------------------------------------------------------------------
 const addPlagueReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,
@@ -417,7 +417,7 @@ const addPlagueReport2 = async (data) => {
   }
 };
 
-// add insecticide
+// add insecticide--------------------------------------------------------------------
 const addInsecticideReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,
@@ -523,7 +523,7 @@ const addInsecticideReport2 = async (data) => {
   }
 };
 
-// add fungicide
+// add fungicide-----------------------------------------------------------------
 const addFungicideReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,
@@ -630,7 +630,7 @@ const addFungicideReport2 = async (data) => {
   }
 };
 
-// add harvest
+// add harvest------------------------------------------------------------------------------
 const addHarvestReport2 = async (data) => {
   const user = {
     fullname: data?.user?.fullname,

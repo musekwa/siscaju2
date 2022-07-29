@@ -33,6 +33,7 @@ import PlagueForm from "./pages/monitorings/PlagueForm";
 import InsecticideForm from './pages/monitorings/InsecticideForm';
 import FungicideForm from './pages/monitorings/FungicideForm';
 import HarvestForm from './pages/monitorings/HarvestForm';
+import MonitoringReport from "./pages/monitorings/MonitoringReport";
 
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
@@ -118,6 +119,8 @@ if (isLoading) {
               path="/monitoring-board"
               element={<MonitoringBoard user={user} />}
             />
+
+            <Route path="/monitoring-report" element={<MonitoringReport user={user} /> } />
 
             <Route path="/weeding-add" element={<WeedingForm user={user} />} />
             <Route path="/pruning-add" element={<PruningForm user={user} />} />
