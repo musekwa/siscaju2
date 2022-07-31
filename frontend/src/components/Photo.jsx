@@ -20,7 +20,8 @@ const UserStack = styled(Stack)(({theme})=>({
 
 const Photo = () => {
 
-    const [photo, setPhoto ] = useState()
+    const [photo, setPhoto ] = useState();
+    const [source, setSource] = useState("");
 
     // const [open, setOpen] = useState(false)
 
@@ -33,6 +34,8 @@ const Photo = () => {
 //         {
 //             data: updatedFarmland, isLoading, isSuccess, error, isError, reset },
 //   ] = useAddCoordinatesMutation();
+
+
 
 
   useEffect(()=>{
@@ -144,7 +147,14 @@ const uploadImage = async (files) =>{
     //   }
     }
   
+  const handleCapture = (target)=>{
 
+    if(target.files && target.files.length !== 0) {
+      const file = target.files[0];
+      const newUrl = URL.createObjectUrl(file);
+      setSource(newUrl);
+    }
+  }
 
 //   if (isLoading) {
 //     return (
@@ -226,7 +236,17 @@ const uploadImage = async (files) =>{
                 justifyContent: "center", 
                 alignItems: "center" }}
         >
-            <Box 
+          <Grid container>
+              <Grid item xs={12}>
+              <Typography>Capturar Imagem</Typography>
+              {
+                source && <Box>
+                  <img src={source} alt="snap"  />
+                </Box>
+              }
+              </Grid>
+          </Grid>
+            {/* <Box 
         // sx={{ 
         //   position: "relative", 
         //   bottom: "80px", 
@@ -234,18 +254,20 @@ const uploadImage = async (files) =>{
         // }}  
                 component="form" 
                 noValidate autoComplete="off" 
-                onSubmit={onSubmit}>
+                onSubmit={onSubmit}> */}
 
                 <Input 
 
                     type="file" 
-                    accept="image/x-png, image/jpeg, image/gif" 
+                    // accept="image/x-png, image/jpeg, image/gif" 
+                    accept="image/*"
+                    capture="environment"
                     onChange={(event)=>{
-                        setPhoto(event.target.files);
+                        handleCapture(event.target);
                     }} 
                 />
                 
-                <BootstrapButton   
+                {/* <BootstrapButton   
                         type='submit'            
                         variant="contained"
                         sx={{ maxWidth: "300px"}}
@@ -256,8 +278,8 @@ const uploadImage = async (files) =>{
                         // }}
                     >
                     Capturar foto
-                </BootstrapButton>
-            </Box>
+                </BootstrapButton> */}
+            {/* </Box> */}
         </Box>
          {/* <FarmlandRegisterModal open={open} setOpen={setOpen} farmer={farmer} farmland={farmland} /> */}
     {/* <Footer /> */}
