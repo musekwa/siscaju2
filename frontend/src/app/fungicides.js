@@ -25,16 +25,21 @@ export const roundByDiseaseAndRegion = {
 
 
 export const fungicides = [
-    "Azoxystrobin",
-    "Lambda Cyhalothrin", 
-    "Flutriafol", 
-    "Triadimenol", 
-    "Fluoxastrobin",
-    "Trifloxystrobin",
-    "Tebuconazole",
-    "Hexaconazole",
-    "Coprox Super",
-    "outro"];
+  "Azoxystrobin",
+  "Lambda Cyhalothrin",
+  "Flutriafol",
+  "Triadimenol",
+  "Fluoxastrobin",
+  "Trifloxystrobin",
+  "Tebuconazole",
+  "Hexaconazole",
+  "Coprox Super",
+  "Fluoxastrobin + Flutriafol",
+  "Trifloxystrobin + Triadimenol",
+  "Trifloxystrobin + Tebuconazole",
+  "Azoxystrobin + Hexaconazole",
+  "outro",
+];
 
 export const applicationNumbers = [
     "primeira", 

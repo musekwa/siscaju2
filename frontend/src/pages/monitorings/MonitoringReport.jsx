@@ -507,8 +507,67 @@ if (!farmland) {
 
                                                 return (
                                                     <Box key={index} sx={{ marginTop: 1, marginBottom: 2,  }}>
-                                                        <Typography sx={{ color: "red" }}>{capitalizeFirstLetter(kit[key])}</Typography>
-                                                        
+                                                        <Typography sx={{ color: "red", paddingBottom: 1, }}>{capitalizeFirstLetter(kit[key])}</Typography>
+                                                        <Grid container 
+                                                            sx={{ 
+                                                                    fontSize: "11px", 
+                                                                    fontWeight: 600, 
+                                                                    color: "#fff", 
+                                                                    backgroundColor: "gray" 
+                                                                }}
+                                                            >
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                Data
+                                                            </Grid>
+
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                                Insecticida (dose)
+                                                            </Grid>
+
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                Aplicação 
+                                                            </Grid>
+
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                               Praga
+                                                            </Grid>
+
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                Cajueiros tratados
+                                                            </Grid>
+
+                                                        </Grid>
+                                                        <Divider />
+
+                                                    {   kitRounds?.map(
+                                                            (round, index)=>
+                                                        <Fragment key={index}>
+                                                        <Grid  container 
+                                                            sx={{ 
+                                                                fontSize: "10px", 
+                                                                marginBottom: 1, 
+                                                                marginTop: 1, 
+                                                                }}
+                                                        >
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                {normalizeDate(new Date(round.appliedAt))}
+                                                            </Grid>
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                                {round?.insecticideName.toLowerCase()} ({round?.dose})
+                                                            </Grid>
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                {round?.applicationNumber}
+                                                            </Grid>
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                                {round?.plagueName.toLowerCase()}
+                                                            </Grid>
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                {calculatePercentage(round?.treatedTrees, division?.trees)} %
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Divider />
+                                                        </Fragment>
+                                                    ) }
                                                     </Box>
                                                 )
 
@@ -591,10 +650,68 @@ if (!farmland) {
 
                                                 return (
                                                     <Box key={index} sx={{ marginTop: 1, marginBottom: 2,  }}>
-                                                        <Typography sx={{ color: "red" }}>{capitalizeFirstLetter(kit[key])}</Typography>
-                                                        
-                                                    </Box>
-                                                )
+                                                        <Typography sx={{ color: "red", paddingBottom: 1, }}>{capitalizeFirstLetter(kit[key])}</Typography>
+                                                        <Grid container 
+                                                            sx={{ 
+                                                                    fontSize: "11px", 
+                                                                    fontWeight: 600, 
+                                                                    color: "#fff", 
+                                                                    backgroundColor: "gray" 
+                                                                }}
+                                                            >
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                Data
+                                                            </Grid>
+
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                                Fungicida (dose)
+                                                            </Grid>
+
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                Aplicação 
+                                                            </Grid>
+
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                               Doenças
+                                                            </Grid>
+
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                Cajueiros tratados
+                                                            </Grid>
+
+                                                        </Grid>
+                                                        <Divider />
+
+                                                    {   kitRounds?.map(
+                                                            (round, index)=>
+                                                        <Fragment key={index}>
+                                                        <Grid  container 
+                                                            sx={{ 
+                                                                fontSize: "10px", 
+                                                                marginBottom: 1, 
+                                                                marginTop: 1, 
+                                                                }}
+                                                        >
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                {normalizeDate(new Date(round.appliedAt))}
+                                                            </Grid>
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                                {round?.fungicideName.toLowerCase()} ({round?.dose})
+                                                            </Grid>
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                {round?.applicationNumber}
+                                                            </Grid>
+                                                            <Grid item xs={3} sx={{ textAlign: "center"}}>
+                                                                {round?.diseaseName.toLowerCase()}
+                                                            </Grid>
+                                                            <Grid item xs={2} sx={{ textAlign: "center"}}>
+                                                                {calculatePercentage(round?.treatedTrees, division?.trees)} %
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Divider />
+                                                        </Fragment>
+                                                    ) }
+                                                    </Box>                                                )
 
                                             }
                                             else if (divisionReport.hasOwnProperty(key) && key === 'harvest'){

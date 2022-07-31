@@ -79,7 +79,11 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
           </Typography>
           <Grid container sx={{ mt: 3 }}>
             <Grid item xs={5} sx={{ textAlign: "left" }}>
-              <Button>
+              <Button
+                onClick={() => {
+                  navigate("/add-photo", { state: { farmer }});
+                }}
+              >
                 <Box sx={{ textAlign: "center", color: "rebeccapurple" }}>
                   <AddAPhoto fontSize="large" />
                   <Typography variant="body2">Foto</Typography>

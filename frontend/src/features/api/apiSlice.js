@@ -320,6 +320,35 @@ export const apiSlice = createApi({
         }
       ) {},
     }),
+
+    // addPhoto: build.mutation({
+    //   query: (body) => {
+    //     return {
+    //       url: `/monitorings/${body.flag}`,
+    //       method: "POST",
+    //       body: body,
+    //     };
+    //   },
+    //   invalidatesTags: ["Monitoring"],
+    //   async onQueryStarted(
+    //     arg,
+    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+    //   ) {},
+    //   async onCacheEntryAdded(
+    //     arg,
+    //     {
+    //       dispatch,
+    //       getState,
+    //       requestId,
+    //       extra,
+    //       getCacheEntry,
+    //       cacheDataLoaded,
+    //       cacheEntryRemoved,
+    //     }
+    //   ) {},
+    // }),
+
+    
   }),
 });
 
@@ -342,5 +371,8 @@ export const {
   useGetMonitoringReportsByDivisionIdQuery,
   useGetMonitoringReportsByFarmlandIdQuery,
   // useGetReportsByFarmlandIdQuery,
+
+  // images
+  // useAddPhotoMutation,
 
 } = apiSlice;

@@ -162,7 +162,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
                        {reportData.weedingType}
                     </Typography>
                 </Box>
@@ -199,7 +199,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
                        {reportData?.pruningType}
                     </Typography>
                 </Box>
@@ -236,7 +236,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
                        {reportData?.diseaseName}
                     </Typography>
                 </Box>
@@ -284,7 +284,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
                        {reportData?.plagueName}
                     </Typography>
                 </Box>
@@ -333,8 +333,8 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-                       {reportData?.insecticideName}
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
+                       {reportData?.insecticideName} contra {reportData?.plagueName}
                     </Typography>
                 </Box>
                   <Box sx={{ p: "5px 15px 5px 15px",  }}>
@@ -383,8 +383,8 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
-                       {reportData?.fungicideName}
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
+                       {reportData?.fungicideName} contra {reportData?.diseaseName}
                     </Typography>
                 </Box>
                   <Box sx={{ p: "5px 15px 5px 15px",  }}>
@@ -426,7 +426,7 @@ const ConfirmModal = ({ openModal, setOpenModal, setReportData, reportData, divi
                     // height: "80%"
                 }}
                 >
-                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="h6"> 
+                    <Typography sx={{  textAlign: 'center', color: "#eee" }} variant="body1"> 
                       Campanha {(new Date().getMonth()+1) < 3 ? (new Date().getFullYear() - 1) : (new Date().getFullYear())} 
                        {' '}-{' '}{(new Date().getMonth()+1) < 3 ? (new Date().getFullYear()) : (new Date().getFullYear() + 1)}
                     </Typography>
