@@ -111,7 +111,7 @@ if (isLoading) {
               path="/add-coordinates"
               element={<FarmlandCoordinates user={user} />}
             />
-            <Route path="/add-photo" element={<Photo />} />
+            <Route path="/add-photo" element={<Photo user={user} />} />
 
             <Route
               path="/monitorings-list"

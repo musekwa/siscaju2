@@ -27,6 +27,7 @@ export const administrativePosts = {
   Macomia: ["Macomia", "Chai", "Mucojo", "Quiterajo"],
   Mecúfi: ["Mecufi", "Murrebue"],
   Meluco: ["Meluco", "Muaguide"],
+  Metuge: ["Metuge", "Messanja", "Mieze"],
   "Mocímboa da Praia": ["Mocimboa da Praia", "Diaca", "Mbau"],
   Montepuez: ["Montepuez", "Mapupulo", "Mirate", "Nairoto", "Namanhumir"],
   Mueda: ["Mueda", "Chapa", "Imbuho", "Negomano", "N'gapa"],

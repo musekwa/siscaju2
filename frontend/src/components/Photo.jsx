@@ -1,24 +1,24 @@
 
 
-import { AddAPhoto, AddLocation } from '@mui/icons-material'
-import { Avatar, Box, Divider, Grid, Input, Stack, styled, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Add, AddAPhoto, AddLocation, Replay } from '@mui/icons-material'
+import { Avatar, Box, Divider, Fab, Grid, IconButton, Input, Stack, styled, Typography } from '@mui/material'
+import React, { Fragment, useEffect } from 'react'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { BootstrapButton } from './Buttons'
 import axios from 'axios'
-// import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
-// import Footer from '../../components/Footer'
-// import Navbar from '../../components/Navbar'
-// import Spinner from '../../components/Spinner'
+import Footer from './Footer'
+import Navbar from './Navbar'
+import { maxWidth } from '@mui/system'
+// import Spinner from './Spinner'
 // import { useAddCoordinatesMutation } from '../../features/api/apiSlice'
 
 const UserStack = styled(Stack)(({theme})=>({
     gap: "10px",
 }))
 
-const Photo = () => {
+const Photo = ({ user }) => {
 
     const [photo, setPhoto ] = useState();
     const [source, setSource] = useState("");
@@ -29,12 +29,6 @@ const Photo = () => {
     const location = useLocation();
 
     //  const { farmer, farmland } = location.state;
-
-//     const [ addCoordinates, 
-//         {
-//             data: updatedFarmland, isLoading, isSuccess, error, isError, reset },
-//   ] = useAddCoordinatesMutation();
-
 
 
 
@@ -131,30 +125,18 @@ const uploadImage = async (files) =>{
     
     console.log('response:', response);
 
-    //   try {
-    //     if (coordinates?.latitude && coordinates?.longitude) {
-    //       const normalizedCoordinatesData = {
-    //         farmlandId: farmland._id,
-    //         geocoordinates: {
-    //           latitude: coordinates.latitude,
-    //           longitude: coordinates.longitude,
-    //         }
-    //       }
-    //       await addCoordinates(normalizedCoordinatesData)
-    //     }
-    //   } catch (error) {
-        
-    //   }
-    }
+  }
   
   const handleCapture = (target)=>{
 
     if(target.files && target.files.length !== 0) {
       const file = target.files[0];
-      const newUrl = URL.createObjectUrl(file);
+      const newUrl = URL.createObjectURL(file);
       setSource(newUrl);
     }
   }
+
+  console.log('source: ', source)
 
 //   if (isLoading) {
 //     return (
@@ -165,8 +147,10 @@ const uploadImage = async (files) =>{
 
   return (
     <Box>
-      {/* <Navbar pageDescription={"Novo Pomar"} user={user} /> */}
-      <Box
+      <Navbar 
+      arrowBack={'block'} goBack={'/'}
+      pageDescription={"Imagem"} user={user} />
+      {/* <Box
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -174,116 +158,83 @@ const uploadImage = async (files) =>{
           marginTop: "60px",
         }}
       >
-        {/* Start Farmer's Profile */}
-        {/* <UserStack direction="row" onClick={() => true} sx={{ m: "10px" }}>
-          <Avatar sx={{ width: "50px", height: "50px" }} src="" />
-          <Box sx={{ textAlign: "left" }}>
-            <Typography variant="body1">{`${farmer?.fullname}`}</Typography>
-            <Typography variant="body2">({`${farmer?.category}`})</Typography>
-          </Box>
-        </UserStack> */}
-      </Box>
+      </Box> */}
 
-      {/* End Farmer's Profile & Start Farmland Registration form */}
+    <Box sx={{ 
+      maxWidth: "960px", 
+      padding: "10px", 
+      // margin: "15px 15px 15px 10px", 
+      margin: "auto",                
+      width: "100%",  
+      height: "80vh",
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center" 
+      }}
+    >
 
-    <Box sx={{ maxWidth: "960px", padding: "10px", margin: "15px 15px 15px 10px" }}>
 
-    {/* dados do pomar */}
-        {/* <Stack direction="row" sx={{ padding: "1px 5px 2px 5px"}} gap={2}>
-        <Box sx={{ width: "50%",textAlign: 'left'}} >
-            {farmer?.village ? 'Localidade (Designação):' : 'Designação:' }
-        </Box>
-        <Box sx={{width: "50%", textAlign: 'left'}}>
-            {farmer?.village ?  `${farmer?.address?.village} (${farmland?.label}):` : `${farmland?.label}`}
-        </Box>
-        </Stack> */}
-
-        {/* Dados Immutaveis do pomar  */}
-        {/* <Stack direction="row" sx={{ padding: "1px 5px 2px 5px"}} gap={2}>
-            <Box sx={{ width: "50%", textAlign: 'left'}} >
-                Distrito (posto):
-            </Box>
-            <Box sx={{width: "50%", textAlign: 'left'}}>
-                <Typography>{`${farmland?.district} (${farmland?.territory ? farmland?.territory : 'N/A' })` }</Typography>
-            </Box>
-        </Stack> */}
-
-        {/* <Stack direction="row" sx={{ padding: "1px 5px 2px 5px"}} gap={2}>
-            <Box sx={{ width: "50%", textAlign: 'left'}} >
-                Latitude:
-            </Box>
-            <Box sx={{width: "50%", textAlign: 'left'}}>
-                <Typography>{`${coordinates?.latitude}` }</Typography>
-            </Box>
-        </Stack>
-        <Stack direction="row" sx={{ padding: "1px 5px 2px 5px"}} gap={2}>
-            <Box sx={{ width: "50%", textAlign: 'left'}} >
-                Longitude:
-            </Box>
-            <Box sx={{width: "50%", textAlign: 'left'}}>
-                <Typography>{`${coordinates?.longitude}` }</Typography>
-            </Box>
-        </Stack> */}
-     </Box>
-
-     {/* <Divider /> */}
-
-        <Box 
-            sx={{ 
-                width: "100%",  
-                height: "50vh",
-                display: "flex", 
-                justifyContent: "center", 
-                alignItems: "center" }}
-        >
-          <Grid container>
-              <Grid item xs={12}>
-              <Typography>Capturar Imagem</Typography>
-              {
-                source && <Box>
-                  <img src={source} alt="snap"  />
+        {
+          source && 
+          <Stack direction="column" spacing={2}> 
+                <Box >
+                  <img src={source} style={{ maxWidth: "250px"}}  alt="snap"  />
                 </Box>
-              }
-              </Grid>
-          </Grid>
-            {/* <Box 
-        // sx={{ 
-        //   position: "relative", 
-        //   bottom: "80px", 
-        //   marginTop: "140px"  
-        // }}  
-                component="form" 
-                noValidate autoComplete="off" 
-                onSubmit={onSubmit}> */}
+                <Stack 
+                  direction="row" 
+                  alignItems="center"
+                  justifyContent="center"
+                  spacing={9}
+                >
+                  <IconButton onClick={()=>{
+                    setSource("")
+                  }}>
+                    <Replay fontSize="large" sx={{ color: "rebeccapurple"}} />
+                  </IconButton>
+                  <BootstrapButton sx={{ color: "#eee", minWidth: "50px"}} >
+                    Salvar
+                  </BootstrapButton>
+                </Stack>
+          </Stack>
+        }
 
-                <Input 
-
-                    type="file" 
+      {/* <GrStid container> */}
+        {
+          !source 
+          && 
+          <Box>
+                <label htmlFor="add-photo">
+                  <input
+                    style={{ display: 'none' }}
+                    id="add-photo"
+                    name="add-photo"
+                    type="file"
+                    
                     // accept="image/x-png, image/jpeg, image/gif" 
                     accept="image/*"
                     capture="environment"
-                    onChange={(event)=>{
-                        handleCapture(event.target);
+                    onChange={(event)=>{ 
+                      handleCapture(event.target);
                     }} 
-                />
-                
-                {/* <BootstrapButton   
-                        type='submit'            
-                        variant="contained"
-                        sx={{ maxWidth: "300px"}}
-                        startIcon={<AddAPhoto fontSize="large"  />} 
-                        // onClick={()=>{
-                        //     ();
-                        //     // setOpen(true)
-                        // }}
-                    >
-                    Capturar foto
-                </BootstrapButton> */}
-            {/* </Box> */}
-        </Box>
-         {/* <FarmlandRegisterModal open={open} setOpen={setOpen} farmer={farmer} farmland={farmland} /> */}
-    {/* <Footer /> */}
+                    />
+
+                    <AddAPhoto 
+                      sx={{ 
+                        fontSize: "50px", 
+                        color: "rebeccapurple"
+                      }} 
+                      /> 
+                    
+                </label>
+                <Typography sx={{ fontSize: "12px", color: "gray"}}>Capturar imagem</Typography>
+            </Box>
+        }
+
+
+
     </Box>
+    <Footer />
+  </Box>
   )
 }
 
