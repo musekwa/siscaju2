@@ -255,4 +255,37 @@ const deleteFarmer = asyncHandler(async (req, res) => {
   // }
 });
 
-export { addFarmer, getFarmerById, getFarmers, updateFarmer, deleteFarmer };
+const addFarmerImage = asyncHandler(async (req, res) => {
+  const {
+    body,
+    params: { farmerId },
+  } = req;
+  if (!farmerId) {
+    res.status(400);
+    throw new Error("O parametro ':farmerId' nao pode ser vazio");
+  }
+
+  const { image } = body;
+
+  // try {
+  let updatedFarmer = await Farmer.findOneAndUpdate(
+    { _id: ObjectId(farmerId) },
+    { image },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
+  if (!updatedFarmer) {
+    res.status(404);
+    throw new Error("Produtor nao encontrados");
+  }
+  return res.status(200).json(updatedFarmer);
+
+});
+
+export {
+  addFarmer,
+  getFarmerById,
+  getFarmers,
+  updateFarmer,
+  deleteFarmer,
+  addFarmerImage,
+};

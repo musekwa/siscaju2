@@ -1,4 +1,4 @@
-import React, {  startTransition } from "react";
+import React, {  startTransition, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -16,6 +16,8 @@ import Spinner from "../../components/Spinner";
 import { toast } from "react-toastify";
 import { useGetFarmersByQuery } from "../../features/api/apiSlice";
 import { useEffect } from "react";
+import imgPlaceholder from '../../assets/images/img_placeholder.png'
+import SearchModal from "../../components/SearchModal";
 
 const FarmlandAdd = ({ user }) => {
   let filterBy =
@@ -26,6 +28,9 @@ const FarmlandAdd = ({ user }) => {
       : user?.role === "Produtor"
       ? user?.address?.territory
       : null;
+
+  const [openModal, setOpenModal] = useState(false);
+  const modalFlag = 'farmers';
 
   const {
     data: farmers,
@@ -73,9 +78,11 @@ const FarmlandAdd = ({ user }) => {
     <Box>
       <Navbar
         pageDescription={"Produtores"}
-        isManageSearch={true}
-        isSearchIcon={true}
-        user={user}
+        isManageSearch={true} 
+        isSearchIcon={true} 
+        user={user} 
+        setOpenModal={setOpenModal}
+        modalFlag={modalFlag}
       />
       <Box 
       sx={{ 
@@ -105,7 +112,7 @@ const FarmlandAdd = ({ user }) => {
               <ListItem alignItems="flex-start">
                 {/* <ListItemButton> */}
                 <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src="" />
+                  <Avatar alt={farmer?.fullname} src={farmer?.image ? farmer?.image : imgPlaceholder} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={
@@ -157,7 +164,12 @@ const FarmlandAdd = ({ user }) => {
           ))}
       </List>
       </Box>
-      {/* <SearchModal open={false} /> */}
+        <SearchModal 
+            openModal={openModal}
+            modalFlag={modalFlag}
+            setOpenModal={setOpenModal}
+            
+        />
       <Footer />
     </Box>
   );

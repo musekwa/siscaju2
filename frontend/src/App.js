@@ -35,6 +35,7 @@ import FungicideForm from './pages/monitorings/FungicideForm';
 import HarvestForm from './pages/monitorings/HarvestForm';
 import MonitoringReport from "./pages/monitorings/MonitoringReport";
 import Photo from './components/Photo';
+import Image from './components/Image'
 
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
@@ -111,7 +112,7 @@ if (isLoading) {
               path="/add-coordinates"
               element={<FarmlandCoordinates user={user} />}
             />
-            <Route path="/add-photo" element={<Photo user={user} />} />
+            <Route path="/add-photo" element={<Image user={user} />} />
 
             <Route
               path="/monitorings-list"

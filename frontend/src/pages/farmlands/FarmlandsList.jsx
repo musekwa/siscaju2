@@ -1,4 +1,4 @@
-import React, {  Fragment, useState} from "react";
+import React, {  Fragment, useState, useEffect} from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -20,7 +20,8 @@ import { Add } from "@mui/icons-material";
 import Spinner from "../../components/Spinner";
 import SearchModal from "../../components/SearchModal";
 import { useGetFarmlandsByQuery } from "../../features/api/apiSlice";
-import { useEffect } from "react";
+// import { useEffect } from "react";
+import imgPlaceholder from "../../assets/images/img_placeholder.png"
 
 const FarmlandsList = ({ user }) => {
 
@@ -180,7 +181,7 @@ const FarmlandsList = ({ user }) => {
           }}
       >
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="" />
+          <Avatar src={byFarmers[`${farmerId}`][0]?.farmer?.image ? byFarmers[`${farmerId}`][0]?.farmer?.image : imgPlaceholder} alt={byFarmers[`${farmerId}`][0]?.farmer?.fullname} />
         </ListItemAvatar>
           <Typography
             variant="body2"

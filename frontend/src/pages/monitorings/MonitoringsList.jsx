@@ -34,6 +34,7 @@ import { useGetFarmlandsByQuery } from "../../features/api/apiSlice";
 import { useEffect } from "react";
 import FarmlandCard from "./FarmlandCard";
 import { borderTop } from "@mui/system";
+import imgPlaceholder from "../../assets/images/img_placeholder.png"
 
 
 
@@ -214,7 +215,7 @@ const MonitoringsList = ({ user }) => {
           }}
       >
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="" />
+          <Avatar src={byFarmers[`${farmerId}`][0]?.farmer?.image ? byFarmers[`${farmerId}`][0]?.farmer?.image : imgPlaceholder} alt={byFarmers[`${farmerId}`][0]?.farmer?.fullname}  />
         </ListItemAvatar>
         <Typography
           variant="body2"

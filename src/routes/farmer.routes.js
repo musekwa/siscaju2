@@ -5,6 +5,7 @@ import {
   getFarmerById,
   updateFarmer,
   deleteFarmer,
+  addFarmerImage,
 } from "../controllers/farmer.controllers.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -15,6 +16,10 @@ router
   .get(protect, getFarmerById)
   .patch(protect, updateFarmer)
   .delete(protect, deleteFarmer);
+
+router
+  .route("/farmers/:farmerId/image")
+  .patch(protect, addFarmerImage);
 
 router;
 

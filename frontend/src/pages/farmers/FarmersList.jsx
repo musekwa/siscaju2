@@ -16,7 +16,7 @@ import Spinner from '../../components/Spinner';
 import SearchModal from '../../components/SearchModal';
 import { useGetFarmersByQuery } from '../../features/api/apiSlice'
 import { useSelector } from 'react-redux';
-
+import imgPlaceholder from "../../assets/images/img_placeholder.png"
 
 const FarmersList = ()=> {
 
@@ -134,7 +134,7 @@ const FarmersList = ()=> {
                 {/* <ListItemButton> */}
                 {/* <Box sx={{ backgroundColor: "#826DA3"}}> */}
                 <ListItemAvatar sx={{ }} >
-                    <Avatar sx={{ width: "50px", height: "50px", marginRight: "0px 5px 0px 0px" }} alt="Remy Sharp"  />
+                    <Avatar src={farmer?.image ? farmer?.image : imgPlaceholder} sx={{ width: "50px", height: "50px", marginRight: "0px 5px 0px 0px" }} alt={farmer?.fullname}  />
                 </ListItemAvatar>
                 {/* </Box> */}
                 <ListItemText

@@ -9,6 +9,7 @@ import { useLocation, useParams } from 'react-router-dom'
 // import { useGetFarmersByQuery } from '../../features/farmers/farmerSlice'
 import { useGetFarmlandsByQuery } from '../../features/api/apiSlice'
 import Spinner from '../../components/Spinner'
+import imgPlaceholder from "../../assets/images/img_placeholder.png";
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -97,7 +98,7 @@ const Farmer = ({ user }) => {
       {/* Start Farmer's Profile */}
      
       <UserStack direction="row" onClick={()=>(true)} sx={{ m: "5px", }}>
-        <Avatar sx={{ width: "50px", height: "50px"}} src="" />
+        <Avatar sx={{ width: "80px", height: "80px"}} src={farmer?.image ? farmer?.image : imgPlaceholder} />
         <Box sx={{ textAlign: "center", width: "80%", marginRight: "5px" }}>
             <Typography variant='body1'>{`${farmer?.fullname}`}</Typography>
             <Typography variant='body2'>({`${farmer?.category}`})</Typography>
