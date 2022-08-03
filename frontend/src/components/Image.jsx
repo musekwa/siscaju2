@@ -4,20 +4,21 @@ import { Add, AddAPhoto, AddLocation, Crop, Replay, Save } from '@mui/icons-mate
 import { Avatar, Box, Divider, Fab, Grid, IconButton, Input, Stack, styled, TextField, Typography } from '@mui/material'
 import React, { Fragment, useEffect, useRef } from 'react'
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { BootstrapButton } from './Buttons'
 import axios from 'axios'
 import Footer from './Footer'
 import Navbar from './Navbar'
 import { height, maxWidth } from '@mui/system'
-// import Spinner from './Spinner'
+import Spinner from './Spinner'
 // import { useAddCoordinatesMutation } from '../../features/api/apiSlice'
 import ReactCrop, { centerCrop, makeAspectCrop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import imgPlaceholder from '../assets/images/img_placeholder.png'
 import { Image } from 'cloudinary-react';
 import { useAddImageMutation } from '../features/api/apiSlice'
+import FarmerRegisterModal from "./FarmerRegisterModal"
 
 
 const UserStack = styled(Stack)(({theme})=>({
@@ -53,6 +54,7 @@ const ImageComponent = ({ user }) => {
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
     const [image, setImage] = useState("");
     const [isImage, setIsImage] = useState(false);
+    const [open, setOpen] = useState(false);
 
      const [
     addImage,
@@ -84,7 +86,9 @@ useEffect(()=>{
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,        
       })    
+      setOpen(true)
       setSource("")
+
 
     }
     // reset()
@@ -122,6 +126,10 @@ const uploadImage = async (base64EncodeImage)=>{
     await addImage(normalizedData)
    
 
+}
+
+if (isLoading) {
+    return <Spinner />
 }
 
   const onSubmit = async (e)=>{
@@ -264,7 +272,7 @@ const uploadImage = async (base64EncodeImage)=>{
                 
                 // accept="image/x-png, image/jpeg, image/gif" 
                 accept="image/*"
-                capture="environment"
+                // capture="environment"
                 onChange={(e) =>handleCapture(e)} 
                 />
 
@@ -281,6 +289,7 @@ const uploadImage = async (base64EncodeImage)=>{
             </Box>
         }
     </Box>
+     <FarmerRegisterModal open={open} setOpen={setOpen} farmer={updatedFarmer} disabled={true}   />
     <Footer />
   </Box>
   )

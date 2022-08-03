@@ -4,11 +4,12 @@ import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import Spinner from "../../components/Spinner";
 import { useGetPerformanceQuery } from "../../features/api/apiSlice";
+import { toast } from "react-toastify";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -22,6 +23,7 @@ const Dashboard = () => {
   // const location = useLocation();
 
   const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate()
 
   const {
     user,
@@ -40,12 +42,35 @@ const Dashboard = () => {
     error,
   } = useGetPerformanceQuery(user);
 
-  useEffect(()=>{
+  const getToken =  (user) =>{
+    if (!user) return ;
+    const {token } = user;
+    const decodedJWT =  JSON.parse(atob(token.split(".")[1]));
+    
+    return decodedJWT;
+  }
 
+  let decodedJWT =  getToken(user);
+
+
+  useEffect(()=>{
+  if (decodedJWT.exp * 1000 < Date.now()) {
+      
+      navigate("/signin");
+      toast.error("A sua sessão expirou. Faça novamente o login!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return ;
+  }
 
   }, [user, performance, isLoading, userLoading, isFetching, isError]);
 
-  // console.log('performance: ', performance)
 
   if (isLoading || isFetching || userLoading) {
     return <Spinner />;

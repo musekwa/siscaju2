@@ -86,7 +86,9 @@ const sendPasswordResetEmail = asyncHandler(async (req, res) =>{
     const sendEmail = async ()=>{
 
         try {
+
             const accessToken = await oAuth2Client.getAccessToken();
+           
             const transport = nodemailer.createTransport({
                 service: "gmail",
                 auth: {

@@ -7,8 +7,7 @@ import {
   sprayingMonths,
 } from ".";
 import { northProvinces } from "../app/provinces";
-import { checkDisease } from "./checkDisease";
-import { checkPlague } from "./monitoring";
+import { checkPlague } from "./checkPlague";
 
 // ---------------------------- Start fungicide report --------------------------
 
@@ -48,7 +47,7 @@ export const checkInsecticide = (reports, farmland) => {
     //
     let report = {
       sowingYear,
-      trees: foundDivision.trees,
+      trees: reports[i].trees,
     };
 
     // let fungicidereports = {
@@ -68,12 +67,14 @@ export const checkInsecticide = (reports, farmland) => {
           : `Recomenda-se o controle das doenças e a aplicação rotineira da 
                 insecticida nos meses de julho, agosto e setembro.`;
 
+     
       normalizedReport.push(report);
     } else if (
       reports[i]?.plague?.rounds &&
       reports[i]?.plague?.rounds?.length > 0 &&
       !reports[i]?.insecticide?.rounds
     ) {
+
       // check if the last plague reportss have any relevant information
       let lastPlagueRounds = checkPlague(reports, farmland);
 
@@ -81,7 +82,7 @@ export const checkInsecticide = (reports, farmland) => {
         (round) => round.plagueName === "Cochonilha"
       );
       let helopeltisLastRound = lastPlagueRounds.find(
-        (round) => round.diseaseName === "Helopeltis ssp"
+        (round) => round.plagueName === "Helopeltis ssp"
       );
 
 
@@ -105,21 +106,21 @@ export const checkInsecticide = (reports, farmland) => {
         let newReport = {
           ...report,
           plagueName,
-          higherAttack,
-          highAttack,
-          averageAttack,
-          lowAttack,
+          higherAttack: Number(higherAttack),
+          highAttack: Number(highAttack),
+          averageAttack: Number(averageAttack),
+          lowAttack: Number(lowAttack),
           detectedAt,
         };
 
-        newReport.affectedTrees =
-          Number(higherAttack) +
-          Number(highAttack) +
-          Number(averageAttack) +
+        newReport.affectedTrees = 
+          Number(higherAttack) + 
+          Number(highAttack) + 
+          Number(averageAttack) + 
           Number(lowAttack);
-        newReport.affectedTreePercentage = calculatePercentage(
-          newReport.affectedTrees,
-          newReport.trees
+
+        newReport.affectedTreePercentage = Number(
+          calculatePercentage(newReport.affectedTrees, newReport.trees)
         );
 
         if (newReport.affectedTreePercentage === 0) {
@@ -127,7 +128,7 @@ export const checkInsecticide = (reports, farmland) => {
             sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
               ? "warning"
               : "info";
-          report.message =
+          newReport.message =
             sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
               ? `Recomenda-se a aplicação rotineira da 
                         insecticida nos meses de julho, agosto e setembro. 
@@ -146,7 +147,7 @@ export const checkInsecticide = (reports, farmland) => {
             sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
               ? "error"
               : "warning";
-          report.message =
+          newReport.message =
             sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
               ? `Recomenda-se a aplicação da 
                         insecticida contra a ${plagueName}. 
@@ -164,7 +165,6 @@ export const checkInsecticide = (reports, farmland) => {
                   newReport.affectedTreePercentage
                 }% dos cajueiros infectados.`;
         }
-
         normalizedReport.push(newReport);
 
         return round;
@@ -174,7 +174,7 @@ export const checkInsecticide = (reports, farmland) => {
       reports[i]?.insecticide?.rounds &&
       reports[i]?.insecticide?.rounds.length > 0
     ) {
-      // considering there is no disease reports yet, but there fungicide reports already
+      // considering there is no plague reports yet, but there fungicide reports already
 
       let cochonilhaLastRound = lastMonitoringRound(
         reports[i]?.insecticide?.rounds.filter(
@@ -299,7 +299,7 @@ export const checkInsecticide = (reports, farmland) => {
         return reports;
       });
     } else {
-      // check if the last disease reportss have any relevant information
+      // check if the last plague reportss have any relevant information
       let lastPlagueReports = checkPlague(reports, farmland);
 
       let cochonilhaLastRound = lastMonitoringRound(

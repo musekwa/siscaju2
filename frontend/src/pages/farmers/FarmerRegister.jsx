@@ -724,7 +724,7 @@ const [
     </Box>
     
     {/* Modal for successfully farmer registration! */}
-    <FarmerRegisterModal open={open} setOpen={setOpen} farmer={farmer}   />
+    <FarmerRegisterModal open={open} setOpen={setOpen} farmer={farmer} disabled={true}  />
 
 
 

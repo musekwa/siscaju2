@@ -1,5 +1,5 @@
 
-import { Edit, MoreVert, Preview, QueryStats } from '@mui/icons-material'
+import { Add, Delete, DeleteForever, Edit, MoreVert, NaturePeople, NoTransferTwoTone, Preview, QueryStats, Send, TransferWithinAStation } from '@mui/icons-material'
 import { Avatar, Badge, Box, Button, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem, Paper, Stack, styled, Typography } from '@mui/material'
 import React, { Fragment, useState } from 'react'
 import Navbar from '../../components/Navbar'
@@ -32,8 +32,24 @@ const Farmland = ({ user }) => {
 
 
     farmland['divisions'] = sortDivisionsBySowingYear(farmland['divisions'])
+
+
+  // --------- start Farmland MoreVert ------------------------------------
+
+  const [anchorElFarmlandMoreVert, setAnchorElFarmlandMoreVert] = useState(null);
+  const openFarmlandMoreVert = Boolean(anchorElFarmlandMoreVert);
+
+  const handleClickFarmlandMoreVert = (event) => {
+    setAnchorElFarmlandMoreVert(event.currentTarget);
+  };
+
+  const handleCloseFarmlandMoreVert = () => {
+    setAnchorElFarmlandMoreVert(null);
+  };
+ 
+  // ---------------- end MoreVert -----------------------------------------------
     
-    // --------- start MoreVert ------------------------------------
+    // --------- start Division MoreVert ------------------------------------
 
   const [anchorElMoreVert, setAnchorElMoreVert] = useState(null);
   const openMoreVert = Boolean(anchorElMoreVert);
@@ -132,9 +148,21 @@ const Farmland = ({ user }) => {
         </Typography>
         </Grid>
         <Grid item xs={3}>
-          <IconButton sx={{ }}>
-            <Edit fontSize='small' sx={{ color: "#826DA3"}} />
+          <IconButton 
+              aria-label="more"
+              id="long-button"
+              aria-controls={openFarmlandMoreVert ? 'long-menu' : undefined}
+              aria-expanded={openFarmlandMoreVert ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleClickFarmlandMoreVert}
+          >
+              <Badge>
+                  <MoreVert fontSize="medium" sx={{ color: "#826DA3"}}  />
+              </Badge>
           </IconButton>
+          {/* <IconButton sx={{ }}>
+            <Edit fontSize='small' sx={{ color: "#826DA3"}} />
+          </IconButton> */}
         </Grid>
       </Grid>
 
@@ -261,7 +289,76 @@ const Farmland = ({ user }) => {
     }
     </Box>
     </Box>
-          {/* -------------------start MoreVert menu -------------- */}
+        {/* -----------------------start Farmland MoreVert menu ------------- */}
+        <Menu
+            id="long-menu"
+            MenuListProps={{
+            'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorElFarmlandMoreVert}
+            open={openFarmlandMoreVert}
+            onClose={handleCloseFarmlandMoreVert}
+            PaperProps={{
+            style: {
+                maxHeight: ITEM_HEIGHT * 3.5,
+                // width: '20ch',
+            },
+            }}
+        >
+            {/* {options.map((option) => (
+            <MenuItem key={option} selected={option === 'Monitorar pomar'} onClick={handleCloseMoreVert}>
+                {option}
+            </MenuItem>
+            ))} */}
+            <MenuItem selected onClick={handleCloseFarmlandMoreVert}>
+                <ListItemIcon>
+                    <Add />
+                </ListItemIcon>
+                <Typography>
+                    Adicionar divisão
+                </Typography>
+            </MenuItem>
+            {/* <Divider />
+            <MenuItem onClick={handleCloseFarmlandMoreVert}>
+                <ListItemIcon>
+                    <Preview />
+                </ListItemIcon>
+                <Typography>
+                    Ver o estado da divisão
+                </Typography>
+            </MenuItem> */}
+             <Divider />
+            <MenuItem onClick={handleCloseFarmlandMoreVert}>
+                <ListItemIcon>
+                    <Edit />
+                </ListItemIcon>
+                <Typography>
+                    Editar pomar
+                </Typography>
+            </MenuItem>
+             <Divider />
+            <MenuItem onClick={handleCloseFarmlandMoreVert}>
+                <ListItemIcon>
+                    <NaturePeople />
+                </ListItemIcon>
+                <Typography>
+                    Transferir pomar
+                </Typography>
+            </MenuItem>
+
+            <Divider />
+            <MenuItem selected onClick={handleCloseFarmlandMoreVert}>
+                <ListItemIcon>
+                    <Delete />
+                </ListItemIcon>
+                <Typography>
+                   Apagar pomar
+                </Typography>
+            </MenuItem>
+        </Menu>
+
+
+          {/* -------------------start Division MoreVert menu -------------- */}
         <Menu
             id="long-menu"
             MenuListProps={{
@@ -282,16 +379,8 @@ const Farmland = ({ user }) => {
                 {option}
             </MenuItem>
             ))} */}
-            <MenuItem selected onClick={handleCloseMoreVert}>
-                <ListItemIcon>
-                    <QueryStats />
-                </ListItemIcon>
-                <Typography>
-                    Monitorar divisão
-                </Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleCloseMoreVert}>
+
+            {/* <MenuItem onClick={handleCloseMoreVert}>
                 <ListItemIcon>
                     <Preview />
                 </ListItemIcon>
@@ -299,15 +388,26 @@ const Farmland = ({ user }) => {
                     Ver o estado da divisão
                 </Typography>
             </MenuItem>
-             <Divider />
+             <Divider /> */}
+             
             <MenuItem onClick={handleCloseMoreVert}>
                 <ListItemIcon>
                     <Edit />
                 </ListItemIcon>
                 <Typography>
-                    Editar a divisão
+                    Editar divisão
                 </Typography>
             </MenuItem>
+             <Divider />
+            <MenuItem selected onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <Delete />
+                </ListItemIcon>
+                <Typography>
+                   Apagar divisão
+                </Typography>
+            </MenuItem>
+           
         </Menu>
       {/* --------------------------end MoreVert menu --------------------- */}
 

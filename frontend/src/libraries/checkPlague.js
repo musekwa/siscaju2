@@ -40,7 +40,7 @@ export const checkPlague = (reports, farmland) => {
 
     let report = {
       sowingYear,
-      trees: foundDivision.trees,
+      trees: reports[i].trees,
     };
 
     if (!reports[i]?.plague?.rounds) {
@@ -103,10 +103,10 @@ export const checkPlague = (reports, farmland) => {
           Number(highAttack) +
           Number(averageAttack) +
           Number(lowAttack);
-        newReport.affectedTreePercentage = calculatePercentage(
+        newReport.affectedTreePercentage = Number(calculatePercentage(
           newReport.affectedTrees,
           newReport.trees
-        );
+        ));
 
         if (Math.round(Number(newReport.affectedTreePercentage)) === 0) {
           newReport.status = "success";
@@ -130,7 +130,7 @@ export const checkPlague = (reports, farmland) => {
                 )} 
                 detectou ${
                   newReport.affectedTreePercentage
-                }% dos cajueiros infectados.`;
+                }% dos cajueiros infectados. Considera-se também realizar uma poda de sanitação para combater a praga.`;
         }
 
         normalizedReport.push(newReport);

@@ -11,7 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { AddAPhoto, ArrowBack, Forest } from "@mui/icons-material";
 
-const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
+const FarmerRegisterModal = ({ open, setOpen, farmer , disabled }) => {
   const navigate = useNavigate();
 
   return (
@@ -80,14 +80,26 @@ const FarmerRegisterModal = ({ open, setOpen, farmer }) => {
           <Grid container sx={{ mt: 3 }}>
             <Grid item xs={5} sx={{ textAlign: "left" }}>
               <Button
+                disabled={disabled}
                 onClick={() => {
                   navigate("/add-photo", { state: { farmer }});
                 }}
               >
-                <Box sx={{ textAlign: "center", color: "rebeccapurple" }}>
-                  <AddAPhoto fontSize="large" />
-                  <Typography variant="body2">Foto</Typography>
-                </Box>
+            { disabled ? (               
+              <Box sx={{ textAlign: "center", color: "gray" }}>
+                <AddAPhoto fontSize="large" />
+                <Typography variant="body2">Foto</Typography>
+              </Box>
+            )
+            :
+            (
+              <Box sx={{ textAlign: "center", color: "rebeccapurple" }}>
+                <AddAPhoto fontSize="large" />
+                <Typography variant="body2">Foto</Typography>
+              </Box> 
+            )
+          
+          }
               </Button>
             </Grid>
             <Grid item xs={2}></Grid>

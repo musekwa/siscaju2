@@ -23,6 +23,10 @@ export const normalizeDate = (date) => {
   );
 };
 
+export const calculateTotal = (number, otherNumber) => {
+  return Number(number) + Number(otherNumber);
+};
+
 
 export const sprayingMonths = [ 7, 8, 9];  // july, august and september
 export const sprayingRounds = [1, 2, 3, 4] // primeira, segunda, terceira, intercalar

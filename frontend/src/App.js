@@ -24,7 +24,6 @@ import Spinner from "./components/Spinner";
 import { useSelector, useDispatch } from "react-redux";
 import FarmlandCoordinates from "./pages/farmlands/FarmlandCoordinates";
 import { resetUser } from "./features/users/userSlice"
-import { toast } from "react-toastify";
 import PasswordUpdate from "./pages/users/PasswordUpdate";
 import WeedingForm from "./pages/monitorings/WeedingForm";
 import PruningForm from "./pages/monitorings/PruningForm";
@@ -37,30 +36,24 @@ import MonitoringReport from "./pages/monitorings/MonitoringReport";
 import Photo from './components/Photo';
 import Image from './components/Image'
 
+const localUser = JSON.parse(localStorage.getItem("user"));
 
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
-
 function App() {
 
-const navigate = useNavigate()
+
 const dispatch = useDispatch()
+const [isValidToken, setIsValidToken] = useState(true);
+
 const { user, isLoading, isError } = useSelector((state) => state.user);
 
-useEffect(()=>{
 
-  // if (isError){
-  //   navigate('/signin')
-  //   localStorage.removeItem("user");
-  //   dispatch(resetUser());
-  // }
-
-}, [user, isError, isLoading])
+  useEffect(() => {
 
 
-if (isLoading) {
-  return <Spinner />
-}
+
+}, [isValidToken, isLoading, user, localUser]);
   
 
   return (

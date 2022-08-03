@@ -11,6 +11,7 @@ const monitoringsSchema = mongoose.Schema(
         return new Date().getFullYear();
       },
     },
+    trees: Number,
     disease: {
       type: Schema.Types.ObjectId,
       ref: "Disease2",

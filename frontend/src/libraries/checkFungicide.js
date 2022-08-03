@@ -43,7 +43,7 @@ export const checkFungicide = (reports, farmland)=>{
     // 
     let report = {
       sowingYear,
-      trees: foundDivision.trees,
+      trees: reports[i].trees,
     };
 
     // let fungicidereports = {
@@ -119,7 +119,7 @@ export const checkFungicide = (reports, farmland)=>{
                   sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
                     ? "warning"
                     : "info";
-                report.message =
+                newReport.message =
                   sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
                     ? `Recomenda-se a aplicação rotineira da 
                         fungicida nos meses de julho, agosto e setembro. 
@@ -139,7 +139,7 @@ export const checkFungicide = (reports, farmland)=>{
                   sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
                     ? "error"
                     : "warning";
-                report.message =
+                newReport.message =
                   sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
                     ? `Recomenda-se a aplicação da 
                         fungicida contra a ${diseaseName}. 

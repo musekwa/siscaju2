@@ -52,7 +52,7 @@ const addPruningReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, pruning: foundPruningReport._id },
+      { user, pruning: foundPruningReport._id, trees: data?.division?.trees },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -86,6 +86,7 @@ const addPruningReport2 = async (data) => {
       pruning: newPruningReport,
       division: newPruningReport.division,
       farmland: ObjectId(data?.farmland),
+      trees: data?.division?.trees,
       user,
     };
 
@@ -143,7 +144,7 @@ const addWeedingReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, weeding: foundWeedingReport._id },
+      { user, weeding: foundWeedingReport._id, trees: data?.division?.trees },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -176,6 +177,7 @@ const addWeedingReport2 = async (data) => {
       weeding: newWeedingReport,
       division: newWeedingReport.division,
       farmland: ObjectId(data?.farmland),
+      trees: data?.division?.trees,
       user,
     };
 
@@ -235,7 +237,7 @@ const addDiseaseReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, disease: foundDiseaseReport._id },
+      { user, disease: foundDiseaseReport._id, trees: data?.division?.trees, },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -278,6 +280,7 @@ const addDiseaseReport2 = async (data) => {
       disease: newDiseaseReport,
       division: newDiseaseReport.division,
       farmland: ObjectId(data?.farmland),
+      trees: data?.division?.trees,
       user,
     };
 
@@ -340,7 +343,7 @@ const addPlagueReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, plague: foundPlagueReport._id },
+      { user, plague: foundPlagueReport._id, trees: data?.division?.trees },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -381,6 +384,7 @@ const addPlagueReport2 = async (data) => {
       plague: newPlagueReport,
       division: newPlagueReport.division,
       farmland: ObjectId(data?.farmland),
+      trees: data?.division?.trees,
       user,
     };
 
@@ -442,7 +446,11 @@ const addInsecticideReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, insecticide: foundInsecticideReport._id },
+      {
+        user,
+        insecticide: foundInsecticideReport._id,
+        trees: data?.division?.trees,
+      },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -484,6 +492,7 @@ const addInsecticideReport2 = async (data) => {
       insecticide: newInsecticideReport,
       division: newInsecticideReport.division,
       farmland: ObjectId(data?.farmland),
+      trees: data?.division?.trees,
       user,
     };
 
@@ -548,7 +557,11 @@ const addFungicideReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, fungicide: foundFungicideReport._id },
+      {
+        user,
+        fungicide: foundFungicideReport._id,
+        trees: data?.division?.trees,
+      },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -594,6 +607,7 @@ const addFungicideReport2 = async (data) => {
       fungicide: newFungicideReport,
       division: newFungicideReport.division,
       farmland: ObjectId(data?.farmland),
+      trees: data?.division?.trees,
       user,
     };
 
@@ -661,7 +675,7 @@ const addHarvestReport2 = async (data) => {
         division: ObjectId(data?.division._id),
         farmland: ObjectId(data?.farmland),
       },
-      { user, harvest: foundHarvestReport._id },
+      { user, harvest: foundHarvestReport._id, trees: data?.division?.trees },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -708,6 +722,7 @@ const addHarvestReport2 = async (data) => {
         new Date().getMonth() + 1 < 3 // check if the harvest campain is not of the previous year
           ? new Date().getFullYear() - 1 // till march of following year, it's still of the previous campain
           : new Date().getFullYear(),
+      trees: data?.division?.trees,
       user,
     };
 

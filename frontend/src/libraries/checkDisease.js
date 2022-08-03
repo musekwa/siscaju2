@@ -42,7 +42,7 @@ export const checkDisease = (reports, farmland) => {
 
     let report = {
       sowingYear,
-      trees: foundDivision.trees,
+      trees: reports[i].trees,
     };
 
     if (!reports[i]?.disease?.rounds) {

@@ -300,7 +300,7 @@ if (!farmland) {
                                         <Typography>Cajueiros:</Typography>
                                     </Grid>
                                     <Grid item xs={6} sx={{ textAlign: "left"}}>
-                                        <Typography>{division?.trees} árvores</Typography>
+                                        <Typography>{divisionReport?.trees} árvores</Typography>
                                     </Grid>
                                 </Grid>
                                 </Box>
@@ -356,10 +356,10 @@ if (!farmland) {
                                                                 {round?.weedingType?.split(' ')[1]}
                                                             </Grid>
                                                             <Grid item xs={3} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.totallyCleanedTrees, division?.trees)} %
+                                                                {calculatePercentage(round?.totallyCleanedTrees, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={3} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.partiallyCleanedTrees, division?.trees)} %
+                                                                {calculatePercentage(round?.partiallyCleanedTrees, divisionReport?.trees)} %
                                                             </Grid>
                                                         </Grid>
                                                         <Divider />
@@ -416,10 +416,10 @@ if (!farmland) {
                                                                 {round?.pruningType?.split(' ')[2]}
                                                             </Grid>
                                                             <Grid item xs={3} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.totallyPrunedTrees, division?.trees)} %
+                                                                {calculatePercentage(round?.totallyPrunedTrees, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={3} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.partiallyPrunedTrees, division?.trees)} %
+                                                                {calculatePercentage(round?.partiallyPrunedTrees, divisionReport?.trees)} %
                                                             </Grid>
                                                         </Grid>
                                                         <Divider />
@@ -482,16 +482,16 @@ if (!farmland) {
                                                                 {round?.plagueName.toLowerCase()}
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.higherAttack, division?.trees)} %
+                                                                {calculatePercentage(round?.higherAttack, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.highAttack, division?.trees)} %
+                                                                {calculatePercentage(round?.highAttack, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.averageAttack, division?.trees)} %
+                                                                {calculatePercentage(round?.averageAttack, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.lowAttack, division?.trees)} %
+                                                                {calculatePercentage(round?.lowAttack, divisionReport?.trees)} %
                                                             </Grid>
                                                         </Grid>
                                                         <Divider />
@@ -562,7 +562,7 @@ if (!farmland) {
                                                                 {round?.plagueName.toLowerCase()}
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.treatedTrees, division?.trees)} %
+                                                                {calculatePercentage(round?.treatedTrees, divisionReport?.trees)} %
                                                             </Grid>
                                                         </Grid>
                                                         <Divider />
@@ -625,16 +625,16 @@ if (!farmland) {
                                                                 {round?.diseaseName.toLowerCase()}
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.higherSeverity, division?.trees)} %
+                                                                {calculatePercentage(round?.higherSeverity, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.highSeverity, division?.trees)} %
+                                                                {calculatePercentage(round?.highSeverity, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.averageSeverity, division?.trees)} %
+                                                                {calculatePercentage(round?.averageSeverity, divisionReport?.trees)} %
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.lowSeverity, division?.trees)} %
+                                                                {calculatePercentage(round?.lowSeverity, divisionReport?.trees)} %
                                                             </Grid>
                                                         </Grid>
                                                         <Divider />
@@ -705,7 +705,7 @@ if (!farmland) {
                                                                 {round?.diseaseName.toLowerCase()}
                                                             </Grid>
                                                             <Grid item xs={2} sx={{ textAlign: "center"}}>
-                                                                {calculatePercentage(round?.treatedTrees, division?.trees)} %
+                                                                {calculatePercentage(round?.treatedTrees, divisionReport?.trees)} %
                                                             </Grid>
                                                         </Grid>
                                                         <Divider />

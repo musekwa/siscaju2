@@ -6,7 +6,10 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { useGetMonitoringReportsByFarmlandIdQuery } from '../../features/api/apiSlice';
-import { checkWeeding, checkHarvest, checkPruning, 
+import { 
+    // checkWeeding, 
+    // checkHarvest, 
+    // checkPruning, 
     // checkDisease, 
     // checkPlague, 
     // checkInsecticide, 
@@ -16,6 +19,9 @@ import { checkDisease } from '../../libraries/checkDisease';
 import { checkPlague } from '../../libraries/checkPlague';
 import { checkFungicide } from '../../libraries/checkFungicide';
 import { checkInsecticide } from '../../libraries/checkInsecticide';
+import { checkPruning } from '../../libraries/checkPruning';
+import { checkWeeding } from '../../libraries/checkWeeding';
+import { checkHarvest } from '../../libraries/checkHarvest';
 
 const ITEM_HEIGHT = 35;
 
@@ -96,7 +102,7 @@ const FarmlandCard = ({ farmland, }) => {
         </Grid>
         <Grid item xs={2} >
             <IconButton onClick={()=>{}}> 
-                <Badge badgeContent={4} color="error"  sx={{ mt: 1, mr: 1 }}>
+                <Badge badgeContent={0} color="error"  sx={{ mt: 1, mr: 1 }}>
                     <NotificationsNoneSharp fontSize="medium" sx={{ color: "rebeccapurple"}} />
                 </Badge>
             </IconButton>

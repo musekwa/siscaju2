@@ -1,7 +1,7 @@
 
-import { Edit } from '@mui/icons-material'
-import { Avatar, Box, Button, Divider, Grid, Paper, Stack, styled, Typography } from '@mui/material'
-import React from 'react'
+import { Delete, Edit, MoreVert } from '@mui/icons-material'
+import { Avatar, Badge, Box, Button, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem, Paper, Stack, styled, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import Navbar from '../../components/Navbar'
 import { FaPencilAlt } from 'react-icons/fa'
 import Footer from '../../components/Footer'
@@ -29,6 +29,8 @@ const UserStack = styled(Stack)(({theme})=>({
 
 }))
 
+const ITEM_HEIGHT = 52;
+
 const Farmer = ({ user }) => {
 
     const location = useLocation()
@@ -44,7 +46,23 @@ const Farmer = ({ user }) => {
                     : user?.role === 'Produtor'
                     ? user?.address?.territory : null;
 
+
     let { data: farmlands,  isLoading } = useGetFarmlandsByQuery(filterBy)
+
+    // --------- start Division MoreVert ------------------------------------
+
+    const [anchorElMoreVert, setAnchorElMoreVert] = useState(null);
+    const openMoreVert = Boolean(anchorElMoreVert);
+
+    const handleClickMoreVert = (event) => {
+      setAnchorElMoreVert(event.currentTarget);
+    };
+
+    const handleCloseMoreVert = () => {
+      setAnchorElMoreVert(null);
+    };
+  
+    // ---------------- end MoreVert -----------------------------------------------
 
 
     // get all ther farmlands associated to this farmer
@@ -127,9 +145,18 @@ const Farmer = ({ user }) => {
         </Typography>
         </Grid>
         <Grid item xs={3}>
-          <Button sx={{ width: "50px"}}>
-            <Edit fontSize='small' sx={{ color: "#826DA3"}} />
-          </Button>
+          <IconButton 
+              aria-label="more"
+              id="long-button"
+              aria-controls={openMoreVert ? 'long-menu' : undefined}
+              aria-expanded={openMoreVert ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleClickMoreVert}
+          >
+              <Badge>
+                  <MoreVert fontSize="medium" sx={{ color: "#826DA3" }}  />
+              </Badge>
+          </IconButton>
         </Grid>
       </Grid>
     </Box>
@@ -257,6 +284,60 @@ const Farmer = ({ user }) => {
      </Paper>
     </Box>
     </Box>
+
+          {/* -------------------start Division MoreVert menu -------------- */}
+        <Menu
+            id="long-menu"
+            MenuListProps={{
+            'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorElMoreVert}
+            open={openMoreVert}
+            onClose={handleCloseMoreVert}
+            PaperProps={{
+            style: {
+                maxHeight: ITEM_HEIGHT * 3.5,
+                // width: '20ch',
+            },
+            }}
+        >
+            {/* {options.map((option) => (
+            <MenuItem key={option} selected={option === 'Monitorar pomar'} onClick={handleCloseMoreVert}>
+                {option}
+            </MenuItem>
+            ))} */}
+
+            {/* <MenuItem onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <Preview />
+                </ListItemIcon>
+                <Typography>
+                    Ver o estado da divisão
+                </Typography>
+            </MenuItem>
+             <Divider /> */}
+             
+            <MenuItem onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <Edit />
+                </ListItemIcon>
+                <Typography>
+                    Editar dados
+                </Typography>
+            </MenuItem>
+             <Divider />
+            <MenuItem selected onClick={handleCloseMoreVert}>
+                <ListItemIcon>
+                    <Delete />
+                </ListItemIcon>
+                <Typography>
+                   Apagar produtor
+                </Typography>
+            </MenuItem>
+           
+        </Menu>
+      {/* --------------------------end MoreVert menu --------------------- */}
+
     <Footer />
     </Box>
   )
