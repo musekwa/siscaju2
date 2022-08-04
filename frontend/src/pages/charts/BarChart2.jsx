@@ -3,15 +3,14 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Titl
 import { Bar } from "react-chartjs-2";
 import React, { useState, useEffect } from 'react';
 import { provinces } from "../../app/provinces"
-// import { useGetGlobalStatisticsQuery } from "../../features/api/apiSlice";
+import { useGetGlobalStatisticsQuery } from "../../features/api/apiSlice";
 
 ChartJS.register(
 CategoryScale, LinearScale, BarElement, Tooltip, Title, Legend
 )
 
 const BarChart = ({
-    // barChartData, barChartOptions, barChartTitle
-    stats
+    barChartData, barChartOptions, barChartTitle
 }) => {
 
     const [chartData, setChartData] = useState({
@@ -19,8 +18,17 @@ const BarChart = ({
     });
     const [chartOptions, setChartOptions] = useState({});
 
+    let {
+        data: stats,
+        isLoading: isStatsLoading,
+        isFetching: isStatsFetching,
+        isSuccess: isStatsSuccess,
+        isError: isStatsError,
+        error: statsError,
+    } = useGetGlobalStatisticsQuery();
+
     useEffect(()=>{
-        if (stats){
+        if (isStatsSuccess){
 
             let existingProvinces = Object?.keys(stats);
             let farmers = new Array(10).fill(0);
@@ -71,7 +79,7 @@ const BarChart = ({
                         },
                         title: {
                             display: true,
-                            text: "Produtores e Pomares"
+                            text: "Produtores e pomares registados"
                         }
                     },
                     elements: {
@@ -81,9 +89,7 @@ const BarChart = ({
                     }
                 })
             }
-            }, [
-                stats
-            ])
+            }, [isStatsError, isStatsSuccess])
             
   return (
     <Box sx={{ margin: "auto", padding: 1 }}>

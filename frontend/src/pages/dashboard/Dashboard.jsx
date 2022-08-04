@@ -11,6 +11,7 @@ import Spinner from "../../components/Spinner";
 import { useGetPerformanceQuery, useGetGlobalStatisticsQuery } from "../../features/api/apiSlice";
 import { toast } from "react-toastify";
 import BarChart from "../charts/BarChart";
+import PieChart from "../charts/PieChart";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,8 +25,8 @@ const Dashboard = () => {
 
   const [globalStatsData, setGlobalStatsData] = useState({ datasets: [], });
   const [globalStatsOptions, setGlobalStatsOptions] = useState({});  
-  const [globalStatsLabels, setGlobalStatsLabels] = useState([]);
-  const [farmerStats, setFarmerStats] = useState([]);
+  const [pieStats, setPieStats] = useState([]);
+  const [stats, setStats] = useState({});
   const [farmlandStats, setFarmlandStats] = useState([]);
 
   const navigate = useNavigate()
@@ -39,7 +40,7 @@ const Dashboard = () => {
   } = useSelector((state) => state.user);
 
   let {
-    data: stats,
+    data,
     isLoading: isStatsLoading,
     isFetching: isStatsFetching,
     isSuccess: isStatsSuccess,
@@ -87,12 +88,16 @@ const Dashboard = () => {
   if (isStatsSuccess) {
     // ------------------------------------
       
-
+      const stats = data?.globalStatistics;
+      const pieStats = data?.farmers;
+     
+      setStats(stats)
+      setPieStats(pieStats);
 
     // ------------------------------------
   }
 
-  }, [user, performance, isLoading, userLoading, isFetching, isError, isStatsSuccess, isStatsError]);
+  }, [user, performance, isLoading, userLoading, isFetching, isError, isStatsSuccess, isStatsError, stats]);
 
 
   if (isLoading || isFetching || userLoading || isStatsLoading) {
@@ -101,7 +106,6 @@ const Dashboard = () => {
 
   return (
     <Box>
-      {/* { isLoading && <Spinner />} */}
       <Navbar
         arrowBack={'none'}
         pageDescription={
@@ -180,7 +184,9 @@ const Dashboard = () => {
         marginTop: "70px"  }}>
      
      <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
-      <BarChart />
+      <BarChart
+        stats={stats}
+      />
       {/* <Link to="#" sx={{}}>
       <Box sx={{ 
         backgroundColor: "#826DA3", 
@@ -235,9 +241,13 @@ const Dashboard = () => {
       </Box>
       </Link> */}
       </Paper>
-      { user?.role === "Extensionista" && (
+      {/* { user?.role === "Extensionista" && ( */}
       <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
-      <Link to="#" sx={{}}>
+        <PieChart 
+          pieStats={pieStats}
+          dataLabel="farmlands"
+        />
+      {/* <Link to="#" sx={{}}>
       <Box sx={{ 
         backgroundColor: "#826DA3", 
         padding: "5px",
@@ -255,7 +265,6 @@ const Dashboard = () => {
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
           <Grid item sx={{}} xs={4}>
-            {/* <Link to="#" sx={{}}> */}
               <Typography variant="body2" sx={{}}>
                 {performance?.district?.farmers?.length || 0}
               </Typography>
@@ -264,10 +273,8 @@ const Dashboard = () => {
                 <br />
                 registados
               </Typography>
-            {/* </Link> */}
           </Grid>
           <Grid item sx={{}} xs={4}>
-            {/* <Link to="#" sx={{}}> */}
               <Typography variant="body2" sx={{}}>
                 {performance?.district?.farmlands?.length || 0}
               </Typography>
@@ -276,11 +283,9 @@ const Dashboard = () => {
                 <br />
                 registados
               </Typography>
-            {/* </Link> */}
           </Grid>
 
           <Grid item sx={{}} xs={4}>
-            {/* <Link to="#" sx={{}}> */}
               <Typography variant="body2" sx={{}}>
                 {0}
               </Typography>
@@ -293,13 +298,17 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Box>
-      </Link>
+      </Link> */}
       </Paper>
-    )}
+    {/* )} */}
 
-      {user?.role === "Gestor" ? (
+      {/* {user?.role === "Gestor" ? ( */}
       <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
-      <Link to="#" sx={{}}>
+        <PieChart 
+          pieStats={pieStats}
+          dataLabel="farmers"
+        />
+      {/* <Link to="#" sx={{}}>
       <Box sx={{ backgroundColor: "#826DA3", padding: "5px", borderRadius: "10px 10px 0px 0px" }}>
         <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
             Desempenho provincial <br /> ({user?.address.province})
@@ -312,7 +321,6 @@ const Dashboard = () => {
               sx={{ display: "flex", justifyContent: "space-around" }}
             >
               <Grid item sx={{}} xs={4}>
-                {/* <Link to="#" sx={{}}> */}
                   <Typography variant="body2" sx={{}}>
                     {performance?.province?.farmers?.length || 0}
                   </Typography>
@@ -321,10 +329,8 @@ const Dashboard = () => {
                     <br />
                     registados
                   </Typography>
-                {/* </Link> */}
               </Grid>
               <Grid item sx={{}} xs={4}>
-                {/* <Link to="#" sx={{}}> */}
                   <Typography variant="body2" sx={{}}>
                     {performance?.province?.farmlands?.length || 0}
                   </Typography>
@@ -333,11 +339,9 @@ const Dashboard = () => {
                     <br />
                     registados
                   </Typography>
-                {/* </Link> */}
               </Grid>
 
               <Grid item sx={{}} xs={4}>
-                {/* <Link to="#" sx={{}}> */}
                   <Typography variant="body2" sx={{}}>
                     {0}
                   </Typography>
@@ -346,13 +350,12 @@ const Dashboard = () => {
                     <br />
                     Monitorados
                   </Typography>
-                {/* </Link> */}
               </Grid>
             </Grid>
           </Box>
-          </Link>
+          </Link> */}
        </Paper>
-      ) : null}
+      {/* ) : null} */}
       </Box>
       <Footer />
     </Box>

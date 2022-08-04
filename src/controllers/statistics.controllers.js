@@ -11,7 +11,8 @@ const getGlobalStatistics = asyncHandler(async (req, res) => {
 
     let farmers;
 
-    farmers = await Farmer.find({});
+    farmers = await Farmer.find({}).populate('farmlands');
+  
     farmers.map(farmer=>{
         let province = farmer?.address.province;
 
@@ -30,10 +31,15 @@ const getGlobalStatistics = asyncHandler(async (req, res) => {
         return farmer;
     })
 
+    const response = {
+        farmers,
+        globalStatistics,
+    }
+
     
 
   
-  return res.status(200).json(globalStatistics);
+  return res.status(200).json(response);
 });
 
 export { getGlobalStatistics };

@@ -355,7 +355,7 @@ export const apiSlice = createApi({
           method: "GET",
         };
       },
-      providesTags: ["Farmer"],
+      providesTags: ["Farmer", "Farmland"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -402,5 +402,5 @@ export const {
 
   // statistics
   useGetGlobalStatisticsQuery,
-  
+
 } = apiSlice;
