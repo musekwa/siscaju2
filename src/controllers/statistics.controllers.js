@@ -1,26 +1,9 @@
 import mongoose from "mongoose";
-import UserPerformance from "../models/userPerformance.model.js";
-import DistrictPerformance from "../models/districtPerformance.model.js";
-import ProvincePerformance from "../models/provincePerformance.model.js";
 import Farmer from "../models/farmer.model.js"
-// import { getPerformanceService } from "../services/performance.services.js";
 import asyncHandler from "express-async-handler";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-// const provinces = [
-//   "Cabo Delgado",
-//   "Gaza",
-//   "Inhambane",
-//   "Manica",
-//   "Maputo",
-//   "Maputo Cidade",
-//   "Nampula",
-//   "Niassa",
-//   "Tete",
-//   "Sofala",
-//   "Zambézia",
-// ];
 
 const getGlobalStatistics = asyncHandler(async (req, res) => {
 
