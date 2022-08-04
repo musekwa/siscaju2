@@ -35,6 +35,7 @@ import HarvestForm from './pages/monitorings/HarvestForm';
 import MonitoringReport from "./pages/monitorings/MonitoringReport";
 import Photo from './components/Photo';
 import Image from './components/Image'
+import BarChart from "./pages/charts/BarChart";
 
 const localUser = JSON.parse(localStorage.getItem("user"));
 
@@ -142,6 +143,8 @@ const { user, isLoading, isError } = useSelector((state) => state.user);
 
           {/* <Route path="farmlands-list" element={<FarmlandsList />} /> */}
           {/* <Route path="monitorings" element={<Monitorings />} /> */}
+
+          {/* <Route path="/bar-chart" element={<BarChart />} /> */}
 
           <Route path="*" element={<NotFound />} />
         </Routes>

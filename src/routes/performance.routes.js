@@ -5,4 +5,6 @@ import { protect } from "../middleware/authMiddleware.js";
 
 router.route("/performances").get(protect, getPerformances);
 
+
+
 export default router;

@@ -348,7 +348,31 @@ export const apiSlice = createApi({
       ) {},
     }),
 
-    
+    getGlobalStatistics: build.query({
+      query: () => {
+        return {
+          url: `/statistics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Farmer"],
+      async onQueryStarted(
+        arg,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {},
+      async onCacheEntryAdded(
+        arg,
+        {
+          dispatch,
+          getState,
+          requestId,
+          extra,
+          getCacheEntry,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        }
+      ) {},
+    }),
   }),
 });
 
@@ -376,4 +400,7 @@ export const {
   // useAddPhotoMutation,
   useAddImageMutation,
 
+  // statistics
+  useGetGlobalStatisticsQuery,
+  
 } = apiSlice;

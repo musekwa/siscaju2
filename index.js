@@ -14,7 +14,9 @@ import monitoringRoutes from "./src/routes/monitoring.routes.js";
 import userPerformanceRoutes from "./src/routes/performance.routes.js";
 import emailRoutes from './src/routes/email.routes.js'
 import recommendationRoutes from "./src/routes/recommendation.routes.js"
+import statisticsRoutes from "./src/routes/statistics.routes.js"
 import dbConnection from "./config/db.js";
+
 
 import {
   errorHandler,
@@ -56,6 +58,7 @@ app.use(monitoringRoutes);
 app.use(recommendationRoutes);
 app.use(userPerformanceRoutes);
 app.use(emailRoutes);
+app.use(statisticsRoutes);
 
 // ----------------deployment---------------------------
 const __filename = fileURLToPath(import.meta.url);

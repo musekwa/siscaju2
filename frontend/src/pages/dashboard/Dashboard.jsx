@@ -8,8 +8,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import Spinner from "../../components/Spinner";
-import { useGetPerformanceQuery } from "../../features/api/apiSlice";
+import { useGetPerformanceQuery, useGetGlobalStatisticsQuery } from "../../features/api/apiSlice";
 import { toast } from "react-toastify";
+import BarChart from "../charts/BarChart";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -20,9 +21,13 @@ const Item = styled(Box)(({ theme }) => ({
 }));
 
 const Dashboard = () => {
-  // const location = useLocation();
 
-  const [currentUser, setCurrentUser] = useState(null);
+  const [globalStatsData, setGlobalStatsData] = useState({ datasets: [], });
+  const [globalStatsOptions, setGlobalStatsOptions] = useState({});  
+  const [globalStatsLabels, setGlobalStatsLabels] = useState([]);
+  const [farmerStats, setFarmerStats] = useState([]);
+  const [farmlandStats, setFarmlandStats] = useState([]);
+
   const navigate = useNavigate()
 
   const {
@@ -32,6 +37,16 @@ const Dashboard = () => {
     isSuccess: userSuccess,
     message,
   } = useSelector((state) => state.user);
+
+  let {
+    data: stats,
+    isLoading: isStatsLoading,
+    isFetching: isStatsFetching,
+    isSuccess: isStatsSuccess,
+    isError: isStatsError,
+    error: statsError,
+  } = useGetGlobalStatisticsQuery();
+
 
   let {
     data: performance,
@@ -69,10 +84,18 @@ const Dashboard = () => {
       return ;
   }
 
-  }, [user, performance, isLoading, userLoading, isFetching, isError]);
+  if (isStatsSuccess) {
+    // ------------------------------------
+      
 
 
-  if (isLoading || isFetching || userLoading) {
+    // ------------------------------------
+  }
+
+  }, [user, performance, isLoading, userLoading, isFetching, isError, isStatsSuccess, isStatsError]);
+
+
+  if (isLoading || isFetching || userLoading || isStatsLoading) {
     return <Spinner />;
   }
 
@@ -157,7 +180,8 @@ const Dashboard = () => {
         marginTop: "70px"  }}>
      
      <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
-      <Link to="#" sx={{}}>
+      <BarChart />
+      {/* <Link to="#" sx={{}}>
       <Box sx={{ 
         backgroundColor: "#826DA3", 
         padding: "5px", 
@@ -176,7 +200,6 @@ const Dashboard = () => {
           sx={{ display: "flex", justifyContent: "space-around" }}
         >
           <Grid item sx={{}} xs={4}>
-            {/* <Link to="#" sx={{}}> */}
               <Typography variant="body2" sx={{}}>
                 {performance?.user?.farmers?.length || 0}
               </Typography>
@@ -185,10 +208,8 @@ const Dashboard = () => {
                 <br />
                 registados
               </Typography>
-            {/* </Link> */}
           </Grid>
           <Grid item sx={{}} xs={4}>
-            {/* <Link to="#" sx={{}}> */}
               <Typography variant="body2" sx={{}}>
                 {performance?.user?.farmlands?.length || 0}
               </Typography>
@@ -197,11 +218,9 @@ const Dashboard = () => {
                 <br />
                 registados
               </Typography>
-            {/* </Link> */}
           </Grid>
 
           <Grid item sx={{}} xs={4}>
-            {/* <Link to="#" sx={{}}> */}
               <Typography variant="body2" sx={{}}>
                 {0}
               </Typography>
@@ -214,7 +233,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Box>
-      </Link>
+      </Link> */}
       </Paper>
       { user?.role === "Extensionista" && (
       <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
