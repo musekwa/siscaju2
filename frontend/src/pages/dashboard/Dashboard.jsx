@@ -12,6 +12,8 @@ import { useGetPerformanceQuery, useGetGlobalStatisticsQuery } from "../../featu
 import { toast } from "react-toastify";
 import BarChart from "../charts/BarChart";
 import PieChart from "../charts/PieChart";
+import LineChart from "../charts/LineChart";
+import DoughnutChart from "../charts/DoughnutChart";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -27,6 +29,7 @@ const Dashboard = () => {
   const [globalStatsOptions, setGlobalStatsOptions] = useState({});  
   const [pieStats, setPieStats] = useState([]);
   const [stats, setStats] = useState({});
+  const [monthlyVisits, setMonthlyVisits] = useState({});
   const [farmlandStats, setFarmlandStats] = useState([]);
 
   const navigate = useNavigate()
@@ -90,9 +93,11 @@ const Dashboard = () => {
       
       const stats = data?.globalStatistics;
       const pieStats = data?.farmers;
+      const monthlyVisits = data?.visits
      
       setStats(stats)
       setPieStats(pieStats);
+      setMonthlyVisits(monthlyVisits)
 
     // ------------------------------------
   }
@@ -182,180 +187,31 @@ const Dashboard = () => {
         position: "relative", 
         bottom: "80px", 
         marginTop: "70px"  }}>
-     
+    
      <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
       <BarChart
         stats={stats}
       />
-      {/* <Link to="#" sx={{}}>
-      <Box sx={{ 
-        backgroundColor: "#826DA3", 
-        padding: "5px", 
-        borderRadius: "10px 10px 0px 0px" 
-        }}
-      >
-
-        <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
-          Desempenho pessoal <br /> ({user?.fullname})
-        </Typography>
-      </Box>
-      <Box sx={{ margin: "15px" }}>
-        <Grid
-          container
-          spacing={{ xs: 4, sm: 6, md: 8 }}
-          sx={{ display: "flex", justifyContent: "space-around" }}
-        >
-          <Grid item sx={{}} xs={4}>
-              <Typography variant="body2" sx={{}}>
-                {performance?.user?.farmers?.length || 0}
-              </Typography>
-              <Typography variant="body2" sx={{}}>
-                Produtores
-                <br />
-                registados
-              </Typography>
-          </Grid>
-          <Grid item sx={{}} xs={4}>
-              <Typography variant="body2" sx={{}}>
-                {performance?.user?.farmlands?.length || 0}
-              </Typography>
-              <Typography variant="body2" sx={{}}>
-                Pomares
-                <br />
-                registados
-              </Typography>
-          </Grid>
-
-          <Grid item sx={{}} xs={4}>
-              <Typography variant="body2" sx={{}}>
-                {0}
-              </Typography>
-              <Typography variant="body2" sx={{}}>
-                Pomares
-                <br />
-                Monitorados
-              </Typography>
-            
-          </Grid>
-        </Grid>
-      </Box>
-      </Link> */}
       </Paper>
-      {/* { user?.role === "Extensionista" && ( */}
+
       <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
-        <PieChart 
+        <DoughnutChart 
           pieStats={pieStats}
           dataLabel="farmlands"
         />
-      {/* <Link to="#" sx={{}}>
-      <Box sx={{ 
-        backgroundColor: "#826DA3", 
-        padding: "5px",
-         borderRadius: "10px 10px 0px 0px" 
-        }}
-      >
-        <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
-          Desempenho distrital <br /> ({user?.address.district})
-        </Typography>
-      </Box>
-      <Box sx={{ margin: "15px" }}>
-        <Grid
-          container
-          spacing={{ xs: 4, sm: 6, md: 8 }}
-          sx={{ display: "flex", justifyContent: "space-around" }}
-        >
-          <Grid item sx={{}} xs={4}>
-              <Typography variant="body2" sx={{}}>
-                {performance?.district?.farmers?.length || 0}
-              </Typography>
-              <Typography variant="body2" sx={{}}>
-                Produtores
-                <br />
-                registados
-              </Typography>
-          </Grid>
-          <Grid item sx={{}} xs={4}>
-              <Typography variant="body2" sx={{}}>
-                {performance?.district?.farmlands?.length || 0}
-              </Typography>
-              <Typography variant="body2" sx={{}}>
-                Pomares
-                <br />
-                registados
-              </Typography>
-          </Grid>
-
-          <Grid item sx={{}} xs={4}>
-              <Typography variant="body2" sx={{}}>
-                {0}
-              </Typography>
-              <Typography variant="body2" sx={{}}>
-                Pomares
-                <br />
-                Monitorados
-              </Typography>
-            
-          </Grid>
-        </Grid>
-      </Box>
-      </Link> */}
       </Paper>
-    {/* )} */}
-
-      {/* {user?.role === "Gestor" ? ( */}
       <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
         <PieChart 
           pieStats={pieStats}
           dataLabel="farmers"
         />
-      {/* <Link to="#" sx={{}}>
-      <Box sx={{ backgroundColor: "#826DA3", padding: "5px", borderRadius: "10px 10px 0px 0px" }}>
-        <Typography variant="body1" sx={{ textAlign: "center", color: "#ffffff" }}>
-            Desempenho provincial <br /> ({user?.address.province})
-          </Typography>
-          </Box>
-          <Box sx={{ margin: "15px" }}>
-            <Grid
-              container
-              spacing={{ xs: 4, sm: 6, md: 8 }}
-              sx={{ display: "flex", justifyContent: "space-around" }}
-            >
-              <Grid item sx={{}} xs={4}>
-                  <Typography variant="body2" sx={{}}>
-                    {performance?.province?.farmers?.length || 0}
-                  </Typography>
-                  <Typography variant="body2" sx={{}}>
-                    Produtores
-                    <br />
-                    registados
-                  </Typography>
-              </Grid>
-              <Grid item sx={{}} xs={4}>
-                  <Typography variant="body2" sx={{}}>
-                    {performance?.province?.farmlands?.length || 0}
-                  </Typography>
-                  <Typography variant="body2" sx={{}}>
-                    Pomares
-                    <br />
-                    registados
-                  </Typography>
-              </Grid>
-
-              <Grid item sx={{}} xs={4}>
-                  <Typography variant="body2" sx={{}}>
-                    {0}
-                  </Typography>
-                  <Typography variant="body2" sx={{}}>
-                    Pomares
-                    <br />
-                    Monitorados
-                  </Typography>
-              </Grid>
-            </Grid>
-          </Box>
-          </Link> */}
        </Paper>
-      {/* ) : null} */}
+
+      <Paper sx={{ margin: "10px 10px 15px 10px", borderRadius: "10px" }}>
+        <LineChart 
+          monthlyVisits={monthlyVisits}
+        />
+      </Paper>
       </Box>
       <Footer />
     </Box>
