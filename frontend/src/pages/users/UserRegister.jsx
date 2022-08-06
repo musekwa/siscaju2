@@ -108,25 +108,6 @@ function UserRegister() {
 
   }, [user])
 
-  // useEffect(()=>{
-  //   if (isSuccess) {
-  //     toast.success(`Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`, {
-  //     autoClose: 5000,
-  //     position: toast.POSITION.TOP_CENTER,
-  //     });
-
-  //     // save user in localStorage 
-  //     localStorage.setItem("user", JSON.stringify(user));
-  //     navigate("/", { state: { user } });
-  //   }
-  //   if(isError){
-  //     toast.error(error, {
-  //       autoClose: 5000,
-  //       position: toast.POSITION.TOP_CENTER,
-  //     });
-  //     return ;
-  //   }
-  // }, [isSuccess, user, navigate, isError, error])
 
 
   useEffect(() => {
@@ -180,6 +161,8 @@ function UserRegister() {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
       });
+      navigate('/signin');
+      return ;
     }
     else if (isError) {
       toast.error(message ? message : "O registo falhou!", {
