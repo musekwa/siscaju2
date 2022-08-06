@@ -123,7 +123,7 @@ export const checkInsecticide = (reports, farmland) => {
           calculatePercentage(newReport.affectedTrees, newReport.trees)
         );
 
-        if (newReport.affectedTreePercentage === 0) {
+        if (Math.round(newReport.affectedTreePercentage) === 0) {
           newReport.status =
             sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
               ? "warning"
@@ -371,10 +371,10 @@ export const checkInsecticide = (reports, farmland) => {
           )}, mas nenhum cajueiros 
                 foi encontrado infectado. Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da ${insecticideName} aos ${normalizeDate(
+                }a aplicação da ${insecticideName} aos ${normalizeDate(
             new Date(appliedAt)
           )}, que 
-                abrangeu ${newReport.treatedTreePercentage} dos cajueiros.`;
+                abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
 
           nextRound.nextApplication !== "Nenhuma"
             ? (newReport.message =
@@ -396,10 +396,9 @@ export const checkInsecticide = (reports, farmland) => {
           )}% dos cajueiros foram encontrados infectados. 
                 Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da  ${insecticideName} aos ${normalizeDate(
+                }a aplicação da  ${insecticideName} aos ${normalizeDate(
             new Date(appliedAt)
-          )} 
-                abrangeu ${newReport.treatedTreePercentage} dos cajueiros.`;
+          )}, que abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
 
           nextRound.nextApplication !== "Nenhuma"
             ? (newReport.message =
@@ -419,10 +418,10 @@ export const checkInsecticide = (reports, farmland) => {
           )}, mas nenhum cajueiro 
                 foi encontrado infectado. Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da ${insecticideName} aos ${normalizeDate(
+                }a aplicação da ${insecticideName} aos ${normalizeDate(
             new Date(appliedAt)
           )}, que
-                abrangeu ${newReport.treatedTreePercentage} dos cajueiros.`;
+                abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
           nextRound.nextApplication !== "Nenhuma"
             ? (newReport.message =
                 newReport.message +
@@ -443,7 +442,7 @@ export const checkInsecticide = (reports, farmland) => {
           )}% dos cajueiros foram encontrados infectados. 
                 Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da ${insecticideName} aos ${normalizeDate(
+                }a aplicação da ${insecticideName} aos ${normalizeDate(
             new Date(appliedAt)
           )}, que 
                 abrangeu ${newReport.treatedTreePercentage} dos cajueiros.`;
@@ -460,7 +459,7 @@ export const checkInsecticide = (reports, farmland) => {
           newReport.status = "info";
           newReport.message = `Ocorreu uma pulverização da ${insecticideName} aos ${normalizeDate(
             new Date(appliedAt)
-          )} que abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
+          )}, que abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
           nextRound.nextApplication !== "Nenhuma"
             ? (newReport.message =
                 newReport.message +

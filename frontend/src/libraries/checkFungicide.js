@@ -89,6 +89,10 @@ export const checkFungicide = (reports, farmland)=>{
         let foundLastRounds = [ oidioLastRound, antracnoseLastRound, queimaLastRound ];
         let foundRounds = foundLastRounds.filter(round => round);
 
+        // console.log("no fungicide yet");
+
+        
+
         foundRounds.map((round)=>{
 
             const { 
@@ -113,8 +117,9 @@ export const checkFungicide = (reports, farmland)=>{
             newReport.affectedTrees = 
                 Number(higherSeverity) + Number(highSeverity) + Number(averageSeverity) + Number(lowSeverity);
             newReport.affectedTreePercentage = calculatePercentage(newReport.affectedTrees, newReport.trees);
-
-            if (newReport.affectedTreePercentage === 0) {
+            
+            if (Math.round(newReport.affectedTreePercentage) === 0) {
+              
                 newReport.status =
                   sprayingMonths.indexOf(new Date().getMonth() + 1) >= 0
                     ? "warning"
@@ -133,6 +138,7 @@ export const checkFungicide = (reports, farmland)=>{
                           new Date(detectedAt)
                         )} 
                         não detectou nenhuma ${diseaseName}.`;
+
             }
             else if (newReport.affectedTreePercentage > 0){
                 newReport.status =
@@ -363,16 +369,15 @@ export const checkFungicide = (reports, farmland)=>{
             Number(oidioReport.affectedTrees) === 0
             ) {
             newReport.status = "success";
-            newReport.message =
-              `Ótimo! Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
-                new Date(oidioReport.detectedAt)
-              )}, mas nenhum cajueiros 
+            newReport.message = `Ótimo! Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
+              new Date(oidioReport.detectedAt)
+            )}, mas nenhum cajueiros 
                 foi detectado doente. Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da ${fungicideName} aos ${normalizeDate(
-                new Date(appliedAt)
-              )}, que 
-                abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`
+                }a aplicação da ${fungicideName} aos ${normalizeDate(
+              new Date(appliedAt)
+            )}, que 
+                abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
                 
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
@@ -388,18 +393,16 @@ export const checkFungicide = (reports, farmland)=>{
             Number(oidioReport.affectedTrees) > 0
             ) {
             newReport.status = "warning";
-            newReport.message =
-              `Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
-                new Date(oidioReport.detectedAt)
-              )} e ${Number(
-                oidioReport.affectedTreePercentage
-              )}% dos cajueiros foram detectados doentes. 
+            newReport.message = `Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
+              new Date(oidioReport.detectedAt)
+            )} e ${Number(
+              oidioReport.affectedTreePercentage
+            )}% dos cajueiros foram detectados doentes. 
                 Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da  ${fungicideName} aos ${normalizeDate(
-                new Date(appliedAt)
-              )} 
-                abrangeu ${newReport.treatedTreePercentage} dos cajueiros.`
+                }a aplicação da  ${fungicideName} aos ${normalizeDate(
+              new Date(appliedAt)
+            )}, que abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
 
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
@@ -424,7 +427,7 @@ export const checkFungicide = (reports, farmland)=>{
                 } aplicações da ${fungicideName} aos ${normalizeDate(
                 new Date(appliedAt)
               )}, que
-                abrangeu ${newReport.treatedTreePercentage} dos cajueiros.` 
+                abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.` 
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
                   newReport.message +
@@ -438,18 +441,17 @@ export const checkFungicide = (reports, farmland)=>{
             Number(antracnoseReport.affectedTrees) > 0
             ) {
             newReport.status = "warning";
-            newReport.message =
-              `Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
-                new Date(antracnoseReport.detectedAt)
-              )} e ${Number(
-                antracnoseReport.affectedTreePercentage
-              )}% dos cajueiros foram detectados doentes. 
+            newReport.message = `Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
+              new Date(antracnoseReport.detectedAt)
+            )} e ${Number(
+              antracnoseReport.affectedTreePercentage
+            )}% dos cajueiros foram detectados doentes. 
                 Em seguida, completou-se ${
                   nextRound.round
-                } aplicações da ${fungicideName} aos ${normalizeDate(
-                new Date(appliedAt)
-              )}, que 
-                abrangeu ${newReport.treatedTreePercentage} dos cajueiros.` 
+                }a aplicação da ${fungicideName} aos ${normalizeDate(
+              new Date(appliedAt)
+            )}, que 
+                abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`; 
                 
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
@@ -465,18 +467,14 @@ export const checkFungicide = (reports, farmland)=>{
             Number(queimaReport.affectedTrees) === 0
             ) {
             newReport.status = "success";
-            newReport.message =
-              `Ótimo! Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
-                new Date(queimaReport.detectedAt)
-              )}, mas nenhum cajueiros 
+            newReport.message = `Ótimo! Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
+              new Date(queimaReport.detectedAt)
+            )}, mas nenhum cajueiros 
                     foi detectado doente. Em seguida, completou-se ${
                       nextRound.round
-                    } aplicações da ${fungicideName} aos ${normalizeDate(
-                new Date(appliedAt)
-              )} 
-                    abrangeu ${
-                      newReport.treatedTreePercentage
-                    } dos cajueiros.` 
+                    }a aplicação da ${fungicideName} aos ${normalizeDate(
+              new Date(appliedAt)
+            )}, que abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`; 
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
                   newReport.message +
@@ -490,20 +488,16 @@ export const checkFungicide = (reports, farmland)=>{
             Number(queimaReport.affectedTrees) > 0
             ) {
             newReport.status = "warning";
-            newReport.message =
-              `Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
-                new Date(queimaReport.detectedAt)
-              )} e ${Number(
-                queimaReport.affectedTreePercentage
-              )}% dos cajueiros foram detectados doentes. 
+            newReport.message = `Ocorreu um controle da ${diseaseName} aos ${normalizeDate(
+              new Date(queimaReport.detectedAt)
+            )} e ${Number(
+              queimaReport.affectedTreePercentage
+            )}% dos cajueiros foram detectados doentes. 
                     Em seguida, completou-se ${
                       nextRound.round
-                    } aplicações da ${fungicideName} aos ${normalizeDate(
-                new Date(appliedAt)
-              )} 
-                    abrangeu ${
-                      newReport.treatedTreePercentage
-                    } dos cajueiros.`
+                    }a aplicação da ${fungicideName} aos ${normalizeDate(
+              new Date(appliedAt)
+            )}, que abrangeu ${newReport.treatedTreePercentage}% dos cajueiros.`;
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
                   newReport.message +
@@ -516,9 +510,9 @@ export const checkFungicide = (reports, farmland)=>{
             newReport.message =
               `Ocorreu uma pulverização da ${fungicideName} aos ${normalizeDate(
                 new Date(appliedAt)
-              )} que abrangeu ${
+              )}, que abrangeu ${
                 newReport.treatedTreePercentage
-              } dos cajueiros.` 
+              }% dos cajueiros.` 
             nextRound.nextApplication !== "Nenhuma"
               ? (newReport.message =
                   newReport.message +
