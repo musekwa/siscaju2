@@ -181,11 +181,11 @@ function Login() {
                 sx={styledTextField}
                 required
                 fullWidth
-                label="Email"
+                label="Correio electrónico"
                 id="fullWidth-1"
                 name="email"
                 type="email"
-                placeholder="Email"
+                placeholder="Correio electrónico"
                 size="medium"
                 InputProps={{ }}
                 value={email}
@@ -202,11 +202,11 @@ function Login() {
                 sx={styledTextField}
                 required
                 fullWidth
-                label="Password"
+                label="Senha"
                 id="fullWidth-2"
                 name="password"
                 type={userData.showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder="Senha"
                 size="medium"
                 value={password}
                 onChange={(event) => {
@@ -255,7 +255,7 @@ function Login() {
                 style={{ textDecoration: "none" }}>
                   <Typography variant="body2" sx={{ color: "rebeccapurple" }}>
                     Recuperar
-                    <br /> password
+                    <br /> senha
                   </Typography>
                 </Link>
                 <Link to={"/signup"} style={{ textDecoration: "none" }}>

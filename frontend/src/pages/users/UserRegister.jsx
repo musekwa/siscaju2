@@ -278,6 +278,35 @@ function UserRegister() {
       return ;
     }
 
+    if (userData?.phone) {
+      const secondDigit = [ 2, 3, 4, 5, 6, 7, ];
+      const allowedDigits = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let { phone } = userData;
+
+      let result = String(phone).split('').every(digit=>allowedDigits.indexOf(Number(digit)) >= 0)
+      console.log('res: ', result)
+
+      if (
+          !result ||
+          String(phone).split('').length !== 9 ||
+         !Number(phone) ||
+          Number(String(phone).charAt(0)) !== 8 ||
+         !(secondDigit.indexOf(Number(String(phone).charAt(1))) >= 0)
+      ){
+
+        toast.error("Número de telefone inválido!", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+        return ;
+      }
+    }
+
     const normalizedUserData = {
       ...userData,
     };

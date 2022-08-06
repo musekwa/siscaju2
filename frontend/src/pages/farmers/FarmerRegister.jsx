@@ -98,6 +98,8 @@ const [
   const navigate = useNavigate();
 //   const dispatch = useDispatch();
 
+  // const setValidPhoneNumber = 
+
     useEffect(()=>{
       if ((userIsError || !user) && !flag) {
         setFlag(true);
@@ -261,6 +263,35 @@ const [
       })
       return ;
     }
+
+    if (farmerData?.phone) {
+      const secondDigit = [ 2, 3, 4, 5, 6, 7, ];
+      const allowedDigits = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let { phone } = farmerData;
+
+      let result = String(phone).split('').every(digit=>allowedDigits.indexOf(Number(digit)) >= 0)
+      console.log('res: ', result)
+
+      if (
+          !result ||
+          String(phone).split('').length !== 9 ||
+         !Number(phone) ||
+          Number(String(phone).charAt(0)) !== 8 ||
+         !(secondDigit.indexOf(Number(String(phone).charAt(1))) >= 0)
+      ){
+
+        toast.error("Número de telefone inválido!", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+        return ;
+      }
+    }
  
 
     const normalizedFarmerData = {
@@ -297,6 +328,9 @@ const [
     }
     // dispatch(addFarmer(normalizedFarmerData));
   };
+
+
+
 
   if (isLoading || userIsLoading) {
     return <Spinner />;
@@ -698,6 +732,8 @@ const [
               <TextField
               sx={styledTextField}
               fullWidth
+              trim={true}
+              value={farmerData?.phone}
               label="Telefone"
               id="fullWidth phone"
               name="phone"
