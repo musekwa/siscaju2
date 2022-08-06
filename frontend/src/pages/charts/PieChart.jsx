@@ -71,17 +71,17 @@ const PieChart = ({
         ] : [   
             'Familiares',
             'Comerciais',
-            'Desconhecidos'
+            'Não categorizados'
         ],
         datasets: [{
             label: 'Pomares',
             data: dataLabel === "farmlands" ? farmlands : pieFarmers,
             backgroundColor: dataLabel === "farmlands" ? [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
+            'rgb(155, 99, 232)',
+            'rgb(154, 62, 35)',
             ] : [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
+            'rgb(155, 99, 232)',
+            'rgb(154, 62, 35)',
             'rgb(120, 120, 120)',
             ],
             hoverOffset: 4
