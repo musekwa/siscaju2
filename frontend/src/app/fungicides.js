@@ -14,12 +14,19 @@ export const fungicideByDisease = {
     "Trifloxystrobin + Tebuconazole",
     "Azoxystrobin + Hexaconazole",
   ],
+  Queima: [
+    "Coprox Super",
+    "Trifloxystrobin",
+    "Trifloxystrobin + Tebuconazole",
+    "Azoxystrobin + Hexaconazole",
+  ],
 };
 
 
 export const roundByDiseaseAndRegion = {
   Oídio: ["primeira", "segunda", "terceira", "quarta"],
   Antracnose: ["primeira", "segunda", "terceira"],
+  Queima: ["primeira", "segunda", "terceira"],
 };
 
 
