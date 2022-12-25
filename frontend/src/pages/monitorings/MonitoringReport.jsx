@@ -274,7 +274,7 @@ if (!farmland) {
                 >
                 <AccordionSummary expandIcon={<ExpandMore fontSize="large"  sx={{ color: "red" }}  />} aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: "" }}>
                     <Typography variant="body1" sx={{ textAlign: "left", color: "red" }}>
-                        Ralatório Anual - {Object.keys(yearlyReport)[0]}
+                        Relatório Anual - {Object.keys(yearlyReport)[0]}
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>

@@ -67,6 +67,7 @@ function Login() {
  
     useEffect(() => {
       if (isSuccess && user && JSON.stringify(user)?.includes('timed out after')) {
+        console.log('user:', JSON.stringify(user));
         toast.error(`Verifique a conexão da Internet!`, {
           autoClose: 5000,
           position: toast.POSITION.TOP_CENTER,
@@ -82,6 +83,7 @@ function Login() {
         navigate("/", { state: { user } });
       }
       else if (isError && message === 'Network Error') {
+         console.log('message erro:', JSON.stringify(message));
         toast.error("Verifique a conexão da Internet!", {
           autoClose: 5000,
           position: toast.POSITION.TOP_CENTER,
